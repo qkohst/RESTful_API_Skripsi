@@ -18,7 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('nama');
             $table->string('username')->unique();
             $table->string('password');
-            $table->string('role');
+            $table->string('api_token');
+            $table->enum('role', ['Admin', 'Admin Prodi', 'Dosen', 'Mahasiswa']);
             $table->rememberToken();
             $table->timestamps();
         });

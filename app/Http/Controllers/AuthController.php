@@ -23,9 +23,17 @@ class AuthController extends Controller
             'api_token' => bcrypt($request->username . 'Admin'),
         ]);
 
+        $data = [
+            'id' => $user->id,
+            'nama' => $user->nama,
+            'username' => $user->username,
+            'role' => $user->role,
+            'api_token' => $user->api_token,
+            'registered_at' => $user->created_at->diffForHumans(),
+        ];
         return response()->json([
-            'message' => 'User Registered',
-            'user' => $user
+            'message' => 'Registration is successful',
+            'user' => $data
         ], 201);
     }
 
@@ -33,13 +41,22 @@ class AuthController extends Controller
     {
         if (!Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
             return response()->json([
-                'error' => 'Your credential is wrong'
+                'error' => 'Incorrect username or password'
             ], 401);
         }
+
         $user = $user->find(Auth::user()->id);
+
+        $data = [
+            'id' => $user->id,
+            'nama' => $user->nama,
+            'username' => $user->username,
+            'role' => $user->role,
+            'api_token' => $user->api_token,
+        ];
         return response()->json([
-            'message' => 'Login Success',
-            'user' => $user
+            'message' => 'Login successfully',
+            'user' => $data
         ], 201);
     }
 }

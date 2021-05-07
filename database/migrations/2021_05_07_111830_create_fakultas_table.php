@@ -15,9 +15,9 @@ class CreateFakultasTable extends Migration
     {
         Schema::create('fakultas', function (Blueprint $table) {
             $table->id();
-            $table->integer('kode_fakultas')->unique();
-            $table->string('nama_fakultas')->unique();
-            $table->string('singkatan_fakultas')->unique();
+            $table->integer('kode_fakultas')->unsigned()->unique();
+            $table->string('nama_fakultas', 100)->unique();
+            $table->string('singkatan_fakultas', 10)->unique();
             $table->enum('status_fakultas', ['Aktif', 'Non Aktif']);
             $table->timestamps();
         });
