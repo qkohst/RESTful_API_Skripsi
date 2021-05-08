@@ -115,8 +115,8 @@ class FakultasController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nama_fakultas' => 'required|min:5|unique:admin' . ($id ? ",id,$id" : ''),
-            'singkatan_fakultas' => 'required|min:2|unique:admin' . ($id ? ",id,$id" : ''),
+            'nama_fakultas' => 'required|min:5|unique:fakultas' . ($id ? ",id,$id" : ''),
+            'singkatan_fakultas' => 'required|min:2|unique:fakultas' . ($id ? ",id,$id" : ''),
             'status_fakultas' => 'required|in:Aktif,Non Aktif',
         ]);
 
@@ -126,26 +126,26 @@ class FakultasController extends Controller
         $fakultas->singkatan_fakultas = $request->input('singkatan_fakultas');
         $fakultas->status_fakultas = $request->input('status_fakultas');
 
-        if (!$fakultas->update()) {
+        try {
+            $fakultas->update();
+            $data = [
+                'id' => $fakultas->id,
+                'kode_fakultas' => $fakultas->kode_fakultas,
+                'nama_fakultas' => $fakultas->nama_fakultas,
+                'singkatan_fakultas' => $fakultas->singkatan_fakultas,
+                'status_fakultas' => $fakultas->status_fakultas,
+                'updated_at' => $fakultas->updated_at->diffForHumans(),
+            ];
+            $response = [
+                'message' => 'Data Edited Successfully',
+                'fakultas' => $data
+            ];
+            return response()->json($response, 200);
+        } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'an error occurred while updating the data'
-            ], 404);
+            ], 409);
         }
-
-        $data = [
-            'id' => $fakultas->id,
-            'kode_fakultas' => $fakultas->kode_fakultas,
-            'nama_fakultas' => $fakultas->nama_fakultas,
-            'singkatan_fakultas' => $fakultas->singkatan_fakultas,
-            'status_fakultas' => $fakultas->status_fakultas,
-            'updated_at' => $fakultas->updated_at->diffForHumans(),
-        ];
-        $response = [
-            'message' => 'Data Edited Successfully',
-            'fakultas' => $data
-        ];
-
-        return response()->json($response, 200);
     }
 
     /**
@@ -180,7 +180,7 @@ class FakultasController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Data with active status',
+            'message' => 'Data Fakultas with active status',
             'fakultas' => $fakultas
         ], 200);
     }

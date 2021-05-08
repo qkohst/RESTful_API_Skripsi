@@ -37,6 +37,11 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('fakultas', 'FakultasController', [
                     'except' => ['create', 'edit']
                 ]);
+
+                Route::get('programstudi/aktif/{fakultas_id_fakultas}', 'ProgramStudiController@filter_by_fakultas');
+                Route::resource('programstudi', 'ProgramStudiController', [
+                    'except' => ['create', 'edit']
+                ]);
             });
         });
 
