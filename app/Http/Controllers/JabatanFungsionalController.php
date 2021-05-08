@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\JabatanStruktural;
+use App\JabatanFungsional;
 
-class JabatanStrukturalController extends Controller
+class JabatanFungsionalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,19 +14,18 @@ class JabatanStrukturalController extends Controller
      */
     public function index()
     {
-        $jabatan_struktural = JabatanStruktural::get([
+        $jabatan_fungsional = JabatanFungsional::get([
             'id',
-            'nama_jabatan_struktural',
-            'deskripsi_jabatan_struktural'
+            'nama_jabatan_fungsional',
+            'deskripsi_jabatan_fungsional'
         ]);
 
         $response = [
             'message' => 'List of Data',
-            'jabatan_struktural' => $jabatan_struktural
+            'jabatan_fungsional' => $jabatan_fungsional
         ];
         return response()->json($response, 200);
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -37,25 +36,25 @@ class JabatanStrukturalController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nama_jabatan_struktural' => 'required|unique:jabatan_struktural|min:5',
-            'deskripsi_jabatan_struktural' => 'required',
+            'nama_jabatan_fungsional' => 'required|unique:jabatan_fungsional|min:5',
+            'deskripsi_jabatan_fungsional' => 'required',
         ]);
 
-        $jabatan_struktural = new JabatanStruktural([
-            'nama_jabatan_struktural' => $request->input('nama_jabatan_struktural'),
-            'deskripsi_jabatan_struktural' => $request->input('deskripsi_jabatan_struktural'),
+        $jabatan_fungsional = new JabatanFungsional([
+            'nama_jabatan_fungsional' => $request->input('nama_jabatan_fungsional'),
+            'deskripsi_jabatan_fungsional' => $request->input('deskripsi_jabatan_fungsional'),
         ]);
 
-        if ($jabatan_struktural->save()) {
+        if ($jabatan_fungsional->save()) {
             $data = [
-                'id' => $jabatan_struktural->id,
-                'nama_jabatan_struktural' => $jabatan_struktural->nama_jabatan_struktural,
-                'deskripsi_jabatan_struktural' => $jabatan_struktural->deskripsi_jabatan_struktural,
-                'created_at' => $jabatan_struktural->created_at->diffForHumans(),
+                'id' => $jabatan_fungsional->id,
+                'nama_jabatan_fungsional' => $jabatan_fungsional->nama_jabatan_fungsional,
+                'deskripsi_jabatan_fungsional' => $jabatan_fungsional->deskripsi_jabatan_fungsional,
+                'created_at' => $jabatan_fungsional->created_at->diffForHumans(),
             ];
             $response = [
                 'message' => 'Data added successfully',
-                'jabatan_struktural' => $data
+                'jabatan_fungsional' => $data
             ];
             return response()->json($response, 201);
         }
@@ -75,17 +74,17 @@ class JabatanStrukturalController extends Controller
     public function show($id)
     {
         try {
-            $jabatan_struktural = JabatanStruktural::findorfail($id);
+            $jabatan_fungsional = JabatanFungsional::findorfail($id);
             $data = [
-                'id' => $jabatan_struktural->id,
-                'nama_jabatan_struktural' => $jabatan_struktural->nama_jabatan_struktural,
-                'deskripsi_jabatan_struktural' => $jabatan_struktural->deskripsi_jabatan_struktural,
-                'created_at' => $jabatan_struktural->created_at->diffForHumans(),
-                'updated_at' => $jabatan_struktural->updated_at->diffForHumans(),
+                'id' => $jabatan_fungsional->id,
+                'nama_jabatan_fungsional' => $jabatan_fungsional->nama_jabatan_fungsional,
+                'deskripsi_jabatan_fungsional' => $jabatan_fungsional->deskripsi_jabatan_fungsional,
+                'created_at' => $jabatan_fungsional->created_at->diffForHumans(),
+                'updated_at' => $jabatan_fungsional->updated_at->diffForHumans(),
             ];
             $response = [
                 'message' => 'Data details',
-                'jabatan_struktural' => $data
+                'jabatan_fungsional' => $data
             ];
 
             return response()->json($response, 200);
@@ -98,7 +97,6 @@ class JabatanStrukturalController extends Controller
         }
     }
 
-
     /**
      * Update the specified resource in storage.
      *
@@ -109,28 +107,28 @@ class JabatanStrukturalController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'deskripsi_jabatan_struktural' => 'required'
+            'deskripsi_jabatan_fungsional' => 'required'
         ]);
 
-        $jabatan_struktural = JabatanStruktural::findorfail($id);
+        $jabatan_fungsional = JabatanFungsional::findorfail($id);
 
-        $jabatan_struktural->deskripsi_jabatan_struktural = $request->input('deskripsi_jabatan_struktural');
+        $jabatan_fungsional->deskripsi_jabatan_fungsional = $request->input('deskripsi_jabatan_fungsional');
 
-        if (!$jabatan_struktural->update()) {
+        if (!$jabatan_fungsional->update()) {
             return response()->json([
                 'message' => 'an error occurred while updating the data'
             ], 404);
         }
 
         $data = [
-            'id' => $jabatan_struktural->id,
-            'nama_jabatan_struktural' => $jabatan_struktural->nama_jabatan_struktural,
-            'deskripsi_jabatan_struktural' => $jabatan_struktural->deskripsi_jabatan_struktural,
-            'updated_at' => $jabatan_struktural->updated_at->diffForHumans(),
+            'id' => $jabatan_fungsional->id,
+            'nama_jabatan_fungsional' => $jabatan_fungsional->nama_jabatan_fungsional,
+            'deskripsi_jabatan_fungsional' => $jabatan_fungsional->deskripsi_jabatan_fungsional,
+            'updated_at' => $jabatan_fungsional->updated_at->diffForHumans(),
         ];
         $response = [
             'message' => 'Data Edited Successfully',
-            'jabatan_struktural' => $data
+            'jabatan_fungsional' => $data
         ];
 
         return response()->json($response, 200);
@@ -145,10 +143,10 @@ class JabatanStrukturalController extends Controller
     public function destroy($id)
     {
         try {
-            $jabatan_struktural = JabatanStruktural::findOrFail($id);
-            $jabatan_struktural->delete();
+            $jabatan_fungsional = JabatanFungsional::findOrFail($id);
+            $jabatan_fungsional->delete();
             return response()->json([
-                'message' => 'Data with id ' . $jabatan_struktural->id . ' deleted successfully'
+                'message' => 'Data with id ' . $jabatan_fungsional->id . ' deleted successfully'
             ], 200);
         } catch (\Illuminate\Database\QueryException $ex) {
             return response()->json([

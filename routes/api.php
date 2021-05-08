@@ -43,6 +43,9 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('jabatanstruktural', 'JabatanStrukturalController', [
                     'except' => ['create', 'edit']
                 ]);
+                Route::resource('jabatanfungsional', 'JabatanFungsionalController', [
+                    'except' => ['create', 'edit']
+                ]);
             });
         });
 
