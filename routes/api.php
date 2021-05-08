@@ -32,14 +32,15 @@ Route::group(['prefix' => 'v1'], function () {
             Route::group(['middleware' => 'checkRole:Admin'], function () {
                 Route::get('profile', 'ProfileAdminController@index');
                 Route::post('profile', 'ProfileAdminController@update_profile');
-
                 Route::get('fakultas/aktif', 'FakultasController@filter_status_aktif');
                 Route::resource('fakultas', 'FakultasController', [
                     'except' => ['create', 'edit']
                 ]);
-
                 Route::get('programstudi/aktif/{fakultas_id_fakultas}', 'ProgramStudiController@filter_by_fakultas');
                 Route::resource('programstudi', 'ProgramStudiController', [
+                    'except' => ['create', 'edit']
+                ]);
+                Route::resource('jabatanstruktural', 'JabatanStrukturalController', [
                     'except' => ['create', 'edit']
                 ]);
             });
