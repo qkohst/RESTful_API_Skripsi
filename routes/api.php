@@ -22,14 +22,15 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('auth/login', 'AuthController@login');
 
     Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('auth/gantipassword', 'AuthController@gantipassword');
+        Route::post('auth/logout', 'AuthController@logout');
 
         //Route Admin
         Route::group(['prefix' => 'admin'], function () {
             Route::group(['middleware' => 'checkRole:Admin'], function () {
-                Route::resource('profile', 'ProfileAdminController', [
-                    'only' => ['index', 'update']
-                ]);
-                Route::post('profile/gantipassword', 'ProfileAdminController@gantipassword');
+                Route::get('profile', 'ProfileAdminController@index');
+                Route::post('profile', 'ProfileAdminController@update_profile');
+
                 Route::resource('fakultas', 'FakultasController', [
                     'except' => ['create', 'edit']
                 ]);
