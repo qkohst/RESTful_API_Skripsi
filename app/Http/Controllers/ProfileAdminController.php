@@ -55,8 +55,10 @@ class ProfileAdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update_profile(Request $request)
     {
+        $admin = Admin::where('user_id_user', Auth::user()->id)->first();
+        $id = $admin->id;
         $this->validate($request, [
             'nama_admin' => 'required|min:5',
             'nidn_admin' => 'required|numeric|digits:10|unique:admin' . ($id ? ",id,$id" : ''),
@@ -70,7 +72,6 @@ class ProfileAdminController extends Controller
             'foto_admin' => 'nullable|mimes:jpg,jpeg,png|max:2000'
         ]);
 
-        $admin = Admin::findorfail($id);
         $admin->nama_admin = $request->input('nama_admin');
         $admin->nidn_admin = $request->input('nidn_admin');
         $admin->nip_admin = $request->input('nip_admin');
@@ -85,16 +86,16 @@ class ProfileAdminController extends Controller
         $fotoName = date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
         $file_foto->move('fileFotoProfile/', $fotoName);
         $admin->foto_admin = $fotoName;
-        $admin->update();
+        $admin->save();
 
-        $user = User::findorfail($admin->user_id_user);
+        $user = User::findorfail(Auth::user()->id);
 
         if ($user->username != $admin->nidn_admin) {
             $user->nama = $admin->nama_admin;
             $user->username = $admin->nidn_admin;
             $user->password = bcrypt($admin->nidn_admin);
             $user->api_token = bcrypt($admin->nidn_admin . 'Admin');
-            $user->update();
+            $user->save();
 
             $data1 = [
                 'id' => $admin->id,
@@ -116,7 +117,7 @@ class ProfileAdminController extends Controller
                 'email_admin' => $admin->email_admin,
                 'no_hp_admin' => $admin->no_hp_admin,
                 'status_admin' => $admin->status_admin,
-                'updated_at' => $admin->updated_at,
+                'updated_at' => $admin->updated_at->diffForHumans(),
             ];
 
             return response()->json([
@@ -145,7 +146,7 @@ class ProfileAdminController extends Controller
             'email_admin' => $admin->email_admin,
             'no_hp_admin' => $admin->no_hp_admin,
             'status_admin' => $admin->status_admin,
-            'updated_at' => $admin->updated_at,
+            'updated_at' => $admin->updated_at->diffForHumans(),
         ];
         return response()->json([
             'message' => 'Profile updated successfully',

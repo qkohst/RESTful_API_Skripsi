@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Fakultas;
 
 class FakultasController extends Controller
 {
@@ -13,17 +14,18 @@ class FakultasController extends Controller
      */
     public function index()
     {
-        return 'it work';
-    }
+        $data = Fakultas::get([
+            'id',
+            'kode_fakultas',
+            'nama_fakultas',
+            'singkatan_fakultas',
+            'status_fakultas'
+        ]);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json([
+            'message' => 'List of Data',
+            'fakultas' => $data
+        ], 200);
     }
 
     /**
@@ -34,7 +36,39 @@ class FakultasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'kode_fakultas' => 'required|unique:fakultas|numeric|digits:2',
+            'nama_fakultas' => 'required|unique:fakultas|min:5',
+            'singkatan_fakultas' => 'required|unique:fakultas|min:2',
+        ]);
+
+        $fakultas = new Fakultas([
+            'kode_fakultas' => $request->input('kode_fakultas'),
+            'nama_fakultas' => $request->input('nama_fakultas'),
+            'singkatan_fakultas' => $request->input('singkatan_fakultas'),
+            'status_fakultas' => 'Aktif'
+        ]);
+
+        if ($fakultas->save()) {
+            $data = [
+                'id' => $fakultas->id,
+                'kode_fakultas' => $fakultas->kode_fakultas,
+                'nama_fakultas' => $fakultas->nama_fakultas,
+                'singkatan_fakultas' => $fakultas->singkatan_fakultas,
+                'status_fakultas' => $fakultas->status_fakultas,
+                'created_at' => $fakultas->created_at->diffForHumans(),
+            ];
+            $response = [
+                'message' => 'Data added successfully',
+                'fakultas' => $data
+            ];
+            return response()->json($response, 201);
+        }
+
+        $response = [
+            'message' => 'an error occurred while saving the data'
+        ];
+        return response()->json($response, 404);
     }
 
     /**
@@ -45,18 +79,30 @@ class FakultasController extends Controller
      */
     public function show($id)
     {
-        //
-    }
+        try {
+            $fakultas = Fakultas::findorfail($id);
+            $data = [
+                'id' => $fakultas->id,
+                'kode_fakultas' => $fakultas->kode_fakultas,
+                'nama_fakultas' => $fakultas->nama_fakultas,
+                'singkatan_fakultas' => $fakultas->singkatan_fakultas,
+                'status_fakultas' => $fakultas->status_fakultas,
+                'created_at' => $fakultas->created_at->diffForHumans(),
+                'updated_at' => $fakultas->updated_at->diffForHumans(),
+            ];
+            $response = [
+                'message' => 'Data details',
+                'fakultas' => $data
+            ];
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+            return response()->json($response, 200);
+        } catch (\Throwable $th) {
+            $response = [
+                'message' => 'Data not found'
+            ];
+
+            return response()->json($response, 404);
+        }
     }
 
     /**
@@ -68,7 +114,38 @@ class FakultasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'nama_fakultas' => 'required|min:5|unique:admin' . ($id ? ",id,$id" : ''),
+            'singkatan_fakultas' => 'required|min:2|unique:admin' . ($id ? ",id,$id" : ''),
+            'status_fakultas' => 'required|in:Aktif,Non Aktif',
+        ]);
+
+        $fakultas = Fakultas::findorfail($id);
+
+        $fakultas->nama_fakultas = $request->input('nama_fakultas');
+        $fakultas->singkatan_fakultas = $request->input('singkatan_fakultas');
+        $fakultas->status_fakultas = $request->input('status_fakultas');
+
+        if (!$fakultas->update()) {
+            return response()->json([
+                'message' => 'an error occurred while updating the data'
+            ], 404);
+        }
+
+        $data = [
+            'id' => $fakultas->id,
+            'kode_fakultas' => $fakultas->kode_fakultas,
+            'nama_fakultas' => $fakultas->nama_fakultas,
+            'singkatan_fakultas' => $fakultas->singkatan_fakultas,
+            'status_fakultas' => $fakultas->status_fakultas,
+            'updated_at' => $fakultas->updated_at->diffForHumans(),
+        ];
+        $response = [
+            'message' => 'Data Edited Successfully',
+            'fakultas' => $data
+        ];
+
+        return response()->json($response, 200);
     }
 
     /**
@@ -79,6 +156,32 @@ class FakultasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $fakultas = Fakultas::findOrFail($id);
+            $fakultas->delete();
+            return response()->json([
+                'message' => 'Data with id ' . $fakultas->id . ' deleted successfully'
+
+            ], 200);
+        } catch (\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'message' => 'Sorry the data cannot be deleted, there are still data in other tables that are related to this data!'
+            ], 406);
+        }
+    }
+
+    public function filter_status_aktif()
+    {
+        $fakultas = Fakultas::where('status_fakultas', 'Aktif')->orderBy('kode_fakultas', 'asc')->get([
+            'id',
+            'kode_fakultas',
+            'nama_fakultas',
+            'singkatan_fakultas'
+        ]);
+
+        return response()->json([
+            'message' => 'Data with active status',
+            'fakultas' => $fakultas
+        ], 200);
     }
 }
