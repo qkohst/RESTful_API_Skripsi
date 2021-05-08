@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    // Nanti Hapus
     public function register(Request $request, User $user)
     {
         $this->validate($request, [
@@ -33,12 +34,16 @@ class AuthController extends Controller
         ];
         return response()->json([
             'message' => 'Registration is successful',
-            'user' => $data
+            'user' => $data,
         ], 201);
     }
 
     public function login(Request $request, User $user)
     {
+        $this->validate($request, [
+            'username' => 'required|numeric',
+            'password' => 'required|min:6'
+        ]);
         if (!Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
             return response()->json([
                 'error' => 'Incorrect username or password'
@@ -57,6 +62,6 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Login successfully',
             'user' => $data
-        ], 201);
+        ], 200);
     }
 }

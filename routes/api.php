@@ -22,12 +22,20 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('auth/login', 'AuthController@login');
 
     Route::group(['middleware' => 'auth:api'], function () {
-        Route::get('users/profile', 'UserController@profile');
 
-        Route::group(['middleware' => 'checkRole:Admin'], function () {
-            Route::resource('fakultas', 'FakultasController', [
-                'except' => ['create', 'edit']
-            ]);
+        //Route Admin
+        Route::group(['prefix' => 'admin'], function () {
+            Route::group(['middleware' => 'checkRole:Admin'], function () {
+                Route::resource('profile', 'ProfileAdminController', [
+                    'only' => ['index', 'update']
+                ]);
+                Route::post('profile/gantipassword', 'ProfileAdminController@gantipassword');
+                Route::resource('fakultas', 'FakultasController', [
+                    'except' => ['create', 'edit']
+                ]);
+            });
         });
+
+        //Route Admin Prodi
     });
 });
