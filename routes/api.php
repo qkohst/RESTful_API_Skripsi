@@ -46,6 +46,12 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('jabatanfungsional', 'JabatanFungsionalController', [
                     'except' => ['create', 'edit']
                 ]);
+                Route::resource('adminprodi', 'AdminProdiController', [
+                    'except' => ['create', 'edit']
+                ]);
+                Route::patch('adminprodi/{id}/resetpassword', [
+                    'uses' => 'AdminProdiController@resetpassword'
+                ])->name('adminprodi.resetpassword');
             });
         });
 
