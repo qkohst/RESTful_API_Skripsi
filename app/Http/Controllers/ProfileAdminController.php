@@ -153,28 +153,4 @@ class ProfileAdminController extends Controller
             'admin' => $data1
         ], 200);
     }
-
-    public function gantipassword(Request $request, User $user)
-    {
-        $this->validate($request, [
-            'nidn_admin' => 'required|numeric',
-            'password_lama' => 'required|min:6',
-            'password_baru' => 'required|min:6',
-            'confirm_password' => 'required|min:6'
-        ]);
-
-        $user = $user->find(Auth::user()->id);
-
-        if ($user->username != $request->nidn_admin || $user->password != $request->password_lama) {
-            return response()->json([
-                'error' => 'Incorrect username or password',
-                'data' => $user
-            ], 401);
-        }
-        if ($request->password_baru != $request->confirm_password) {
-            return response()->json([
-                'error' => 'New password confirmation does not match'
-            ], 401);
-        }
-    }
 }

@@ -333,7 +333,7 @@ class AdminProdiController extends Controller
         return response()->json([
             'message' => 'The given data was invalid.',
             'errors' => [
-                'nidn_admin_prodi'=>'The NIDN you entered is invalid'
+                'nidn_admin_prodi' => 'The nidn admin prodi you entered is invalid'
             ],
         ], 400);
     }
