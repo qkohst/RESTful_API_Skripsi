@@ -39,7 +39,6 @@ class ProfileAdminController extends Controller
             ],
             'email_admin' => $admin->email_admin,
             'no_hp_admin' => $admin->no_hp_admin,
-            'status_admin' => $admin->status_admin,
             'updated_at' => $admin->updated_at,
         ];
         return response()->json([
@@ -82,10 +81,13 @@ class ProfileAdminController extends Controller
         $admin->email_admin = $request->input('email_admin');
         $admin->no_hp_admin = $request->input('no_hp_admin');
 
-        $file_foto = $request->file('foto_admin');
-        $fotoName = date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
-        $file_foto->move('fileFotoProfile/', $fotoName);
-        $admin->foto_admin = $fotoName;
+        if ($request->hasFile('foto_admin')) {
+            $file_foto = $request->file('foto_admin');
+            $fotoName = 'img-' . date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
+            $file_foto->move('fileFotoProfile/', $fotoName);
+            $admin->foto_admin = $fotoName;
+        }
+
         $admin->save();
 
         $user = User::findorfail(Auth::user()->id);
@@ -116,7 +118,6 @@ class ProfileAdminController extends Controller
                 ],
                 'email_admin' => $admin->email_admin,
                 'no_hp_admin' => $admin->no_hp_admin,
-                'status_admin' => $admin->status_admin,
                 'updated_at' => $admin->updated_at->diffForHumans(),
             ];
 
@@ -145,7 +146,6 @@ class ProfileAdminController extends Controller
             ],
             'email_admin' => $admin->email_admin,
             'no_hp_admin' => $admin->no_hp_admin,
-            'status_admin' => $admin->status_admin,
             'updated_at' => $admin->updated_at->diffForHumans(),
         ];
         return response()->json([

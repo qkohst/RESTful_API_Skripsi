@@ -28,7 +28,6 @@ class CreateAdminProdiTable extends Migration
             $table->string('no_surat_tugas_admin_prodi', 45)->unique();
             $table->string('email_admin_prodi', 45)->unique();
             $table->string('no_hp_admin_prodi', 13)->unique();
-            $table->enum('status_admin_prodi', ['Aktif', 'Non Aktif']);
             $table->timestamps();
 
             $table->foreign('user_id_user')->references('id')->on('users');

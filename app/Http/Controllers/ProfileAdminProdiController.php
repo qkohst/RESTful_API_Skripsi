@@ -40,7 +40,6 @@ class ProfileAdminProdiController extends Controller
             'no_surat_tugas_admin_prodi' => $admin_prodi->no_surat_tugas_admin_prodi,
             'email_admin_prodi' => $admin_prodi->email_admin_prodi,
             'no_hp_admin_prodi' => $admin_prodi->no_hp_admin_prodi,
-            'status_admin_prodi' => $admin_prodi->status_admin_prodi,
             'updated_at' => $admin_prodi->updated_at->diffForHumans(),
         ];
         return response()->json([
@@ -76,10 +75,12 @@ class ProfileAdminProdiController extends Controller
         $admin_prodi->email_admin_prodi = $request->input('email_admin_prodi');
         $admin_prodi->no_hp_admin_prodi = $request->input('no_hp_admin_prodi');
 
-        $file_foto = $request->file('foto_admin_prodi');
-        $fotoName = date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
-        $file_foto->move('fileFotoProfile/', $fotoName);
-        $admin_prodi->foto_admin_prodi = $fotoName;
+        if ($request->has('foto_admin_prodi')) {
+            $file_foto = $request->file('foto_admin_prodi');
+            $fotoName = 'img-' . date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
+            $file_foto->move('fileFotoProfile/', $fotoName);
+            $admin_prodi->foto_admin_prodi = $fotoName;
+        }
         $admin_prodi->save();
 
         $data = [
@@ -101,7 +102,6 @@ class ProfileAdminProdiController extends Controller
             'no_surat_tugas_admin_prodi' => $admin_prodi->no_surat_tugas_admin_prodi,
             'email_admin_prodi' => $admin_prodi->email_admin_prodi,
             'no_hp_admin_prodi' => $admin_prodi->no_hp_admin_prodi,
-            'status_admin_prodi' => $admin_prodi->status_admin_prodi,
             'updated_at' => $admin_prodi->updated_at->diffForHumans(),
         ];
         return response()->json([

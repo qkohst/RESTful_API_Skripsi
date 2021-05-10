@@ -20,8 +20,7 @@ class AdminProdi extends Model
         'foto_admin_prodi',
         'no_surat_tugas_admin_prodi',
         'email_admin_prodi',
-        'no_hp_admin_prodi',
-        'status_admin_prodi'
+        'no_hp_admin_prodi'
     ];
 
     public function program_studi()

@@ -26,7 +26,6 @@ class CreateAdminTable extends Migration
             $table->string('foto_admin', 100)->nullable();
             $table->string('email_admin', 45)->unique();
             $table->string('no_hp_admin', 13)->unique();
-            $table->enum('status_admin', ['Aktif', 'Non Aktif']);
             $table->timestamps();
 
             $table->foreign('user_id_user')->references('id')->on('users');

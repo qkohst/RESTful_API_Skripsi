@@ -18,8 +18,7 @@ class Admin extends Model
         'jenis_kelamin_admin',
         'foto_admin',
         'email_admin',
-        'no_hp_admin',
-        'status_admin',
+        'no_hp_admin'
     ];
 
     public function user()

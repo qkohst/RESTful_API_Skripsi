@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    RESTful API E-Skripsi
                 </div>
 
                 <div class="links">

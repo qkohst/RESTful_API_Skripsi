@@ -20,7 +20,8 @@ class AdminProdiController extends Controller
             'id',
             'program_studi_id_program_studi',
             'nama_admin_prodi',
-            'status_admin_prodi'
+            'jenis_kelamin_admin_prodi',
+            'nidn_admin_prodi'
         ]);
 
         foreach ($admin_prodi as $data_admin_prodi) {
@@ -54,7 +55,7 @@ class AdminProdiController extends Controller
             'nama_admin_prodi' => 'required|min:5',
             'tempat_lahir_admin_prodi' => 'required|min:3',
             'tanggal_lahir_admin_prodi' => 'required|date',
-            'jenis_kelamin_admin_prodi' => 'required',
+            'jenis_kelamin_admin_prodi' => 'required|in:L,P',
             'foto_admin_prodi' => 'nullable|mimes:jpg,jpeg,png|max:2000',
             'no_surat_tugas_admin_prodi' => 'required|unique:admin_prodi|min:5',
             'email_admin_prodi' => 'required|unique:admin_prodi|email',
@@ -75,31 +76,31 @@ class AdminProdiController extends Controller
         if ($user->save()) {
             //Menyimpan Data Admin Prodi
             try {
-                $file_foto = $request->file('foto_admin_prodi');
-                $fotoName = date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
-                $file_foto->move('fileFotoProfile/', $fotoName);
-
-                $admin_prodi = new AdminProdi([
-                    'user_id_user' => $user->id,
-                    'program_studi_id_program_studi' => $request->input('program_studi_id_program_studi'),
-                    'nik_admin_prodi' => $request->input('nik_admin_prodi'),
-                    'nidn_admin_prodi' => $request->input('nidn_admin_prodi'),
-                    'nip_admin_prodi' => $request->input('nip_admin_prodi'),
-                    'nama_admin_prodi' => $request->input('nama_admin_prodi'),
-                    'tempat_lahir_admin_prodi' => $request->input('tempat_lahir_admin_prodi'),
-                    'tanggal_lahir_admin_prodi' => $request->input('tanggal_lahir_admin_prodi'),
-                    'jenis_kelamin_admin_prodi' => $request->input('jenis_kelamin_admin_prodi'),
-                    'foto_admin_prodi' => $fotoName,
-                    'no_surat_tugas_admin_prodi' => $request->input('no_surat_tugas_admin_prodi'),
-                    'email_admin_prodi' => $request->input('email_admin_prodi'),
-                    'no_hp_admin_prodi' => $request->input('no_hp_admin_prodi'),
-                    'status_admin_prodi' => 'Aktif'
-                ]);
-
                 $program_studi = ProgramStudi::findorfail($request->input('program_studi_id_program_studi'));
 
-                //Response ketika data admin prodi berhasil disimpan
-                if ($admin_prodi->save()) {
+                //Jika Upload Foto
+                if ($request->hasFile('foto_admin_prodi')) {
+                    $file_foto = $request->file('foto_admin_prodi');
+                    $fotoName = 'img-' . date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
+                    $file_foto->move('fileFotoProfile/', $fotoName);
+
+                    $admin_prodi = new AdminProdi([
+                        'user_id_user' => $user->id,
+                        'program_studi_id_program_studi' => $request->input('program_studi_id_program_studi'),
+                        'nik_admin_prodi' => $request->input('nik_admin_prodi'),
+                        'nidn_admin_prodi' => $request->input('nidn_admin_prodi'),
+                        'nip_admin_prodi' => $request->input('nip_admin_prodi'),
+                        'nama_admin_prodi' => $request->input('nama_admin_prodi'),
+                        'tempat_lahir_admin_prodi' => $request->input('tempat_lahir_admin_prodi'),
+                        'tanggal_lahir_admin_prodi' => $request->input('tanggal_lahir_admin_prodi'),
+                        'jenis_kelamin_admin_prodi' => $request->input('jenis_kelamin_admin_prodi'),
+                        'foto_admin_prodi' => $fotoName,
+                        'no_surat_tugas_admin_prodi' => $request->input('no_surat_tugas_admin_prodi'),
+                        'email_admin_prodi' => $request->input('email_admin_prodi'),
+                        'no_hp_admin_prodi' => $request->input('no_hp_admin_prodi'),
+                    ]);
+
+                    $admin_prodi->save();
 
                     $data = [
                         'id' => $admin_prodi->id,
@@ -127,7 +128,6 @@ class AdminProdiController extends Controller
                         ],
                         'no_surat_tugas_admin_prodi' => $admin_prodi->no_surat_tugas_admin_prodi,
                         'email_admin_prodi' => $admin_prodi->email_admin_prodi,
-                        'status_admin_prodi' => $admin_prodi->status_admin_prodi,
                         'created_at' => $admin_prodi->created_at->diffForHumans(),
                     ];
 
@@ -137,6 +137,60 @@ class AdminProdiController extends Controller
                     ];
                     return response()->json($response, 201);
                 }
+
+                //Jika Tidak Upload Foto
+                $admin_prodi = new AdminProdi([
+                    'user_id_user' => $user->id,
+                    'program_studi_id_program_studi' => $request->input('program_studi_id_program_studi'),
+                    'nik_admin_prodi' => $request->input('nik_admin_prodi'),
+                    'nidn_admin_prodi' => $request->input('nidn_admin_prodi'),
+                    'nip_admin_prodi' => $request->input('nip_admin_prodi'),
+                    'nama_admin_prodi' => $request->input('nama_admin_prodi'),
+                    'tempat_lahir_admin_prodi' => $request->input('tempat_lahir_admin_prodi'),
+                    'tanggal_lahir_admin_prodi' => $request->input('tanggal_lahir_admin_prodi'),
+                    'jenis_kelamin_admin_prodi' => $request->input('jenis_kelamin_admin_prodi'),
+                    'foto_admin_prodi' => $request->input('foto_admin_prodi'),
+                    'no_surat_tugas_admin_prodi' => $request->input('no_surat_tugas_admin_prodi'),
+                    'email_admin_prodi' => $request->input('email_admin_prodi'),
+                    'no_hp_admin_prodi' => $request->input('no_hp_admin_prodi'),
+                ]);
+
+                $admin_prodi->save();
+
+                $data = [
+                    'id' => $admin_prodi->id,
+                    'user' => [
+                        'id' => $user->id,
+                        'nama' => $user->nama,
+                        'username' => $user->username,
+                        'role' => $user->role
+                    ],
+                    'program_studi' => [
+                        'id' => $program_studi->id,
+                        'kode_program_studi' => $program_studi->kode_program_studi,
+                        'nama_program_studi' => $program_studi->nama_program_studi
+                    ],
+                    'nik_admin_prodi' => $admin_prodi->nik_admin_prodi,
+                    'nidn_admin_prodi' => $admin_prodi->nidn_admin_prodi,
+                    'nip_admin_prodi' => $admin_prodi->nip_admin_prodi,
+                    'nama_admin_prodi' => $admin_prodi->nama_admin_prodi,
+                    'tempat_lahir_admin_prodi' => $admin_prodi->tempat_lahir_admin_prodi,
+                    'tanggal_lahir_admin_prodi' => $admin_prodi->tanggal_lahir_admin_prodi,
+                    'jenis_kelamin_admin_prodi' => $admin_prodi->jenis_kelamin_admin_prodi,
+                    'foto_admin_prodi' => [
+                        'nama_file' => $admin_prodi->foto_admin_prodi,
+                        'url' => 'fileFotoProfile/' . $admin_prodi->foto_admin_prodi
+                    ],
+                    'no_surat_tugas_admin_prodi' => $admin_prodi->no_surat_tugas_admin_prodi,
+                    'email_admin_prodi' => $admin_prodi->email_admin_prodi,
+                    'created_at' => $admin_prodi->created_at->diffForHumans(),
+                ];
+
+                $response = [
+                    'message' => 'Data added successfully',
+                    'admin_prodi' => $data
+                ];
+                return response()->json($response, 201);
             } catch (\Illuminate\Database\QueryException $ex) {
                 // response ketika data admin prodi gagal disimpan 
                 $user_delete = User::findOrFail($user->id);
@@ -193,7 +247,6 @@ class AdminProdiController extends Controller
                 'no_surat_tugas_admin_prodi' => $admin_prodi->no_surat_tugas_admin_prodi,
                 'email_admin_prodi' => $admin_prodi->email_admin_prodi,
                 'no_hp_admin_prodi' => $admin_prodi->no_hp_admin_prodi,
-                'status_admin_prodi' => $admin_prodi->status_admin_prodi,
                 'created_at' => $admin_prodi->created_at->diffForHumans(),
                 'updated_at' => $admin_prodi->updated_at->diffForHumans(),
             ];
@@ -226,14 +279,12 @@ class AdminProdiController extends Controller
             'nama_admin_prodi' => 'required|min:5',
             'nik_admin_prodi' => 'required|numeric|digits:16|unique:program_studi' . ($id ? ",id,$id" : ''),
             'nip_admin_prodi' => 'nullable|numeric|digits:18|unique:program_studi' . ($id ? ",id,$id" : ''),
-            'status_admin_prodi' => 'required|in:Aktif,Non Aktif',
         ]);
 
         $admin_prodi = AdminProdi::findorfail($id);
         $admin_prodi->nama_admin_prodi = $request->input('nama_admin_prodi');
         $admin_prodi->nik_admin_prodi = $request->input('nik_admin_prodi');
         $admin_prodi->nip_admin_prodi = $request->input('nip_admin_prodi');
-        $admin_prodi->status_admin_prodi = $request->input('status_admin_prodi');
 
         $user = User::findorfail($admin_prodi->user_id_user);
         $user->nama = $request->input('nama_admin_prodi');
@@ -257,7 +308,6 @@ class AdminProdiController extends Controller
                 'nama_admin_prodi' => $admin_prodi->nama_admin_prodi,
                 'nip_admin_prodi' => $admin_prodi->nip_admin_prodi,
                 'nik_admin_prodi' => $admin_prodi->nik_admin_prodi,
-                'status_admin_prodi' => $admin_prodi->status_admin_prodi,
                 'updated_at' => $admin_prodi->updated_at->diffForHumans(),
             ];
 

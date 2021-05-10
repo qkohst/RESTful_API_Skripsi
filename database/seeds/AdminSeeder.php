@@ -31,8 +31,7 @@ class AdminSeeder extends Seeder
             'tanggal_lahir_admin' => '1982-03-30',
             'jenis_kelamin_admin' => 'L',
             'email_admin' => 'admin@mail.com',
-            'no_hp_admin' => '085656876876',
-            'status_admin' => 'Aktif',
+            'no_hp_admin' => '085656876876'
         ]);
     }
 }

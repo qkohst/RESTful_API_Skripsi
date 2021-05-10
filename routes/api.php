@@ -77,6 +77,13 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::post('profile', [
                     'uses' => 'ProfileAdminProdiController@update_profile'
                 ]);
+
+                Route::resource('mahasiswa', 'MahasiswaController', [
+                    'except' => ['create', 'edit']
+                ]);
+                Route::patch('mahasiswa/{id}/resetpassword', [
+                    'uses' => 'MahasiswaController@resetpassword'
+                ]);
             });
         });
     });
