@@ -499,11 +499,12 @@ class DosenController extends Controller
         }
     }
 
+
     public function resetpassword(Request $request, $id)
     {
         $this->validate($request, [
             'nidn_dosen' => 'required|numeric|digits:10'
-        ]);
+            ]);
         $dosen = Dosen::findOrFail($id);
         $user = User::findorfail($dosen->user_id_user);
         $program_studi = ProgramStudi::findorfail($dosen->program_studi_id_program_studi);
@@ -512,7 +513,7 @@ class DosenController extends Controller
             $user->password = bcrypt($request->input('nidn_dosen'));
             $user->api_token = bcrypt($request->input('nidn_dosen') . 'Dosen');
             $user->update();
-
+            
             $data = [
                 'id' => $dosen->id,
                 'user' => [
@@ -523,20 +524,41 @@ class DosenController extends Controller
                 'program_studi' => [
                     'id' => $program_studi->id,
                     'nama_program_studi' => $program_studi->nama_program_studi
-                ]
-            ];
-
-            return response()->json([
-                'message' => 'password reset successful',
-                'dosen' => $data
-            ], 205);
+                    ]
+                ];
+                
+                return response()->json([
+                    'message' => 'password reset successful',
+                    'dosen' => $data
+                ], 205);
         }
-
+        
         return response()->json([
             'message' => 'The given data was invalid.',
             'errors' => [
                 'nidn_dosen' => 'The nidn dosen you entered is invalid'
             ],
         ], 400);
+    }
+
+    public function filter_by_status()
+    {
+        $admin_prodi = AdminProdi::where('user_id_user', Auth::user()->id)->first();
+        $program_studi = ProgramStudi::where('id', $admin_prodi->program_studi_id_program_studi)->first();
+
+        $dosen = Dosen::where([
+            ['program_studi_id_program_studi', $program_studi->id],
+            ['status_dosen', 'Aktif']
+        ])->orderBy('nama_dosen', 'asc')->get([
+            'id',
+            'nidn_dosen',
+            'nama_dosen'
+        ]);
+
+        return response()->json([
+            'message' => 'Data dosen at ' . $program_studi->nama_program_studi . ' with an active status',
+            'dosen' => $dosen
+        ], 200);
+
     }
 }

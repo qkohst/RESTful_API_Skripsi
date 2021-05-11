@@ -85,6 +85,9 @@ Route::group(['prefix' => 'v1'], function () {
                     'uses' => 'MahasiswaController@resetpassword'
                 ]);
 
+                Route::get('dosen/aktif', [
+                    'uses' => 'DosenController@filter_by_status'
+                ]);
                 Route::resource('dosen', 'DosenController', [
                     'except' => ['create', 'edit']
                 ]);
