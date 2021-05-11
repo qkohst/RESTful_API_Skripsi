@@ -111,7 +111,7 @@ class DosenController extends Controller
             try {
                 if ($request->hasFile('foto_dosen')) {
                     $file_foto = $request->file('foto_dosen');
-                    $fotoName = 'img-' . date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
+                    $fotoName = 'img-' . $user->username . '.' . $file_foto->getClientOriginalExtension();
                     $file_foto->move('fileFotoProfile/', $fotoName);
 
                     $dosen = new Dosen([

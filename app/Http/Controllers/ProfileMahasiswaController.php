@@ -96,7 +96,7 @@ class ProfileMahasiswaController extends Controller
 
         if ($request->hasFile('foto_mahasiswa')) {
             $file_foto = $request->file('foto_mahasiswa');
-            $fotoName = 'img-' . date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
+            $fotoName = 'img-' . $mahasiswa->npm_mahasiswa . '.' . $file_foto->getClientOriginalExtension();
             $file_foto->move('fileFotoProfile/', $fotoName);
             $mahasiswa->foto_mahasiswa = $fotoName;
         }

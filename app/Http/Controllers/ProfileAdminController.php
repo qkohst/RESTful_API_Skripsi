@@ -83,7 +83,7 @@ class ProfileAdminController extends Controller
 
         if ($request->hasFile('foto_admin')) {
             $file_foto = $request->file('foto_admin');
-            $fotoName = 'img-' . date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
+            $fotoName = 'img-' . $admin->nidn_admin . '.' . $file_foto->getClientOriginalExtension();
             $file_foto->move('fileFotoProfile/', $fotoName);
             $admin->foto_admin = $fotoName;
         }

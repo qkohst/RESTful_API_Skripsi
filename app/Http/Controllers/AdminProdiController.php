@@ -81,7 +81,7 @@ class AdminProdiController extends Controller
                 //Jika Upload Foto
                 if ($request->hasFile('foto_admin_prodi')) {
                     $file_foto = $request->file('foto_admin_prodi');
-                    $fotoName = 'img-' . date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
+                    $fotoName = 'img-' . $user->username . '.' . $file_foto->getClientOriginalExtension();
                     $file_foto->move('fileFotoProfile/', $fotoName);
 
                     $admin_prodi = new AdminProdi([

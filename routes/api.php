@@ -106,6 +106,13 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::post('profile', [
                     'uses' => 'ProfileMahasiswaController@update_profile'
                 ]);
+
+                Route::post('uploadkrs', [
+                    'uses' => 'PersyaratanSkripsiController@uploadkrs'
+                ]);
+                Route::get('uploadkrs', [
+                    'uses' => 'PersyaratanSkripsiController@lihat_status_krs'
+                ]);
             });
         });
     });

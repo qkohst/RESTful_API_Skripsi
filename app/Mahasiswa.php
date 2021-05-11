@@ -39,4 +39,9 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function file_krs()
+    {
+        return $this->belongsTo('App\FileKrs');
+    }
 }
