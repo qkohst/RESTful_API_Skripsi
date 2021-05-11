@@ -24,4 +24,9 @@ class ProgramStudi extends Model
     {
         return $this->hasMany('App\Mahasiswa');
     }
+
+    public function dosen()
+    {
+        return $this->hasMany('App\Dosen');
+    }
 }

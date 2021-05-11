@@ -52,7 +52,7 @@ class AdminProdiController extends Controller
             'nik_admin_prodi' => 'required|unique:admin_prodi|numeric|digits:16',
             'nidn_admin_prodi' => 'required|unique:admin_prodi|numeric|digits:10',
             'nip_admin_prodi' => 'nullable|unique:admin_prodi|numeric|digits:18',
-            'nama_admin_prodi' => 'required|min:5',
+            'nama_admin_prodi' => 'required|min:3',
             'tempat_lahir_admin_prodi' => 'required|min:3',
             'tanggal_lahir_admin_prodi' => 'required|date',
             'jenis_kelamin_admin_prodi' => 'required|in:L,P',
@@ -276,7 +276,7 @@ class AdminProdiController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nama_admin_prodi' => 'required|min:5',
+            'nama_admin_prodi' => 'required|min:3',
             'nik_admin_prodi' => 'required|numeric|digits:16|unique:program_studi' . ($id ? ",id,$id" : ''),
             'nip_admin_prodi' => 'nullable|numeric|digits:18|unique:program_studi' . ($id ? ",id,$id" : ''),
         ]);

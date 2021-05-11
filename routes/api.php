@@ -84,6 +84,13 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::patch('mahasiswa/{id}/resetpassword', [
                     'uses' => 'MahasiswaController@resetpassword'
                 ]);
+
+                Route::resource('dosen', 'DosenController', [
+                    'except' => ['create', 'edit']
+                ]);
+                Route::patch('dosen/{id}/resetpassword', [
+                    'uses' => 'DosenController@resetpassword'
+                ]);
             });
         });
     });

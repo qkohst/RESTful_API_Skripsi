@@ -11,4 +11,9 @@ class JabatanFungsional extends Model
         'nama_jabatan_fungsional',
         'deskripsi_jabatan_fungsional'
     ];
+
+    public function dosen()
+    {
+        return $this->hasMany('App\Dosen');
+    }
 }

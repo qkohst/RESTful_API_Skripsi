@@ -11,4 +11,9 @@ class JabatanStruktural extends Model
         'nama_jabatan_struktural',
         'deskripsi_jabatan_struktural'
     ];
+
+    public function dosen()
+    {
+        return $this->hasMany('App\Dosen');
+    }
 }

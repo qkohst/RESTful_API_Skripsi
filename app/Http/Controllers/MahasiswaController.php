@@ -80,7 +80,7 @@ class MahasiswaController extends Controller
                 //Jika Upload Foto
                 if ($request->hasFile('foto_mahasiswa')) {
                     $file_foto = $request->file('foto_mahasiswa');
-                    $fotoName = date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
+                    $fotoName = 'img-' . date('mdYHis') . '.' . $file_foto->getClientOriginalExtension();
                     $file_foto->move('fileFotoProfile/', $fotoName);
 
                     $mahasiswa = new Mahasiswa([
@@ -303,7 +303,7 @@ class MahasiswaController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nama_mahasiswa' => 'required|min:5',
+            'nama_mahasiswa' => 'required|min:3',
             'tempat_lahir_mahasiswa' => 'required|min:3',
             'tanggal_lahir_mahasiswa' => 'required|date',
             'status_mahasiswa' => 'required|in:Aktif,Non Aktif,Drop Out,Lulus',
