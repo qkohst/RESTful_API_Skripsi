@@ -64,8 +64,8 @@ class DosenController extends Controller
             'kabupaten_dosen' => 'required|min:3',
             'kecamatan_dosen' => 'required|min:3',
             'desa_dosen' => 'required|min:3',
-            'email_dosen' => 'nullable|unique:dosen|email',
-            'no_hp_dosen' => 'nullable|unique:dosen|numeric|digits_between:11,13',
+            'email_dosen' => 'required|unique:dosen|email',
+            'no_hp_dosen' => 'required|unique:dosen|numeric|digits_between:11,13',
             'jabatan_fungsional_id_jabatan_fungsional' => 'nullable|exists:jabatan_fungsional,id',
             'jabatan_struktural_id_jabatan_struktural' => 'nullable|exists:jabatan_struktural,id',
             'foto_dosen' => 'nullable|mimes:jpg,jpeg,png|max:2000',
@@ -504,7 +504,7 @@ class DosenController extends Controller
     {
         $this->validate($request, [
             'nidn_dosen' => 'required|numeric|digits:10'
-            ]);
+        ]);
         $dosen = Dosen::findOrFail($id);
         $user = User::findorfail($dosen->user_id_user);
         $program_studi = ProgramStudi::findorfail($dosen->program_studi_id_program_studi);
@@ -513,7 +513,7 @@ class DosenController extends Controller
             $user->password = bcrypt($request->input('nidn_dosen'));
             $user->api_token = bcrypt($request->input('nidn_dosen') . 'Dosen');
             $user->update();
-            
+
             $data = [
                 'id' => $dosen->id,
                 'user' => [
@@ -524,15 +524,15 @@ class DosenController extends Controller
                 'program_studi' => [
                     'id' => $program_studi->id,
                     'nama_program_studi' => $program_studi->nama_program_studi
-                    ]
-                ];
-                
-                return response()->json([
-                    'message' => 'password reset successful',
-                    'dosen' => $data
-                ], 205);
+                ]
+            ];
+
+            return response()->json([
+                'message' => 'password reset successful',
+                'dosen' => $data
+            ], 205);
         }
-        
+
         return response()->json([
             'message' => 'The given data was invalid.',
             'errors' => [
@@ -559,6 +559,5 @@ class DosenController extends Controller
             'message' => 'Data dosen at ' . $program_studi->nama_program_studi . ' with an active status',
             'dosen' => $dosen
         ], 200);
-
     }
 }

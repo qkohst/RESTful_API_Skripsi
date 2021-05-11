@@ -59,8 +59,8 @@ class MahasiswaController extends Controller
             'kabupaten_mahasiswa' => 'required|min:3',
             'kecamatan_mahasiswa' => 'required|min:3',
             'desa_mahasiswa' => 'required|min:3',
-            'email_mahasiswa' => 'nullable|unique:mahasiswa|email',
-            'no_hp_mahasiswa' => 'nullable|unique:mahasiswa|numeric|digits_between:11,13',
+            'email_mahasiswa' => 'required|unique:mahasiswa|email',
+            'no_hp_mahasiswa' => 'required|unique:mahasiswa|numeric|digits_between:11,13',
             'foto_mahasiswa' => 'nullable|mimes:jpg,jpeg,png|max:2000',
         ]);
 

@@ -96,5 +96,17 @@ Route::group(['prefix' => 'v1'], function () {
                 ]);
             });
         });
+
+        //Route Mahasiswa
+        Route::group(['prefix' => 'mahasiswa'], function () {
+            Route::group(['middleware' => 'checkRole:Mahasiswa'], function () {
+                Route::get('profile', [
+                    'uses' => 'ProfileMahasiswaController@index'
+                ]);
+                Route::post('profile', [
+                    'uses' => 'ProfileMahasiswaController@update_profile'
+                ]);
+            });
+        });
     });
 });

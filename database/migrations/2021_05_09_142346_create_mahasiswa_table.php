@@ -32,8 +32,8 @@ class CreateMahasiswaTable extends Migration
             $table->string('kabupaten_mahasiswa', 45);
             $table->string('provinsi_mahasiswa', 45);
             $table->string('foto_mahasiswa', 100)->nullable();
-            $table->string('email_mahasiswa', 45)->unique()->nullable();
-            $table->string('no_hp_mahasiswa', 13)->unique()->nullable();
+            $table->string('email_mahasiswa', 45)->unique();
+            $table->string('no_hp_mahasiswa', 13)->unique();
             $table->enum('status_mahasiswa', ['Aktif', 'Non Aktif', 'Drop Out', 'Lulus']);
             $table->timestamps();
 

@@ -37,8 +37,8 @@ class CreateDosenTable extends Migration
             $table->string('kabupaten_dosen', 45);
             $table->string('provinsi_dosen', 45);
             $table->string('foto_dosen', 100)->nullable();
-            $table->string('email_dosen', 45)->unique()->nullable();
-            $table->string('no_hp_dosen', 13)->unique()->nullable();
+            $table->string('email_dosen', 45)->unique();
+            $table->string('no_hp_dosen', 13)->unique();
             $table->enum('status_dosen', ['Aktif', 'Non Aktif']);
             $table->timestamps();
 
