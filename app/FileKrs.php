@@ -10,7 +10,7 @@ class FileKrs extends Model
     protected $fillable = [
         'mahasiswa_id_mahasiswa',
         'nama_file_krs',
-        'statuspersetujuan_admin_prodi_file_krs',
+        'status_persetujuan_admin_prodi_file_krs',
         'catatan_file_krs'
     ];
 

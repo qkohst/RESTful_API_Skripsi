@@ -17,7 +17,7 @@ class CreateFileKrsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('mahasiswa_id_mahasiswa')->unique()->unsigned();
             $table->string('nama_file_krs', 100);
-            $table->enum('statuspersetujuan_admin_prodi_file_krs', ['Antrian', 'Disetujui', 'Ditolak']);
+            $table->enum('status_persetujuan_admin_prodi_file_krs', ['Antrian', 'Disetujui', 'Ditolak']);
             $table->string('catatan_file_krs', 200)->nullable();
             $table->timestamps();
 

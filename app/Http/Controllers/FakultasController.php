@@ -166,7 +166,7 @@ class FakultasController extends Controller
         } catch (\Illuminate\Database\QueryException $ex) {
             return response()->json([
                 'message' => 'Sorry the data cannot be deleted, there are still data in other tables that are related to this data!'
-            ], 406);
+            ], 400);
         }
     }
 

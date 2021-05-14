@@ -94,6 +94,10 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::patch('dosen/{id}/resetpassword', [
                     'uses' => 'DosenController@resetpassword'
                 ]);
+
+                Route::resource('persetujuankrs', 'PersetujuanKRSController', [
+                    'except' => ['create', 'edit', 'destroy', 'store']
+                ]);
             });
         });
 

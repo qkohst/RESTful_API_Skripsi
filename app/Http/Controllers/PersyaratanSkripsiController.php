@@ -25,14 +25,14 @@ class PersyaratanSkripsiController extends Controller
             $file_krs = new FileKrs([
                 'mahasiswa_id_mahasiswa' => $mahasiswa->id,
                 'nama_file_krs' => $krs_fileName,
-                'statuspersetujuan_admin_prodi_file_krs' => 'Antrian',
+                'status_persetujuan_admin_prodi_file_krs' => 'Antrian',
             ]);
             $file_krs->save();
             $data_file_krs->move('fileKRS/', $krs_fileName);
 
             $data = [
                 'id' => $file_krs->id,
-                'file_krs' => [
+                'file' => [
                     'nama_file' => $file_krs->nama_file_krs,
                     'url' => 'fileKRS/' . $file_krs->nama_file_krs,
                 ],
@@ -45,15 +45,15 @@ class PersyaratanSkripsiController extends Controller
             ];
             return response()->json($response, 201);
         } else {
-            if ($data_krs_mahasiswa->statuspersetujuan_admin_prodi_file_krs == 'Ditolak') {
+            if ($data_krs_mahasiswa->status_persetujuan_admin_prodi_file_krs == 'Ditolak') {
                 $data_krs_mahasiswa->nama_file_krs = $krs_fileName;
-                $data_krs_mahasiswa->statuspersetujuan_admin_prodi_file_krs = 'Antrian';
+                $data_krs_mahasiswa->status_persetujuan_admin_prodi_file_krs = 'Antrian';
                 $data_krs_mahasiswa->catatan_file_krs = '';
                 $data_krs_mahasiswa->update();
 
                 $data = [
                     'id' => $data_krs_mahasiswa->id,
-                    'file_krs' => [
+                    'file' => [
                         'nama_file' => $data_krs_mahasiswa->nama_file_krs,
                         'url' => 'fileKRS/' . $data_krs_mahasiswa->nama_file_krs,
                     ],
@@ -65,7 +65,7 @@ class PersyaratanSkripsiController extends Controller
                     'file_krs' => $data
                 ];
                 return response()->json($response, 200);
-            } elseif ($data_krs_mahasiswa->statuspersetujuan_admin_prodi_file_krs == 'Antrian') {
+            } elseif ($data_krs_mahasiswa->status_persetujuan_admin_prodi_file_krs == 'Antrian') {
                 $response = [
                     'message' => 'detects that you have uploaded a file KRS, please wait for the approval of the admin prodi',
                 ];
@@ -92,11 +92,11 @@ class PersyaratanSkripsiController extends Controller
 
         $data = [
             'id' => $file_krs->id,
-            'file_krs' => [
+            'file' => [
                 'nama_file' => $file_krs->nama_file_krs,
                 'url' => 'fileKRS/' . $file_krs->nama_file_krs,
             ],
-            'statuspersetujuan_admin_prodi_file_krs' => $file_krs->statuspersetujuan_admin_prodi_file_krs,
+            'status_persetujuan_admin_prodi_file_krs' => $file_krs->status_persetujuan_admin_prodi_file_krs,
             'catatan_file_krs' => $file_krs->catatan_file_krs,
             'created_at' => $file_krs->created_at->diffForHumans(),
         ];
