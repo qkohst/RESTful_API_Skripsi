@@ -20,7 +20,7 @@ class MahasiswaController extends Controller
     {
         $admin_prodi = AdminProdi::where('user_id_user', Auth::user()->id)->first();
         $program_studi = ProgramStudi::where('id', $admin_prodi->program_studi_id_program_studi)->first();
-        $mahasiswa = Mahasiswa::where('program_studi_id_program_studi', $program_studi->id)->get([
+        $mahasiswa = Mahasiswa::where('program_studi_id_program_studi', $program_studi->id)->orderby('npm_mahasiswa','asc')->get([
             'id',
             'nama_mahasiswa',
             'npm_mahasiswa',

@@ -117,6 +117,9 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('uploadkrs', [
                     'uses' => 'PersyaratanSkripsiController@lihat_status_krs'
                 ]);
+                Route::get('dosen', [
+                    'uses' => 'MahasiswaDosenAktifController@index'
+                ]);
             });
         });
     });

@@ -22,7 +22,7 @@ class DosenController extends Controller
     {
         $admin_prodi = AdminProdi::where('user_id_user', Auth::user()->id)->first();
         $program_studi = ProgramStudi::where('id', $admin_prodi->program_studi_id_program_studi)->first();
-        $dosen = Dosen::where('program_studi_id_program_studi', $program_studi->id)->get([
+        $dosen = Dosen::where('program_studi_id_program_studi', $program_studi->id)->orderby('nama_dosen', 'asc')->get([
             'id',
             'nama_dosen',
             'nidn_dosen',
@@ -173,7 +173,7 @@ class DosenController extends Controller
                         'kecamatan_dosen' => $dosen->kecamatan_dosen,
                         'desa_dosen' => $dosen->desa_dosen,
                         'email_dosen' => $dosen->email_dosen,
-                        'nomor_hp_dosen' => $dosen->nomor_hp_dosen,
+                        'no_hp_dosen' => $dosen->no_hp_dosen,
                         'jabatan_fungsional' => $data_jabatan_fungsional,
                         'jabatan_struktural' => $data_jabatan_struktural,
                         'foto_dosen' => [
@@ -250,7 +250,7 @@ class DosenController extends Controller
                     'kecamatan_dosen' => $dosen->kecamatan_dosen,
                     'desa_dosen' => $dosen->desa_dosen,
                     'email_dosen' => $dosen->email_dosen,
-                    'nomor_hp_dosen' => $dosen->nomor_hp_dosen,
+                    'no_hp_dosen' => $dosen->no_hp_dosen,
                     'jabatan_fungsional' => $data_jabatan_fungsional,
                     'jabatan_struktural' => $data_jabatan_struktural,
                     'foto_dosen' => [
@@ -345,7 +345,7 @@ class DosenController extends Controller
                 'kecamatan_dosen' => $dosen->kecamatan_dosen,
                 'desa_dosen' => $dosen->desa_dosen,
                 'email_dosen' => $dosen->email_dosen,
-                'nomor_hp_dosen' => $dosen->nomor_hp_dosen,
+                'no_hp_dosen' => $dosen->no_hp_dosen,
                 'jabatan_fungsional' => $data_jabatan_fungsional,
                 'jabatan_struktural' => $data_jabatan_struktural,
                 'foto_dosen' => [
