@@ -54,4 +54,9 @@ class Dosen extends Model
     {
         return $this->belongsTo('App\JabatanFungsional');
     }
+
+    public function dosen_pembimbing()
+    {
+        return $this->hasMany('App\DosenPembimbing');
+    }
 }

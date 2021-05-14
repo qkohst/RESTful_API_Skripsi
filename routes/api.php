@@ -111,14 +111,21 @@ Route::group(['prefix' => 'v1'], function () {
                     'uses' => 'ProfileMahasiswaController@update_profile'
                 ]);
 
-                Route::post('uploadkrs', [
-                    'uses' => 'PersyaratanSkripsiController@uploadkrs'
-                ]);
-                Route::get('uploadkrs', [
-                    'uses' => 'PersyaratanSkripsiController@lihat_status_krs'
-                ]);
                 Route::get('dosen', [
                     'uses' => 'MahasiswaDosenAktifController@index'
+                ]);
+
+                Route::post('persyaratan/uploadkrs', [
+                    'uses' => 'PersyaratanSkripsiController@uploadkrs'
+                ]);
+                Route::get('persyaratan/uploadkrs', [
+                    'uses' => 'PersyaratanSkripsiController@lihat_status_krs'
+                ]);
+                Route::post('persyaratan/juduldosbing1', [
+                    'uses' => 'PersyaratanSkripsiController@juduldosbing1'
+                ]);
+                Route::get('persyaratan/juduldosbing1', [
+                    'uses' => 'PersyaratanSkripsiController@lihat_status_juduldosbing1'
                 ]);
             });
         });

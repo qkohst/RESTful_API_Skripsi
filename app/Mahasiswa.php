@@ -44,4 +44,9 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo('App\FileKrs');
     }
+
+    public function judul_skripsi()
+    {
+        return $this->belongsTo('App\JudulSkripsi');
+    }
 }
