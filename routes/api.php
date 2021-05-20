@@ -134,6 +134,10 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('persyaratan/juduldosbing2', [
                     'uses' => 'PersyaratanSkripsiController@lihat_status_juduldosbing2'
                 ]);
+
+                Route::resource('bimbinganproposal', 'PengajuanBimbinganProposalController', [
+                    'only' => ['index', 'show', 'store']
+                ]);
             });
         });
 

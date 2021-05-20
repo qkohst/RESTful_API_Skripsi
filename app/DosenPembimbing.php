@@ -24,4 +24,9 @@ class DosenPembimbing extends Model
     {
         return $this->belongsTo('App\Dosen');
     }
+
+    public function bimbingan_proposal()
+    {
+        return $this->hasMany('App\BimbinganProposal');
+    }
 }
