@@ -139,6 +139,10 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::post('profile', [
                     'uses' => 'ProfileDosenController@update_profile'
                 ]);
+
+                Route::resource('persetujuanjudul', 'PersetujuanJudulController', [
+                    'except' => ['create', 'edit', 'destroy', 'store']
+                ]);
             });
         });
     });

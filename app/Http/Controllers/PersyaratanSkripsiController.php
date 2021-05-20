@@ -118,11 +118,11 @@ class PersyaratanSkripsiController extends Controller
             return response()->json($response, 400);
         } elseif ($file_krs->status_persetujuan_admin_prodi_file_krs == 'Disetujui') {
             $cek_judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', '=', $mahasiswa->id)->first();
-            $this->validate($request, [
-                'nama_judul_skripsi' => 'required|min:15|unique:judul_skripsi' . ($cek_judul_skripsi->id ? ",id,$cek_judul_skripsi->id" : ''),
-                'dosen_id_dosen' => 'required|exists:dosen,id',
-            ]);
             if (is_null($cek_judul_skripsi)) {
+                $this->validate($request, [
+                    'nama_judul_skripsi' => 'required|min:15|unique:judul_skripsi',
+                    'dosen_id_dosen' => 'required|exists:dosen,id',
+                ]);
                 $cekdosen = Dosen::where('id', $request->dosen_id_dosen)->first();
                 if ($cekdosen->status_dosen == 'Non Aktif') {
                     return response()->json([
@@ -171,6 +171,11 @@ class PersyaratanSkripsiController extends Controller
                     ['judul_skripsi_id_judul_skripsi', '=', $cek_judul_skripsi->id],
                     ['jabatan_dosen_pembimbing', '=', '1']
                 ])->first();
+
+                $this->validate($request, [
+                    'nama_judul_skripsi' => 'required|min:15|unique:judul_skripsi' . ($judul_skripsi->id ? ",id,$judul_skripsi->id" : ''),
+                    'dosen_id_dosen' => 'required|exists:dosen,id',
+                ]);
 
                 if ($dosbing1->persetujuan_dosen_pembimbing == 'Ditolak') {
                     $cekdosen = Dosen::where('id', $request->dosen_id_dosen)->first();
