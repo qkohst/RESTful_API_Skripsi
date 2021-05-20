@@ -135,6 +135,9 @@ Route::group(['prefix' => 'v1'], function () {
                     'uses' => 'PersyaratanSkripsiController@lihat_status_juduldosbing2'
                 ]);
 
+                Route::get('dosenpembimbing', [
+                    'uses' => 'DosenPembimbingMahasiswaController@index'
+                ]);
                 Route::resource('bimbinganproposal', 'PengajuanBimbinganProposalController', [
                     'only' => ['index', 'show', 'store']
                 ]);
@@ -153,6 +156,10 @@ Route::group(['prefix' => 'v1'], function () {
 
                 Route::resource('persetujuanjudul', 'PersetujuanJudulController', [
                     'except' => ['create', 'edit', 'destroy', 'store']
+                ]);
+
+                Route::resource('bimbinganproposal', 'BimbinganProposalController', [
+                    'only' => ['index', 'show', 'store', 'update']
                 ]);
             });
         });
