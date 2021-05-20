@@ -121,11 +121,18 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('persyaratan/uploadkrs', [
                     'uses' => 'PersyaratanSkripsiController@lihat_status_krs'
                 ]);
+
                 Route::post('persyaratan/juduldosbing1', [
                     'uses' => 'PersyaratanSkripsiController@juduldosbing1'
                 ]);
                 Route::get('persyaratan/juduldosbing1', [
                     'uses' => 'PersyaratanSkripsiController@lihat_status_juduldosbing1'
+                ]);
+                Route::post('persyaratan/juduldosbing2', [
+                    'uses' => 'PersyaratanSkripsiController@juduldosbing2'
+                ]);
+                Route::get('persyaratan/juduldosbing2', [
+                    'uses' => 'PersyaratanSkripsiController@lihat_status_juduldosbing2'
                 ]);
             });
         });
