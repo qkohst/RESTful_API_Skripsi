@@ -129,5 +129,17 @@ Route::group(['prefix' => 'v1'], function () {
                 ]);
             });
         });
+
+        //Route Dosen
+        Route::group(['prefix' => 'dosen'], function () {
+            Route::group(['middleware' => 'checkRole:Dosen'], function () {
+                Route::get('profile', [
+                    'uses' => 'ProfileDosenController@index'
+                ]);
+                Route::post('profile', [
+                    'uses' => 'ProfileDosenController@update_profile'
+                ]);
+            });
+        });
     });
 });

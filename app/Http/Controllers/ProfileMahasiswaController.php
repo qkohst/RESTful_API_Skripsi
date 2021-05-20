@@ -125,6 +125,7 @@ class ProfileMahasiswaController extends Controller
             ],
             'updated_at' => $mahasiswa->updated_at->diffForHumans(),
         ];
+        
         return response()->json([
             'message' => 'Profile updated successfully',
             'mahasiswa' => $data
