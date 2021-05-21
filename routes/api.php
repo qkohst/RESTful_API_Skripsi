@@ -138,8 +138,13 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('dosenpembimbing', [
                     'uses' => 'DosenPembimbingMahasiswaController@index'
                 ]);
+
                 Route::resource('bimbinganproposal', 'PengajuanBimbinganProposalController', [
                     'only' => ['index', 'show', 'store']
+                ]);
+
+                Route::resource('seminarproposal', 'PengajuanSeminarProposalController', [
+                    'only' => ['store']
                 ]);
             });
         });

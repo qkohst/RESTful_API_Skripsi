@@ -63,10 +63,17 @@ class PengajuanBimbinganProposalController extends Controller
         $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
         $judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', $mahasiswa->id)->first();
 
+        if (is_null($judul_skripsi)) {
+            $response = [
+                'message' => 'You are not allowed at this stage, please complete the previous process',
+            ];
+            return response()->json($response, 400);
+        }
         $cek_status_bimbingan = BimbinganProposal::where([
             ['dosen_pembimbing_judul_skripsi_id', $judul_skripsi->id],
             ['status_persetujuan_bimbingan_proposal', 'Antrian'],
         ])->first();
+        
         if (is_null($cek_status_bimbingan)) {
             $this->validate($request, [
                 'topik_bimbingan_proposal' => 'required|max:200',

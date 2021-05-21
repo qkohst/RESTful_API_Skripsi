@@ -21,4 +21,9 @@ class JudulSkripsi extends Model
     {
         return $this->hasMany('App\DosenPembimbing');
     }
+
+    public function seminar_proposal()
+    {
+        return $this->belongsTo('App\SeminarProposal');
+    }
 }
