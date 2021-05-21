@@ -159,7 +159,7 @@ Route::group(['prefix' => 'v1'], function () {
                 ]);
 
                 Route::resource('bimbinganproposal', 'BimbinganProposalController', [
-                    'only' => ['index', 'show', 'store', 'update']
+                    'only' => ['index', 'show', 'update']
                 ]);
             });
         });
