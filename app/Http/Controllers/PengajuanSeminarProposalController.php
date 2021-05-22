@@ -31,7 +31,7 @@ class PengajuanSeminarProposalController extends Controller
             ];
             return response()->json($response, 400);
         }
-        
+
         $data_seminar_proposal = SeminarProposal::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
 
         $data_file_seminar_proposal = $request->file('file_seminar_proposal');
@@ -108,15 +108,66 @@ class PengajuanSeminarProposalController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function update(Request $request, $id)
-    // {
-    //     //
-    // }
+    public function cek_persetujuan_dosbing()
+    {
+        $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
+        $judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', $mahasiswa->id)->first();
+
+        if (is_null($judul_skripsi)) {
+            $response = [
+                'message' => 'Judul Skripsi Not Found, please upload data',
+            ];
+            return response()->json($response, 404);
+        }
+        $seminar_proposal = SeminarProposal::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
+        if (is_null($seminar_proposal)) {
+            $response = [
+                'message' => 'Seminar Proposal Not Found, please upload data',
+            ];
+            return response()->json($response, 404);
+        }
+        $data = [
+            'id' => $seminar_proposal->id,
+            'judul_skripsi' => [
+                'id' => $judul_skripsi->id,
+                'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
+            ],
+            'persetujuan_pembimbing1_seminar_proposal' => $seminar_proposal->persetujuan_pembimbing1_seminar_proposal,
+            'catatan_pembimbing1_seminar_proposal' => $seminar_proposal->catatan_pembimbing1_seminar_proposal,
+            'persetujuan_pembimbing2_seminar_proposal' => $seminar_proposal->persetujuan_pembimbing2_seminar_proposal,
+            'catatan_pembimbing2_seminar_proposal' => $seminar_proposal->catatan_pembimbing2_seminar_proposal,
+            'created_at' => $seminar_proposal->created_at
+        ];
+
+        return response()->json([
+            'message' => 'Submission status',
+            'status_persetujuan_dosen_pembimbing' => $data
+        ], 200);
+    }
+
+    public function cek_penguji_dan_waktu()
+    {
+        // $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
+        // $judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', $mahasiswa->id)->first();
+
+        // if (is_null($judul_skripsi)) {
+        //     $response = [
+        //         'message' => 'Judul Skripsi Not Found, please upload data',
+        //     ];
+        //     return response()->json($response, 404);
+        // }
+        // $seminar_proposal = SeminarProposal::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
+        // if (is_null($seminar_proposal)) {
+        //     $response = [
+        //         'message' => 'Seminar Proposal Not Found, please upload data',
+        //     ];
+        //     return response()->json($response, 404);
+        // } elseif (is_null($seminar_proposal->waktu_seminar_proposal)) {
+        //     $response = [
+        //         'message' => 'Data not yet determined',
+        //     ];
+        //     return response()->json($response, 404);
+        // }
+      
+    }
 }

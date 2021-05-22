@@ -146,6 +146,9 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('seminarproposal', 'PengajuanSeminarProposalController', [
                     'only' => ['store']
                 ]);
+                Route::get('seminarproposal/persetujuandosbing', [
+                    'uses' => 'PengajuanSeminarProposalController@cek_persetujuan_dosbing'
+                ]);
             });
         });
 
