@@ -21,21 +21,19 @@ class PengajuanBimbinganProposalController extends Controller
     {
         $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
         $judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', $mahasiswa->id)->first();
-        $bimbingan_proposal = BimbinganProposal::where('dosen_pembimbing_judul_skripsi_id', $judul_skripsi->id)
+        $id_dosen_pembimbing = DosenPembimbing::where('juduL_skripsi_id_judul_skripsi', $judul_skripsi->id)->get('id');
+
+        $bimbingan_proposal = BimbinganProposal::whereIn('dosen_pembimbing_id_dosen_pembimbing', $id_dosen_pembimbing)
             ->orderBy('id', 'desc')
             ->get([
                 'id',
-                'dosen_pembimbing_judul_skripsi_id',
-                'dosen_pembimbing_dosen_id',
+                'dosen_pembimbing_id_dosen_pembimbing',
                 'topik_bimbingan_proposal',
                 'status_persetujuan_bimbingan_proposal',
                 'created_at'
             ]);
         foreach ($bimbingan_proposal as $bimbingan) {
-            $dosen_pembimbing = DosenPembimbing::where([
-                ['dosen_id_dosen', $bimbingan->dosen_pembimbing_dosen_id],
-                ['judul_skripsi_id_judul_skripsi', $bimbingan->dosen_pembimbing_judul_skripsi_id],
-            ])->first();
+            $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan->dosen_pembimbing_id_dosen_pembimbing);
             $dosen = Dosen::findorfail($dosen_pembimbing->dosen_id_dosen);
 
             $bimbingan->dosen_pembimbing = [
@@ -69,33 +67,23 @@ class PengajuanBimbinganProposalController extends Controller
             ];
             return response()->json($response, 400);
         }
-        $cek_status_bimbingan = BimbinganProposal::where([
-            ['dosen_pembimbing_judul_skripsi_id', $judul_skripsi->id],
-            ['status_persetujuan_bimbingan_proposal', 'Antrian'],
-        ])->first();
-        
+
+        $dosen_pembimbing = DosenPembimbing::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->get('id');
+        $cek_status_bimbingan = BimbinganProposal::whereIn('dosen_pembimbing_id_dosen_pembimbing', $dosen_pembimbing)
+            ->where('status_persetujuan_bimbingan_proposal', 'Antrian')->first();
+
         if (is_null($cek_status_bimbingan)) {
             $this->validate($request, [
                 'topik_bimbingan_proposal' => 'required|max:200',
                 'nama_file_bimbingan_proposal' => 'required|mimes:pdf|max:5000',
-                'dosen_pembimbing_dosen_id' => 'required|exists:dosen,id'
+                'dosen_pembimbing_id_dosen_pembimbing' => 'required|exists:dosen_pembimbing,id'
             ]);
-            $cekdosen = Dosen::where('id', $request->dosen_pembimbing_dosen_id)->first();
-            if ($cekdosen->status_dosen == 'Non Aktif') {
-                return response()->json([
-                    'message' => 'The given data was invalid.',
-                    'errors' => [
-                        'dosen_id_dosen' => [
-                            'The selected dosen id dosen status is non aktif, please choose another'
-                        ]
-                    ]
-                ], 422);
-            }
 
             $cekpembimbing = DosenPembimbing::where([
-                ['dosen_id_dosen', $cekdosen->id],
+                ['id', $request->dosen_pembimbing_id_dosen_pembimbing],
                 ['judul_skripsi_id_judul_skripsi', $judul_skripsi->id]
             ])->first();
+
             if (is_null($cekpembimbing)) {
                 return response()->json([
                     'message' => 'The given data was invalid.',
@@ -110,8 +98,7 @@ class PengajuanBimbinganProposalController extends Controller
             $data_file_proposal = $request->file('nama_file_bimbingan_proposal');
             $proposal_fileName = 'proposal-' . $mahasiswa->npm_mahasiswa . '_' . date('mdYHis') . '.' . $data_file_proposal->getClientOriginalExtension();
             $bimbingan_proposal = new BimbinganProposal([
-                'dosen_pembimbing_judul_skripsi_id' => $judul_skripsi->id,
-                'dosen_pembimbing_dosen_id' => $request->dosen_pembimbing_dosen_id,
+                'dosen_pembimbing_id_dosen_pembimbing' => $request->dosen_pembimbing_id_dosen_pembimbing,
                 'topik_bimbingan_proposal' => $request->topik_bimbingan_proposal,
                 'nama_file_bimbingan_proposal' => $proposal_fileName,
                 'status_persetujuan_bimbingan_proposal' => 'Antrian',
@@ -119,11 +106,13 @@ class PengajuanBimbinganProposalController extends Controller
             $bimbingan_proposal->save();
             $data_file_proposal->move('fileProposal/', $proposal_fileName);
 
+            $cekdosen = Dosen::where('id', $cekpembimbing->dosen_id_dosen)->first();
+
             $data = [
                 'id' => $bimbingan_proposal->id,
                 'topik_bimbingan_proposal' => $bimbingan_proposal->topik_bimbingan_proposal,
                 'dosen_pembimbing' => [
-                    'id' => $request->dosen_pembimbing_dosen_id,
+                    'id' => $request->dosen_pembimbing_id_dosen_pembimbing,
                     'nama_dosen_pembimbing' => $cekdosen->nama_dosen . ', ' . $cekdosen->gelar_dosen,
                 ],
                 'file_proposal' => [
@@ -154,15 +143,16 @@ class PengajuanBimbinganProposalController extends Controller
     {
         try {
             $bimbingan_proposal = BimbinganProposal::findorfail($id);
-            $dosen_pembimbing = Dosen::where('id', $bimbingan_proposal->dosen_pembimbing_dosen_id)->first();
+            $dosen_pembimbing = DosenPembimbing::where('id', $bimbingan_proposal->dosen_pembimbing_id_dosen_pembimbing)->first();
+            $dosen = Dosen::where('id', $dosen_pembimbing->dosen_id_dosen)->first();
 
             $data = [
                 'id' => $bimbingan_proposal->id,
                 'topik_bimbingan_proposal' => $bimbingan_proposal->topik_bimbingan_proposal,
                 'dosen_pembimbing' => [
                     'id' => $dosen_pembimbing->id,
-                    'nama_dosen_pembimbing' => $dosen_pembimbing->nama_dosen . ', ' . $dosen_pembimbing->gelar_dosen,
-                    'nidn_dosen_pembimbing' => $dosen_pembimbing->nidn_dosen
+                    'nama_dosen_pembimbing' => $dosen->nama_dosen . ', ' . $dosen->gelar_dosen,
+                    'nidn_dosen_pembimbing' => $dosen->nidn_dosen
                 ],
                 'file_bimbingan_proposal' => [
                     'nama_file' => $bimbingan_proposal->nama_file_bimbingan_proposal,

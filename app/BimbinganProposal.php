@@ -8,8 +8,7 @@ class BimbinganProposal extends Model
 {
     protected $table = 'bimbingan_proposal';
     protected $fillable = [
-        'dosen_pembimbing_judul_skripsi_id',
-        'dosen_pembimbing_dosen_id',
+        'dosen_pembimbing_id_dosen_pembimbing',
         'topik_bimbingan_proposal',
         'nama_file_bimbingan_proposal',
         'status_persetujuan_bimbingan_proposal',

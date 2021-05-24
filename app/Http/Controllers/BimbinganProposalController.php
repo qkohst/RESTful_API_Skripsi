@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BimbinganProposal;
 use App\Dosen;
+use App\DosenPembimbing;
 use App\JudulSkripsi;
 use App\Mahasiswa;
 use Illuminate\Http\Request;
@@ -19,18 +20,20 @@ class BimbinganProposalController extends Controller
     public function index()
     {
         $dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
-        $bimbingan_proposal = BimbinganProposal::where('dosen_pembimbing_dosen_id', $dosen->id)
+        $id_dosen_pembimbing = DosenPembimbing::where('dosen_id_dosen', $dosen->id)->get('id');
+        $bimbingan_proposal = BimbinganProposal::whereIn('dosen_pembimbing_id_dosen_pembimbing', $id_dosen_pembimbing)
             ->orderBy('status_persetujuan_bimbingan_proposal', 'asc')
-            ->orderBy('updated_at', 'asc')
+            ->orderBy('updated_at', 'desc')
             ->get([
                 'id',
-                'dosen_pembimbing_judul_skripsi_id',
+                'dosen_pembimbing_id_dosen_pembimbing',
                 'topik_bimbingan_proposal',
                 'status_persetujuan_bimbingan_proposal',
                 'created_at'
             ]);
         foreach ($bimbingan_proposal as $bimbingan) {
-            $judul_skripsi = JudulSkripsi::findorfail($bimbingan->dosen_pembimbing_judul_skripsi_id);
+            $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan->dosen_pembimbing_id_dosen_pembimbing);
+            $judul_skripsi = JudulSkripsi::findorfail($dosen_pembimbing->judul_skripsi_id_judul_skripsi);
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
             $bimbingan->mahasiswa = [
                 'id' => $mahasiswa->id,
@@ -53,9 +56,10 @@ class BimbinganProposalController extends Controller
     public function show($id)
     {
         try {
-            $bimbingan_proposal = BimbinganProposal::where('id', $id)->first();
-            $judul_skripsi = JudulSkripsi::where('id', $bimbingan_proposal->dosen_pembimbing_judul_skripsi_id)->first();
-            $mahasiswa = Mahasiswa::where('id', $judul_skripsi->mahasiswa_id_mahasiswa)->first();
+            $bimbingan_proposal = BimbinganProposal::findorfail($id);
+            $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan_proposal->dosen_pembimbing_id_dosen_pembimbing);
+            $judul_skripsi = JudulSkripsi::findorfail($dosen_pembimbing->judul_skripsi_id_judul_skripsi);
+            $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
 
             $data = [
                 'id' => $bimbingan_proposal->id,
@@ -106,14 +110,21 @@ class BimbinganProposalController extends Controller
             'catatan_bimbingan_proposal' => 'required|min:1',
         ]);
 
-        $bimbingan_proposal = BimbinganProposal::where('id', $id)->first();
+        $bimbingan_proposal = BimbinganProposal::findorfail($id);
         if ($bimbingan_proposal->status_persetujuan_bimbingan_proposal != 'Disetujui') {
+            $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan_proposal->dosen_pembimbing_id_dosen_pembimbing);
+            $dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
+            if ($dosen_pembimbing->dosen_id_dosen != $dosen->id) {
+                return response()->json([
+                    'message' => 'You can not verify data with this id'
+                ], 400);
+            }
             $bimbingan_proposal->status_persetujuan_bimbingan_proposal = $request->input('status_persetujuan_bimbingan_proposal');
             $bimbingan_proposal->catatan_bimbingan_proposal = $request->input('catatan_bimbingan_proposal');
             $bimbingan_proposal->update();
-
-            $judul_skripsi = JudulSkripsi::where('id', $bimbingan_proposal->dosen_pembimbing_judul_skripsi_id)->first();
-            $mahasiswa = Mahasiswa::where('id', $judul_skripsi->mahasiswa_id_mahasiswa)->first();
+            
+            $judul_skripsi = JudulSkripsi::findorfail($dosen_pembimbing->judul_skripsi_id_judul_skripsi);
+            $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
 
             $data = [
                 'id' => $bimbingan_proposal->id,
