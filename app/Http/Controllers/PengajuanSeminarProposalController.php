@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\BimbinganProposal;
+use App\DosenPembimbing;
 use App\JudulSkripsi;
 use App\Mahasiswa;
 use App\SeminarProposal;
@@ -27,11 +29,19 @@ class PengajuanSeminarProposalController extends Controller
 
         if (is_null($judul_skripsi)) {
             $response = [
-                'message' => 'You are not allowed at this stage, please complete the previous process',
+                'message' => 'You are not allowed at this stage, please complete the process pengajuan judul',
             ];
             return response()->json($response, 400);
         }
 
+        $dosen_pembimbing = DosenPembimbing::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->get('id');
+        $bimbingan_proposal = BimbinganProposal::whereIn('dosen_pembimbing_id_dosen_pembimbing', $dosen_pembimbing)->first();
+        if (is_null($bimbingan_proposal) || $bimbingan_proposal->status_persetujuan_bimbingan_proposal == 'Antrian') {
+            $response = [
+                'message' => 'You are not allowed at this stage, please complete the process bimbingan proposal',
+            ];
+            return response()->json($response, 400);
+        }
         $data_seminar_proposal = SeminarProposal::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
 
         $data_file_seminar_proposal = $request->file('file_seminar_proposal');
@@ -168,6 +178,6 @@ class PengajuanSeminarProposalController extends Controller
         //     ];
         //     return response()->json($response, 404);
         // }
-      
+
     }
 }
