@@ -59,4 +59,9 @@ class Dosen extends Model
     {
         return $this->hasMany('App\DosenPembimbing');
     }
+
+    public function dosen_penguji()
+    {
+        return $this->hasMany('App\DosenPenguji');
+    }
 }

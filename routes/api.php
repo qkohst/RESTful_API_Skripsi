@@ -98,6 +98,10 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('persetujuankrs', 'PersetujuanKRSController', [
                     'except' => ['create', 'edit', 'destroy', 'store']
                 ]);
+
+                Route::resource('seminarproposal', 'SeminarProposalController', [
+                    'except' => ['create', 'edit', 'destroy', 'store']
+                ]);
             });
         });
 
@@ -113,6 +117,12 @@ Route::group(['prefix' => 'v1'], function () {
 
                 Route::get('dosen', [
                     'uses' => 'MahasiswaDosenAktifController@index'
+                ]);
+                Route::get('dosenpembimbing', [
+                    'uses' => 'DosenPembimbingMahasiswaController@index'
+                ]);
+                Route::get('dosenpenguji', [
+                    'uses' => 'DosenPengujiMahasiswaController@index'
                 ]);
 
                 Route::post('persyaratan/uploadkrs', [
@@ -135,10 +145,6 @@ Route::group(['prefix' => 'v1'], function () {
                     'uses' => 'PersyaratanSkripsiController@lihat_status_juduldosbing2'
                 ]);
 
-                Route::get('dosenpembimbing', [
-                    'uses' => 'DosenPembimbingMahasiswaController@index'
-                ]);
-
                 Route::resource('bimbinganproposal', 'PengajuanBimbinganProposalController', [
                     'only' => ['index', 'show', 'store']
                 ]);
@@ -148,6 +154,9 @@ Route::group(['prefix' => 'v1'], function () {
                 ]);
                 Route::get('seminarproposal/persetujuandosbing', [
                     'uses' => 'PengajuanSeminarProposalController@cek_persetujuan_dosbing'
+                ]);
+                Route::get('seminarproposal/penguji', [
+                    'uses' => 'PengajuanSeminarProposalController@cek_penguji_dan_waktu'
                 ]);
             });
         });

@@ -157,27 +157,28 @@ class PengajuanSeminarProposalController extends Controller
 
     public function cek_penguji_dan_waktu()
     {
-        // $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
-        // $judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', $mahasiswa->id)->first();
+        $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
+        $judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', $mahasiswa->id)->first();
 
-        // if (is_null($judul_skripsi)) {
-        //     $response = [
-        //         'message' => 'Judul Skripsi Not Found, please upload data',
-        //     ];
-        //     return response()->json($response, 404);
-        // }
-        // $seminar_proposal = SeminarProposal::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
-        // if (is_null($seminar_proposal)) {
-        //     $response = [
-        //         'message' => 'Seminar Proposal Not Found, please upload data',
-        //     ];
-        //     return response()->json($response, 404);
-        // } elseif (is_null($seminar_proposal->waktu_seminar_proposal)) {
-        //     $response = [
-        //         'message' => 'Data not yet determined',
-        //     ];
-        //     return response()->json($response, 404);
-        // }
-
+        if (is_null($judul_skripsi)) {
+            $response = [
+                'message' => 'Judul Skripsi Not Found, please upload data',
+            ];
+            return response()->json($response, 404);
+        }
+        $seminar_proposal = SeminarProposal::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
+        if (is_null($seminar_proposal)) {
+            $response = [
+                'message' => 'Seminar Proposal Not Found, please upload data',
+            ];
+            return response()->json($response, 404);
+        } elseif (is_null($seminar_proposal->waktu_seminar_proposal)) {
+            $response = [
+                'message' => 'Data not yet determined',
+            ];
+            return response()->json($response, 404);
+        } else {
+            # code...
+        }
     }
 }
