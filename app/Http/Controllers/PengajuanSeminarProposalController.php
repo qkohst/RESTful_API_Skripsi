@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\BimbinganProposal;
+use App\Dosen;
 use App\DosenPembimbing;
+use App\DosenPenguji;
 use App\JudulSkripsi;
 use App\Mahasiswa;
 use App\SeminarProposal;
@@ -178,7 +180,45 @@ class PengajuanSeminarProposalController extends Controller
             ];
             return response()->json($response, 404);
         } else {
-            # code...
+            $penguji1 = DosenPenguji::where([
+                ['judul_skripsi_id_judul_skripsi', $judul_skripsi->id],
+                ['jabatan_dosen_penguji', '1']
+            ])->first();
+            $dosen_penguji1 = Dosen::findOrFail($penguji1->dosen_id_dosen);
+
+            $penguji2 = DosenPenguji::where([
+                ['judul_skripsi_id_judul_skripsi', $judul_skripsi->id],
+                ['jabatan_dosen_penguji', '2']
+            ])->first();
+            $dosen_penguji2 = Dosen::findOrFail($penguji2->dosen_id_dosen);
+
+            if ($penguji1->persetujuan_dosen_penguji == 'Disetujui' && $penguji2->persetujuan_dosen_penguji == 'Disetujui') {
+                $data = [
+                    'id' => $seminar_proposal->id,
+                    'dosen_penguji1_seminar_proposal' => [
+                        'id' => $penguji1->id,
+                        'nama_dosen' => $dosen_penguji1->nama_dosen . ', ' . $dosen_penguji1->gelar_dosen,
+                        'nidn_dosen' => $dosen_penguji1->nidn_dosen
+                    ],
+                    'dosen_penguji2_seminar_proposal' => [
+                        'id' => $penguji2->id,
+                        'nama_dosen' => $dosen_penguji2->nama_dosen . ', ' . $dosen_penguji2->gelar_dosen,
+                        'nidn_dosen' => $dosen_penguji2->nidn_dosen
+                    ],
+                    'waktu_seminar_proposal' => $seminar_proposal->waktu_seminar_proposal,
+                    'tempat_seminar_proposal' => $seminar_proposal->tempat_seminar_proposal
+                ];
+                $response = [
+                    'message' => 'Data information',
+                    'penguji_dan_waktu_seminar' => $data
+                ];
+                return response()->json($response, 200);
+            } else {
+                $response = [
+                    'message' => 'Waiting for the approval process from dosen penguji',
+                ];
+                return response()->json($response, 404);
+            }
         }
     }
 }
