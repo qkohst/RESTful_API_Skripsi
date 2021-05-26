@@ -102,6 +102,9 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('seminarproposal', 'SeminarProposalController', [
                     'except' => ['create', 'edit', 'destroy', 'store']
                 ]);
+                Route::get('seminarproposal/{id}/penguji', [
+                    'uses' => 'SeminarProposalController@cek_persetujuan_penguji'
+                ]);
             });
         });
 

@@ -311,4 +311,84 @@ class SeminarProposalController extends Controller
         ];
         return response()->json($response, 200);
     }
+
+    public function cek_persetujuan_penguji($id)
+    {
+        try {
+            $seminar_proposal = SeminarProposal::findorfail($id);
+            $judul_skripsi = JudulSkripsi::findorfail($seminar_proposal->judul_skripsi_id_judul_skripsi);
+            $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
+
+            $pembimbing1 = DosenPembimbing::where([
+                ['judul_skripsi_id_judul_skripsi', $judul_skripsi->id],
+                ['jabatan_dosen_pembimbing', '1']
+            ])->first();
+            $dosen_pembimbing1 = Dosen::findorfail($pembimbing1->dosen_id_dosen);
+            $pembimbing2 = DosenPembimbing::where([
+                ['judul_skripsi_id_judul_skripsi', $judul_skripsi->id],
+                ['jabatan_dosen_pembimbing', '2']
+            ])->first();
+            $dosen_pembimbing2 = Dosen::findorfail($pembimbing2->dosen_id_dosen);
+
+            $penguji1 = DosenPenguji::where([
+                ['judul_skripsi_id_judul_skripsi', $judul_skripsi->id],
+                ['jabatan_dosen_penguji', '1']
+            ])->first();
+            $dosen_penguji1 = Dosen::findorfail($penguji1->dosen_id_dosen);
+            $penguji2 = DosenPenguji::where([
+                ['judul_skripsi_id_judul_skripsi', $judul_skripsi->id],
+                ['jabatan_dosen_penguji', '2']
+            ])->first();
+            $dosen_penguji2 = Dosen::findorfail($penguji2->dosen_id_dosen);
+
+            $data = [
+                'id' => $seminar_proposal->id,
+                'mahasiswa' => [
+                    'id' => $mahasiswa->id,
+                    'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
+                    'nama_mahasiswa' => $mahasiswa->nama_mahasiswa
+                ],
+                'judul_skripsi' => [
+                    'id' => $judul_skripsi->id,
+                    'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
+                ],
+                'dosen_pembimbing1' => [
+                    'id' => $pembimbing1->id,
+                    'nidn_dosen_pembimbing1' => $dosen_pembimbing1->nidn_dosen,
+                    'nama_dosen_pembimbing1' => $dosen_pembimbing1->nama_dosen . ', ' . $dosen_pembimbing1->gelar_dosen
+                ],
+                'dosen_pembimbing2' => [
+                    'id' => $pembimbing2->id,
+                    'nidn_dosen_pembimbing2' => $dosen_pembimbing2->nidn_dosen,
+                    'nama_dosen_pembimbing2' => $dosen_pembimbing2->nama_dosen . ', ' . $dosen_pembimbing2->gelar_dosen
+                ],
+                'dosen_penguji1' => [
+                    'id' => $penguji1->id,
+                    'nidn_dosen_penguji1' => $dosen_penguji1->nidn_dosen,
+                    'nama_dosen_penguji1' => $dosen_penguji1->nama_dosen . ', ' . $dosen_penguji1->gelar_dosen,
+                    'persetujuan_dosen_penguji1' => $penguji1->persetujuan_dosen_penguji
+                ],
+                'dosen_penguji2' => [
+                    'id' => $penguji2->id,
+                    'nidn_dosen_penguji2' => $dosen_penguji2->nidn_dosen,
+                    'nama_dosen_penguji2' => $dosen_penguji2->nama_dosen . ', ' . $dosen_penguji2->gelar_dosen,
+                    'persetujuan_dosen_penguji2' => $penguji2->persetujuan_dosen_penguji
+                ],
+                'waktu_seminar_proposal' => $seminar_proposal->waktu_seminar_proposal,
+                'tempat_seminar_proposal' => $seminar_proposal->tempat_seminar_proposal
+            ];
+
+            $response = [
+                'message' => 'Submission status',
+                'persetujuan_penguji' => $data
+            ];
+            return response()->json($response, 200);
+        } catch (\Throwable $th) {
+            $response = [
+                'message' => 'Data not found',
+            ];
+
+            return response()->json($response, 404);
+        }
+    }
 }
