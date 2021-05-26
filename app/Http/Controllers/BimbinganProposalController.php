@@ -58,6 +58,15 @@ class BimbinganProposalController extends Controller
         try {
             $bimbingan_proposal = BimbinganProposal::findorfail($id);
             $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan_proposal->dosen_pembimbing_id_dosen_pembimbing);
+            $cek_dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
+            if ($cek_dosen->id != $dosen_pembimbing->dosen_id_dosen) {
+                $response = [
+                    'message' => 'You do not have access to data with id ' . $dosen_pembimbing->id,
+                ];
+
+                return response()->json($response, 400);
+            }
+
             $judul_skripsi = JudulSkripsi::findorfail($dosen_pembimbing->judul_skripsi_id_judul_skripsi);
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
 
@@ -111,18 +120,18 @@ class BimbinganProposalController extends Controller
         ]);
 
         $bimbingan_proposal = BimbinganProposal::findorfail($id);
+        $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan_proposal->dosen_pembimbing_id_dosen_pembimbing);
+        $dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
+        if ($dosen_pembimbing->dosen_id_dosen != $dosen->id) {
+            return response()->json([
+                'message' => 'You do not have access to data with id '.$bimbingan_proposal->id
+            ], 400);
+        }
         if ($bimbingan_proposal->status_persetujuan_bimbingan_proposal != 'Disetujui') {
-            $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan_proposal->dosen_pembimbing_id_dosen_pembimbing);
-            $dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
-            if ($dosen_pembimbing->dosen_id_dosen != $dosen->id) {
-                return response()->json([
-                    'message' => 'You can not verify data with this id'
-                ], 400);
-            }
             $bimbingan_proposal->status_persetujuan_bimbingan_proposal = $request->input('status_persetujuan_bimbingan_proposal');
             $bimbingan_proposal->catatan_bimbingan_proposal = $request->input('catatan_bimbingan_proposal');
             $bimbingan_proposal->update();
-            
+
             $judul_skripsi = JudulSkripsi::findorfail($dosen_pembimbing->judul_skripsi_id_judul_skripsi);
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
 

@@ -21,7 +21,7 @@ class PersetujuanJudulController extends Controller
         $dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
         $dosen_pembimbing = DosenPembimbing::where('dosen_id_dosen', $dosen->id)
             ->orderBy('persetujuan_dosen_pembimbing', 'asc')
-            ->orderBy('updated_at', 'asc')
+            ->orderBy('updated_at', 'desc')
             ->get([
                 'id',
                 'judul_skripsi_id_judul_skripsi',
@@ -63,6 +63,14 @@ class PersetujuanJudulController extends Controller
 
         try {
             $dosen_pembimbing = DosenPembimbing::findorfail($id);
+            $cek_dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
+            if ($cek_dosen->id != $dosen_pembimbing->dosen_id_dosen) {
+                $response = [
+                    'message' => 'You do not have access to data with id ' . $dosen_pembimbing->id,
+                ];
+
+                return response()->json($response, 400);
+            }
             $judul_skripsi = JudulSkripsi::findorfail($dosen_pembimbing->judul_skripsi_id_judul_skripsi);
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
 
@@ -112,6 +120,13 @@ class PersetujuanJudulController extends Controller
         ]);
 
         $dosen_pembimbing = DosenPembimbing::findorfail($id);
+        $cek_dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
+        if ($cek_dosen->id != $dosen_pembimbing->dosen_id_dosen) {
+            $response = [
+                'message' => 'You do not have access to data with id ' . $dosen_pembimbing->id,
+            ];
+            return response()->json($response, 400);
+        }
         if ($dosen_pembimbing->persetujuan_dosen_pembimbing != 'Disetujui') {
             $dosen_pembimbing->persetujuan_dosen_pembimbing = $request->input('persetujuan_dosen_pembimbing');
             $dosen_pembimbing->catatan_dosen_pembimbing = $request->input('catatan_dosen_pembimbing');
