@@ -17,7 +17,7 @@ class CreateHasilSeminarProposalTable extends Migration
             $table->id();
             $table->unsignedBigInteger('seminar_proposal_id_seminar')->unsigned();
             $table->unsignedBigInteger('dosen_id_dosen')->unsigned();
-            $table->enum('jenis_dosen_hasil_seminar_proposal', ['Pembimbing I', 'Pembimbing II', 'Penguji I', 'Penguji II']);
+            $table->enum('jenis_dosen_hasil_seminar_proposal', ['Pembimbing 1', 'Pembimbing 2', 'Penguji 1', 'Penguji 2']);
             $table->enum('status_verifikasi_hasil_seminar_proposal', ['Revisi', 'Lulus Seminar']);
             $table->longText('catatan_hasil_seminar_proposal')->nullable();
             $table->integer('nilai_a1_hasil_seminar_proposal')->nullable();

@@ -193,6 +193,13 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('seminarproposal', 'DosenVerifikasiSeminarProposalController', [
                     'only' => ['index', 'show', 'update']
                 ]);
+                Route::patch('seminarproposal/{id}/nilai', [
+                    'uses' => 'DosenVerifikasiSeminarProposalController@input_nilai'
+                ]);
+
+                Route::get('seminarproposal/{id}/nilai', [
+                    'uses' => 'DosenVerifikasiSeminarProposalController@lihat_nilai'
+                ]);
             });
         });
     });

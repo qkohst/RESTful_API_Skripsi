@@ -8,7 +8,7 @@ class HasilSeminarProposal extends Model
 {
     protected $table = 'hasil_seminar_proposal';
     protected $fillable = [
-        'seminar_proposal_id_seminar_proposal',
+        'seminar_proposal_id_seminar',
         'dosen_id_dosen',
         'jenis_dosen_hasil_seminar_proposal',
         'status_verifikasi_hasil_seminar_proposal',
