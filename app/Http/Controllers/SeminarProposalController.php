@@ -52,7 +52,7 @@ class SeminarProposalController extends Controller
                 'nama_judul_skripsi' => $data_judul_skripsi->nama_judul_skripsi
             ];
             $seminar->persetujuan_pembimbing_seminar_proposal = 'Disetujui';
-            if (is_null($seminar->waktu_seminar_proposal)) {
+            if (is_null($data_seminar_proposal->waktu_seminar_proposal)) {
                 $seminar->penguji_dan_waktu_seminar_proposal = 'Belum Ditentukan';
             } else {
                 $data_dosen_penguji1 = DosenPenguji::where([
@@ -65,6 +65,8 @@ class SeminarProposalController extends Controller
                 ])->first();
                 if ($data_dosen_penguji1->persetujuan_dosen_penguji == 'Disetujui' && $data_dosen_penguji2->persetujuan_dosen_penguji == 'Disetujui') {
                     $seminar->penguji_dan_waktu_seminar_proposal = 'Telah Ditentukan';
+                } elseif ($data_dosen_penguji1->persetujuan_dosen_penguji == 'Ditolak' || $data_dosen_penguji2->persetujuan_dosen_penguji == 'Ditolak') {
+                    $seminar->penguji_dan_waktu_seminar_proposal = 'Ditolak Penguji';
                 } else {
                     $seminar->penguji_dan_waktu_seminar_proposal = 'Menunggu Persetujuan Penguji';
                 }
@@ -189,7 +191,7 @@ class SeminarProposalController extends Controller
         if (DB::table('dosen_penguji')->where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->doesntExist()) {
             $seminar_proposal->waktu_seminar_proposal = $request->waktu_seminar_proposal;
             $seminar_proposal->tempat_seminar_proposal = $request->tempat_seminar_proposal;
-            $seminar_proposal->status_seminar_proposal = 'Belum Mulai';
+            $seminar_proposal->status_seminar_proposal = 'Proses';
             $seminar_proposal->update();
 
             $penguji1 = new DosenPenguji([

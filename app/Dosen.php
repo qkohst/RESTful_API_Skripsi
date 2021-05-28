@@ -64,4 +64,9 @@ class Dosen extends Model
     {
         return $this->hasMany('App\DosenPenguji');
     }
+
+    public function hasil_seminar_proposal()
+    {
+        return $this->hasMany('App\HasilSeminarProposal');
+    }
 }

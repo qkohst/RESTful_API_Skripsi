@@ -23,7 +23,7 @@ class CreateSeminarProposalTable extends Migration
             $table->string('catatan_pembimbing2_seminar_proposal', 200)->nullable();
             $table->timestamp('waktu_seminar_proposal')->nullable();
             $table->string('tempat_seminar_proposal', 45)->nullable();
-            $table->enum('status_seminar_proposal', ['Pengajuan', 'Belum Mulai', 'Sedang Berlangsung', 'Selesai']);
+            $table->enum('status_seminar_proposal', ['Pengajuan', 'Proses', 'Selesai']);
             $table->timestamps();
 
             $table->foreign('judul_skripsi_id_judul_skripsi')->references('id')->on('judul_skripsi');

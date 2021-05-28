@@ -23,4 +23,9 @@ class SeminarProposal extends Model
     {
         return $this->hasOne('App\JudulSkripsi');
     }
+
+    public function hasil_seminar_proposal()
+    {
+        return $this->hasMany('App\HasilSeminarProposal');
+    }
 }

@@ -50,7 +50,7 @@ class ProfileDosenController extends Controller
                 'kode_program_studi' => $program_studi->kode_program_studi,
                 'nama_program_studi' => $program_studi->nama_program_studi
             ],
-            'nama_dosen' => $dosen->nama_dosen . $dosen->gelar_dosen,
+            'nama_dosen' => $dosen->nama_dosen . ', ' . $dosen->gelar_dosen,
             'nidn_dosen' => $dosen->nidn_dosen,
             'nip_dosen' => $dosen->nip_dosen,
             'jenis_kelamin_dosen' => $dosen->jenis_kelamin_dosen,

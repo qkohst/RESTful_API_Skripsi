@@ -189,6 +189,10 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('persetujuandosenpenguji', 'PersetujuanDosenPengujiController', [
                     'only' => ['index', 'show', 'update']
                 ]);
+
+                Route::resource('seminarproposal', 'DosenVerifikasiSeminarProposalController', [
+                    'only' => ['index', 'show', 'update']
+                ]);
             });
         });
     });
