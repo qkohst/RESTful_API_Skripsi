@@ -18,7 +18,7 @@ class AuthController extends Controller
         ]);
         if (!Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
             return response()->json([
-                'error' => 'Incorrect username or password'
+                'message' => 'Incorrect username or password'
             ], 401);
         }
 
@@ -29,7 +29,7 @@ class AuthController extends Controller
             'nama' => $user->nama,
             'username' => $user->username,
             'role' => $user->role,
-            'api_token' => $user->api_token,
+            'bearer_token' => $user->api_token,
         ];
         return response()->json([
             'message' => 'Login successfully',

@@ -161,6 +161,12 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('seminarproposal/penguji', [
                     'uses' => 'PengajuanSeminarProposalController@cek_penguji_dan_waktu'
                 ]);
+                Route::get('hasilseminarproposal/daftarnilai', [
+                    'uses' => 'MahasiswaHasilSeminarProposalController@daftar_nilai'
+                ]);
+                Route::resource('hasilseminarproposal', 'MahasiswaHasilSeminarProposalController', [
+                    'only' => ['index', 'show']
+                ]);
             });
         });
 
