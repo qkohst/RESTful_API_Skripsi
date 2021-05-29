@@ -88,8 +88,8 @@ class PengajuanBimbinganProposalController extends Controller
                 return response()->json([
                     'message' => 'The given data was invalid.',
                     'errors' => [
-                        'dosen_id_dosen' => [
-                            'The selected dosen id dosen is invalid, please choose another'
+                        'dosen_pembimbing_id_dosen_pembimbing' => [
+                            'The selected dosen pembimbing id dosen pembimbing is invalid, please choose another'
                         ]
                     ]
                 ], 422);

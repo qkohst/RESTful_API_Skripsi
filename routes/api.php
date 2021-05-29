@@ -180,6 +180,10 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('hasilseminarproposal', 'MahasiswaHasilSeminarProposalController', [
                     'only' => ['index', 'show']
                 ]);
+
+                Route::resource('bimbinganskripsi', 'PengajuanBimbinganSkripsiController', [
+                    'only' => ['index', 'show', 'store']
+                ]);
             });
         });
 

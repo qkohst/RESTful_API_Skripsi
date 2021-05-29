@@ -29,4 +29,9 @@ class DosenPembimbing extends Model
     {
         return $this->hasMany('App\BimbinganProposal');
     }
+
+    public function bimbingan_skripsi()
+    {
+        return $this->hasMany('App\BimbinganSkripsi');
+    }
 }
