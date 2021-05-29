@@ -472,25 +472,22 @@ class SeminarProposalController extends Controller
             ['seminar_proposal_id_seminar', $seminar_proposal->id],
             ['jenis_dosen_hasil_seminar_proposal', 'Pembimbing 1']
         ])->first();
-        $dosen_pembimbing1 = Dosen::findOrFail($nilai_pembimbing1->dosen_id_dosen);
 
         $nilai_pembimbing2 = HasilSeminarProposal::where([
             ['seminar_proposal_id_seminar', $seminar_proposal->id],
             ['jenis_dosen_hasil_seminar_proposal', 'Pembimbing 2']
         ])->first();
-        $dosen_pembimbing2 = Dosen::findOrFail($nilai_pembimbing2->dosen_id_dosen);
 
         $nilai_penguji1 = HasilSeminarProposal::where([
             ['seminar_proposal_id_seminar', $seminar_proposal->id],
             ['jenis_dosen_hasil_seminar_proposal', 'Penguji 1']
         ])->first();
-        $dosen_penguji1 = Dosen::findOrFail($nilai_penguji1->dosen_id_dosen);
 
         $nilai_penguji2 = HasilSeminarProposal::where([
             ['seminar_proposal_id_seminar', $seminar_proposal->id],
             ['jenis_dosen_hasil_seminar_proposal', 'Penguji 2']
         ])->first();
-        $dosen_penguji2 = Dosen::findOrFail($nilai_penguji2->dosen_id_dosen);
+
         if (is_null($nilai_pembimbing1) || is_null($nilai_pembimbing2) || is_null($nilai_penguji1) || is_null($nilai_penguji2)) {
             $response = [
                 'message' => 'the verification process by the dosen pembimbing and penguji has not been completed',
@@ -502,6 +499,10 @@ class SeminarProposalController extends Controller
             ];
             return response()->json($response, 404);
         }
+        $dosen_pembimbing1 = Dosen::findOrFail($nilai_pembimbing1->dosen_id_dosen);
+        $dosen_pembimbing2 = Dosen::findOrFail($nilai_pembimbing2->dosen_id_dosen);
+        $dosen_penguji1 = Dosen::findOrFail($nilai_penguji1->dosen_id_dosen);
+        $dosen_penguji2 = Dosen::findOrFail($nilai_penguji2->dosen_id_dosen);
 
         $data = [
             'id' => $seminar_proposal->id,

@@ -65,6 +65,10 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::patch('adminprodi/{id}/resetpassword', [
                     'uses' => 'AdminProdiController@resetpassword'
                 ]);
+
+                Route::resource('seminarproposal', 'AdminSeminarProposalController', [
+                    'only' => ['index', 'show']
+                ]);
             });
         });
 
