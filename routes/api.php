@@ -105,6 +105,15 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('seminarproposal/{id}/penguji', [
                     'uses' => 'SeminarProposalController@cek_persetujuan_penguji'
                 ]);
+                Route::get('seminarproposal/{id}/hasil', [
+                    'uses' => 'SeminarProposalController@hasil_seminar'
+                ]);
+                Route::patch('seminarproposal/{id}/verifikasi', [
+                    'uses' => 'SeminarProposalController@verifikasi_seminar'
+                ]);
+                Route::get('seminarproposal/{id}/daftarnilai', [
+                    'uses' => 'SeminarProposalController@daftar_nilai'
+                ]);
             });
         });
 
