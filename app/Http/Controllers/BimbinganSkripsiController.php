@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\BimbinganProposal;
+use App\BimbinganSkripsi;
 use App\Dosen;
 use App\DosenPembimbing;
 use App\JudulSkripsi;
@@ -10,7 +10,7 @@ use App\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class BimbinganProposalController extends Controller
+class BimbinganSkripsiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,29 +21,30 @@ class BimbinganProposalController extends Controller
     {
         $dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
         $id_dosen_pembimbing = DosenPembimbing::where('dosen_id_dosen', $dosen->id)->get('id');
-        $bimbingan_proposal = BimbinganProposal::whereIn('dosen_pembimbing_id_dosen_pembimbing', $id_dosen_pembimbing)
-            ->orderBy('status_persetujuan_bimbingan_proposal', 'asc')
+
+        $bimbingan_skripsi = BimbinganSkripsi::whereIn('dosen_pembimbing_id_dosen_pembimbing', $id_dosen_pembimbing)
+            ->orderBy('status_persetujuan_bimbingan_skripsi', 'asc')
             ->orderBy('updated_at', 'desc')
-            ->get([
-                'id',
-                'dosen_pembimbing_id_dosen_pembimbing',
-                'topik_bimbingan_proposal',
-                'status_persetujuan_bimbingan_proposal',
-                'created_at'
-            ]);
-        foreach ($bimbingan_proposal as $bimbingan) {
-            $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan->dosen_pembimbing_id_dosen_pembimbing);
+            ->get('id');
+        foreach ($bimbingan_skripsi as $bimbingan) {
+            $data_bimbingan_skripsi = BimbinganSkripsi::findorfail($bimbingan->id);
+            $dosen_pembimbing = DosenPembimbing::findorfail($data_bimbingan_skripsi->dosen_pembimbing_id_dosen_pembimbing);
             $judul_skripsi = JudulSkripsi::findorfail($dosen_pembimbing->judul_skripsi_id_judul_skripsi);
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
+
             $bimbingan->mahasiswa = [
                 'id' => $mahasiswa->id,
                 'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
                 'nama_mahasiswa' => $mahasiswa->nama_mahasiswa
             ];
+            $bimbingan->topik_bimbingan_skripsi = $data_bimbingan_skripsi->topik_bimbingan_skripsi;
+            $bimbingan->tanggal_pengajuan_bimbingan_skripsi = $data_bimbingan_skripsi->created_at;
+            $bimbingan->status_persetujuan_bimbingan_skripsi = $data_bimbingan_skripsi->status_persetujuan_bimbingan_skripsi;
         }
+
         return response()->json([
             'message' => 'List of Data',
-            'bimbingan_proposal' => $bimbingan_proposal,
+            'bimbingan_skripsi' => $bimbingan_skripsi
         ], 200);
     }
 
@@ -56,22 +57,22 @@ class BimbinganProposalController extends Controller
     public function show($id)
     {
         try {
-            $bimbingan_proposal = BimbinganProposal::findorfail($id);
-            $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan_proposal->dosen_pembimbing_id_dosen_pembimbing);
+            $bimbingan_skripsi = BimbinganSkripsi::findorfail($id);
+            $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan_skripsi->dosen_pembimbing_id_dosen_pembimbing);
             $cek_dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
+
             if ($cek_dosen->id != $dosen_pembimbing->dosen_id_dosen) {
                 $response = [
-                    'message' => 'You do not have access to data with id ' . $bimbingan_proposal->id,
+                    'message' => 'You do not have access to data with id ' . $bimbingan_skripsi->id,
                 ];
 
                 return response()->json($response, 400);
             }
-
             $judul_skripsi = JudulSkripsi::findorfail($dosen_pembimbing->judul_skripsi_id_judul_skripsi);
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
 
             $data = [
-                'id' => $bimbingan_proposal->id,
+                'id' => $bimbingan_skripsi->id,
                 'mahasiswa' => [
                     'id' => $mahasiswa->id,
                     'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
@@ -81,19 +82,19 @@ class BimbinganProposalController extends Controller
                     'id' => $judul_skripsi->id,
                     'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                 ],
-                'topik_bimbingan_proposal' => $bimbingan_proposal->topik_bimbingan_proposal,
-                'file_bimbingan_proposal' => [
-                    'nama_file' => $bimbingan_proposal->nama_file_bimbingan_proposal,
-                    'url' => 'fileProposal/' . $bimbingan_proposal->nama_file_bimbingan_proposal,
+                'topik_bimbingan_skripsi' => $bimbingan_skripsi->topik_bimbingan_skripsi,
+                'file_bimbingan_skripsi' => [
+                    'nama_file' => $bimbingan_skripsi->nama_file_bimbingan_skripsi,
+                    'url' => 'fileSkripsi/' . $bimbingan_skripsi->nama_file_bimbingan_skripsi,
                 ],
-                'status_persetujuan_bimbingan_proposal' => $bimbingan_proposal->status_persetujuan_bimbingan_proposal,
-                'catatan_bimbingan_proposal' => $bimbingan_proposal->catatan_bimbingan_proposal,
-                'created_at' => $bimbingan_proposal->created_at
+                'status_persetujuan_bimbingan_skripsi' => $bimbingan_skripsi->status_persetujuan_bimbingan_skripsi,
+                'catatan_bimbingan_skripsi' => $bimbingan_skripsi->catatan_bimbingan_skripsi,
+                'tanggal_pengajuan_bimbingan_skripsi' => $bimbingan_skripsi->created_at
             ];
 
             $response = [
                 'message' => 'Data details',
-                'bimbingan_proposal' => $data
+                'bimbingan_skripsi' => $data
             ];
             return response()->json($response, 200);
         } catch (\Throwable $th) {
@@ -115,28 +116,28 @@ class BimbinganProposalController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'status_persetujuan_bimbingan_proposal' => 'required|in:Antrian,Disetujui,Revisi',
-            'catatan_bimbingan_proposal' => 'required',
+            'status_persetujuan_bimbingan_skripsi' => 'required|in:Antrian,Disetujui,Revisi',
+            'catatan_bimbingan_skripsi' => 'required',
         ]);
 
-        $bimbingan_proposal = BimbinganProposal::findorfail($id);
-        $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan_proposal->dosen_pembimbing_id_dosen_pembimbing);
+        $bimbingan_skripsi = BimbinganSkripsi::findorfail($id);
+        $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan_skripsi->dosen_pembimbing_id_dosen_pembimbing);
         $dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
         if ($dosen_pembimbing->dosen_id_dosen != $dosen->id) {
             return response()->json([
-                'message' => 'You do not have access to data with id '.$bimbingan_proposal->id
+                'message' => 'You do not have access to data with id ' . $bimbingan_skripsi->id
             ], 400);
         }
-        if ($bimbingan_proposal->status_persetujuan_bimbingan_proposal != 'Disetujui') {
-            $bimbingan_proposal->status_persetujuan_bimbingan_proposal = $request->input('status_persetujuan_bimbingan_proposal');
-            $bimbingan_proposal->catatan_bimbingan_proposal = $request->input('catatan_bimbingan_proposal');
-            $bimbingan_proposal->update();
+        if ($bimbingan_skripsi->status_persetujuan_bimbingan_skripsi != 'Disetujui') {
+            $bimbingan_skripsi->status_persetujuan_bimbingan_skripsi = $request->input('status_persetujuan_bimbingan_skripsi');
+            $bimbingan_skripsi->catatan_bimbingan_skripsi = $request->input('catatan_bimbingan_skripsi');
+            $bimbingan_skripsi->update();
 
             $judul_skripsi = JudulSkripsi::findorfail($dosen_pembimbing->judul_skripsi_id_judul_skripsi);
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
-
+            
             $data = [
-                'id' => $bimbingan_proposal->id,
+                'id' => $bimbingan_skripsi->id,
                 'mahasiswa' => [
                     'id' => $mahasiswa->id,
                     'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
@@ -146,10 +147,10 @@ class BimbinganProposalController extends Controller
                     'id' => $judul_skripsi->id,
                     'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                 ],
-                'topik_bimbingan_proposal' => $bimbingan_proposal->topik_bimbingan_proposal,
-                'status_bimbingan_proposal' => $bimbingan_proposal->status_persetujuan_bimbingan_proposal,
-                'catatan_bimbingan_proposal' => $bimbingan_proposal->catatan_bimbingan_proposal,
-                'updated_at' => $bimbingan_proposal->updated_at->diffForHumans(),
+                'topik_bimbingan_skripsi' => $bimbingan_skripsi->topik_bimbingan_skripsi,
+                'status_bimbingan_skripsi' => $bimbingan_skripsi->status_persetujuan_bimbingan_skripsi,
+                'catatan_bimbingan_skripsi' => $bimbingan_skripsi->catatan_bimbingan_skripsi,
+                'updated_at' => $bimbingan_skripsi->updated_at->diffForHumans(),
             ];
 
             return response()->json([

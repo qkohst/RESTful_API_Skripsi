@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::group(['prefix' => 'v1'], function () {
 
-    Route::post('auth/register', 'AuthController@register');
     Route::post('auth/login', 'AuthController@login');
 
     Route::group(['middleware' => 'auth:api'], function () {
@@ -219,9 +218,12 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::patch('seminarproposal/{id}/nilai', [
                     'uses' => 'DosenVerifikasiSeminarProposalController@input_nilai'
                 ]);
-
                 Route::get('seminarproposal/{id}/nilai', [
                     'uses' => 'DosenVerifikasiSeminarProposalController@lihat_nilai'
+                ]);
+
+                Route::resource('bimbinganskripsi', 'BimbinganSkripsiController', [
+                    'only' => ['index', 'show', 'update']
                 ]);
             });
         });
