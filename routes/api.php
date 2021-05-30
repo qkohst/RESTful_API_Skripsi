@@ -117,6 +117,10 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('seminarproposal/{id}/daftarnilai', [
                     'uses' => 'SeminarProposalController@daftar_nilai'
                 ]);
+
+                Route::resource('sidangskripsi', 'SidangSkripsiController', [
+                    'except' => ['create', 'edit', 'destroy', 'store']
+                ]);
             });
         });
 
@@ -183,6 +187,16 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('bimbinganskripsi', 'PengajuanBimbinganSkripsiController', [
                     'only' => ['index', 'show', 'store']
                 ]);
+
+                Route::resource('sidangskripsi', 'PengajuanSidangSkripsiController', [
+                    'only' => ['store']
+                ]);
+                Route::get('sidangskripsi/persetujuandosbing', [
+                    'uses' => 'PengajuanSidangSkripsiController@cek_persetujuan_dosbing'
+                ]);
+                Route::get('sidangskripsi/waktu', [
+                    'uses' => 'PengajuanSidangSkripsiController@cek_waktu'
+                ]);
             });
         });
 
@@ -223,6 +237,10 @@ Route::group(['prefix' => 'v1'], function () {
                 ]);
 
                 Route::resource('bimbinganskripsi', 'BimbinganSkripsiController', [
+                    'only' => ['index', 'show', 'update']
+                ]);
+
+                Route::resource('persetujuansidang', 'PersetujuanSidangSkripsiController', [
                     'only' => ['index', 'show', 'update']
                 ]);
             });

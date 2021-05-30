@@ -37,7 +37,9 @@ class PengajuanSeminarProposalController extends Controller
         }
 
         $dosen_pembimbing = DosenPembimbing::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->get('id');
-        $bimbingan_proposal = BimbinganProposal::whereIn('dosen_pembimbing_id_dosen_pembimbing', $dosen_pembimbing)->first();
+        $bimbingan_proposal = BimbinganProposal::whereIn('dosen_pembimbing_id_dosen_pembimbing', $dosen_pembimbing)
+            ->orderBy('created_at', 'desc')
+            ->first();
         if (is_null($bimbingan_proposal) || $bimbingan_proposal->status_persetujuan_bimbingan_proposal == 'Antrian') {
             $response = [
                 'message' => 'You are not allowed at this stage, please complete the process bimbingan proposal',

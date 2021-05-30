@@ -6,11 +6,11 @@ use App\Dosen;
 use App\DosenPembimbing;
 use App\JudulSkripsi;
 use App\Mahasiswa;
-use App\SeminarProposal;
+use App\SidangSkripsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PersetujuanSeminarProposalController extends Controller
+class PersetujuanSidangSkripsiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,43 +22,43 @@ class PersetujuanSeminarProposalController extends Controller
         $dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
         $data_pembimbing = DosenPembimbing::where('dosen_id_dosen', $dosen->id)->get('judul_skripsi_id_judul_skripsi');
         $data_judul_skripsi = JudulSkripsi::whereIn('id', $data_pembimbing)->get('id');
-        $seminar_proposal = SeminarProposal::whereIn('judul_skripsi_id_judul_skripsi', $data_judul_skripsi)
-            ->orderBy('persetujuan_pembimbing1_seminar_proposal', 'asc')
-            ->orderBy('persetujuan_pembimbing2_seminar_proposal', 'asc')
+        $sidang_skripsi = SidangSkripsi::whereIn('judul_skripsi_id_judul_skripsi', $data_judul_skripsi)
+            ->orderBy('persetujuan_pembimbing1_sidang_skripsi', 'asc')
+            ->orderBy('persetujuan_pembimbing2_sidang_skripsi', 'asc')
             ->get('id');
 
-        foreach ($seminar_proposal as $seminar) {
-            $data_seminar_proposal = SeminarProposal::findorfail($seminar->id);
-            $judul_skripsi = JudulSkripsi::findorfail($data_seminar_proposal->judul_skripsi_id_judul_skripsi);
+        foreach ($sidang_skripsi as $sidang) {
+            $data_sidang_skripsi = SidangSkripsi::findorfail($sidang->id);
+            $judul_skripsi = JudulSkripsi::findorfail($data_sidang_skripsi->judul_skripsi_id_judul_skripsi);
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
             $dosen_pembimbing = DosenPembimbing::where([
                 ['judul_skripsi_id_judul_skripsi', $judul_skripsi->id],
                 ['dosen_id_dosen', $dosen->id]
             ])->first();
 
-            $seminar->mahasiswa = [
+            $sidang->mahasiswa = [
                 'id' => $mahasiswa->id,
                 'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
                 'nama_mahasiswa' => $mahasiswa->nama_mahasiswa
             ];
-            $seminar->judul_skripsi = [
+            $sidang->judul_skripsi = [
                 'id' => $judul_skripsi->id,
                 'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
             ];
             if ($dosen_pembimbing->jabatan_dosen_pembimbing == '1') {
-                $seminar->status_persetujuan_seminar = $data_seminar_proposal->persetujuan_pembimbing1_seminar_proposal;
-                $seminar->created_at = $data_seminar_proposal->created_at;
+                $sidang->status_persetujuan_sidang_skripsi = $data_sidang_skripsi->persetujuan_pembimbing1_sidang_skripsi;
+                $sidang->created_at = $data_sidang_skripsi->created_at;
             } else {
-                $seminar->status_persetujuan_seminar = $data_seminar_proposal->persetujuan_pembimbing2_seminar_proposal;
-                $seminar->created_at = $data_seminar_proposal->created_at;
+                $sidang->status_persetujuan_sidang = $data_sidang_skripsi->persetujuan_pembimbing2_sidang_skripsi;
+                $sidang->created_at = $data_sidang_skripsi->created_at;
             }
         }
-
         return response()->json([
             'message' => 'List of Data',
-            'persetujuan_seminar' => $seminar_proposal,
+            'persetujuan_sidang_skripsi' => $sidang_skripsi,
         ], 200);
     }
+
 
     /**
      * Display the specified resource.
@@ -69,8 +69,8 @@ class PersetujuanSeminarProposalController extends Controller
     public function show($id)
     {
         try {
-            $seminar_proposal = SeminarProposal::findorfail($id);
-            $judul_skripsi = JudulSkripsi::findorfail($seminar_proposal->judul_skripsi_id_judul_skripsi);
+            $sidang_skripsi = SidangSkripsi::findorfail($id);
+            $judul_skripsi = JudulSkripsi::findorfail($sidang_skripsi->judul_skripsi_id_judul_skripsi);
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
 
             $dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
@@ -81,7 +81,7 @@ class PersetujuanSeminarProposalController extends Controller
 
             if ($dosen_pembimbing->jabatan_dosen_pembimbing == '1') {
                 $data = [
-                    'id' => $seminar_proposal->id,
+                    'id' => $sidang_skripsi->id,
                     'mahasiswa' => [
                         'id' => $mahasiswa->id,
                         'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
@@ -91,23 +91,23 @@ class PersetujuanSeminarProposalController extends Controller
                         'id' => $judul_skripsi->id,
                         'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                     ],
-                    'file_persetujuan_seminar' => [
-                        'nama_file' => $seminar_proposal->file_seminar_proposal,
-                        'url' => 'fileSeminar/' . $seminar_proposal->file_seminar_proposal
+                    'file_persetujuan_sidang' => [
+                        'nama_file' => $sidang_skripsi->file_sidang_skripsi,
+                        'url' => 'fileSidang/' . $sidang_skripsi->file_sidang_skripsi
                     ],
-                    'status_persetujuan_seminar' => $seminar_proposal->persetujuan_pembimbing1_seminar_proposal,
-                    'catatan_persetujuan_seminar' => $seminar_proposal->catatan_pembimbing1_seminar_proposal,
-                    'created_at' => $seminar_proposal->created_at
+                    'status_persetujuan_sidang' => $sidang_skripsi->persetujuan_pembimbing1_sidang_skripsi,
+                    'catatan_persetujuan_sidang' => $sidang_skripsi->catatan_pembimbing1_sidang_skripsi,
+                    'created_at' => $sidang_skripsi->created_at
                 ];
                 $response = [
                     'message' => 'Data details',
-                    'persetujuan_seminar' => $data
+                    'persetujuan_sidang' => $data
                 ];
                 return response()->json($response, 200);
             }
 
             $data = [
-                'id' => $seminar_proposal->id,
+                'id' => $sidang_skripsi->id,
                 'mahasiswa' => [
                     'id' => $mahasiswa->id,
                     'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
@@ -117,17 +117,17 @@ class PersetujuanSeminarProposalController extends Controller
                     'id' => $judul_skripsi->id,
                     'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                 ],
-                'file_persetujuan_seminar' => [
-                    'nama_file' => $seminar_proposal->file_seminar_proposal,
-                    'url' => 'fileSeminar/' . $seminar_proposal->file_seminar_proposal
+                'file_persetujuan_sidang' => [
+                    'nama_file' => $sidang_skripsi->file_sidang_skripsi,
+                    'url' => 'fileSidang/' . $sidang_skripsi->file_sidang_skripsi
                 ],
-                'status_persetujuan_seminar' => $seminar_proposal->persetujuan_pembimbing2_seminar_proposal,
-                'catatan_persetujuan_seminar' => $seminar_proposal->catatan_pembimbing2_seminar_proposal,
-                'created_at' => $seminar_proposal->created_at
+                'status_persetujuan_sidang' => $sidang_skripsi->persetujuan_pembimbing2_sidang_skripsi,
+                'catatan_persetujuan_sidang' => $sidang_skripsi->catatan_pembimbing2_sidang_skripsi,
+                'created_at' => $sidang_skripsi->created_at
             ];
             $response = [
                 'message' => 'Data details',
-                'persetujuan_seminar' => $data
+                'persetujuan_sidang' => $data
             ];
             return response()->json($response, 200);
         } catch (\Throwable $th) {
@@ -149,28 +149,28 @@ class PersetujuanSeminarProposalController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'status_persetujuan_seminar' => 'required|in:Antrian,Disetujui,Ditolak',
-            'catatan_persetujuan_seminar' => 'required',
+            'status_persetujuan_sidang' => 'required|in:Antrian,Disetujui,Ditolak',
+            'catatan_persetujuan_sidang' => 'required',
         ]);
 
         $dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
-        $seminar_proposal = SeminarProposal::findorfail($id);
-        $judul_skripsi = JudulSkripsi::findorfail($seminar_proposal->judul_skripsi_id_judul_skripsi);
+        $sidang_skripsi = SidangSkripsi::findorfail($id);
+        $judul_skripsi = JudulSkripsi::findorfail($sidang_skripsi->judul_skripsi_id_judul_skripsi);
         $cek_jabatan_pembimbing = DosenPembimbing::where([
             ['judul_skripsi_id_judul_skripsi', $judul_skripsi->id],
             ['dosen_id_dosen', $dosen->id]
         ])->first();
 
         if ($cek_jabatan_pembimbing->jabatan_dosen_pembimbing == '1') {
-            if ($seminar_proposal->persetujuan_pembimbing1_seminar_proposal != 'Disetujui') {
-                $seminar_proposal->persetujuan_pembimbing1_seminar_proposal = $request->input('status_persetujuan_seminar');
-                $seminar_proposal->catatan_pembimbing1_seminar_proposal = $request->input('catatan_persetujuan_seminar');
-                $seminar_proposal->update();
+            if ($sidang_skripsi->persetujuan_pembimbing1_sidang_skripsi != 'Disetujui') {
+                $sidang_skripsi->persetujuan_pembimbing1_sidang_skripsi = $request->input('status_persetujuan_sidang');
+                $sidang_skripsi->catatan_pembimbing1_sidang_skripsi = $request->input('catatan_persetujuan_sidang');
+                $sidang_skripsi->update();
 
                 $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
 
                 $data = [
-                    'id' => $seminar_proposal->id,
+                    'id' => $sidang_skripsi->id,
                     'mahasiswa' => [
                         'id' => $mahasiswa->id,
                         'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
@@ -180,28 +180,28 @@ class PersetujuanSeminarProposalController extends Controller
                         'id' => $judul_skripsi->id,
                         'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                     ],
-                    'status_persetujuan_seminar' => $seminar_proposal->persetujuan_pembimbing1_seminar_proposal,
-                    'catatan_persetujuan_seminar' => $seminar_proposal->catatan_pembimbing1_seminar_proposal,
-                    'updated_at' => $seminar_proposal->updated_at
+                    'status_persetujuan_sidang' => $sidang_skripsi->persetujuan_pembimbing1_sidang_skripsi,
+                    'catatan_persetujuan_sidang' => $sidang_skripsi->catatan_pembimbing1_sidang_skripsi,
+                    'updated_at' => $sidang_skripsi->updated_at
                 ];
                 return response()->json([
                     'message' => 'verification is successful',
-                    'persetujuan_seminar' => $data,
+                    'persetujuan_sidang' => $data,
                 ], 200);
             }
             return response()->json([
                 'message' => 'the data has been verified, you can not change the verification status'
             ], 400);
         }
-        if ($seminar_proposal->persetujuan_pembimbing2_seminar_proposal != 'Disetujui') {
-            $seminar_proposal->persetujuan_pembimbing2_seminar_proposal = $request->input('status_persetujuan_seminar');
-            $seminar_proposal->catatan_pembimbing2_seminar_proposal = $request->input('catatan_persetujuan_seminar');
-            $seminar_proposal->update();
+        if ($sidang_skripsi->persetujuan_pembimbing2_sidang_skripsi != 'Disetujui') {
+            $sidang_skripsi->persetujuan_pembimbing2_sidang_skripsi = $request->input('status_persetujuan_sidang');
+            $sidang_skripsi->catatan_pembimbing2_sidang_skripsi = $request->input('catatan_persetujuan_sidang');
+            $sidang_skripsi->update();
 
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
 
             $data = [
-                'id' => $seminar_proposal->id,
+                'id' => $sidang_skripsi->id,
                 'mahasiswa' => [
                     'id' => $mahasiswa->id,
                     'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
@@ -211,13 +211,13 @@ class PersetujuanSeminarProposalController extends Controller
                     'id' => $judul_skripsi->id,
                     'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                 ],
-                'status_persetujuan_seminar' => $seminar_proposal->persetujuan_pembimbing2_seminar_proposal,
-                'catatan_persetujuan_seminar' => $seminar_proposal->catatan_pembimbing2_seminar_proposal,
-                'updated_at' => $seminar_proposal->updated_at
+                'status_persetujuan_sidang' => $sidang_skripsi->persetujuan_pembimbing2_sidang_skripsi,
+                'catatan_persetujuan_sidang' => $sidang_skripsi->catatan_pembimbing2_sidang_skripsi,
+                'updated_at' => $sidang_skripsi->updated_at
             ];
             return response()->json([
                 'message' => 'verification is successful',
-                'persetujuan_seminar' => $data,
+                'persetujuan_sidang' => $data,
             ], 200);
         }
         return response()->json([

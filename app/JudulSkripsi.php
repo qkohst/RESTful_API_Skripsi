@@ -31,4 +31,9 @@ class JudulSkripsi extends Model
     {
         return $this->belongsTo('App\SeminarProposal');
     }
+
+    public function sidang_skripsi()
+    {
+        return $this->belongsTo('App\SidangSkripsi');
+    }
 }

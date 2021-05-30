@@ -268,7 +268,7 @@ class SeminarProposalController extends Controller
         }
         $seminar_proposal->waktu_seminar_proposal = $request->waktu_seminar_proposal;
         $seminar_proposal->tempat_seminar_proposal = $request->tempat_seminar_proposal;
-        $seminar_proposal->status_seminar_proposal = 'Belum Mulai';
+        $seminar_proposal->status_seminar_proposal = 'Proses';
         $seminar_proposal->update();
 
         $cek_status_penguji1->dosen_id_dosen = $request->id_dosen_penguji1_seminar_proposal;
