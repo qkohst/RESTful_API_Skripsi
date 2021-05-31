@@ -197,6 +197,12 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('sidangskripsi/waktu', [
                     'uses' => 'PengajuanSidangSkripsiController@cek_waktu'
                 ]);
+                Route::get('hasilsidangskripsi/daftarnilai', [
+                    'uses' => 'MahasiswaHasilSidangSkripsiController@daftar_nilai'
+                ]);
+                Route::resource('hasilsidangskripsi', 'MahasiswaHasilSidangSkripsiController', [
+                    'only' => ['index', 'show']
+                ]);
             });
         });
 
@@ -253,7 +259,6 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('sidangskripsi/{id}/nilai', [
                     'uses' => 'DosenVerifikasiSidangSkripsiController@lihat_nilai'
                 ]);
-
             });
         });
     });
