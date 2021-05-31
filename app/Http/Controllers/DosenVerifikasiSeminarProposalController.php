@@ -28,7 +28,9 @@ class DosenVerifikasiSeminarProposalController extends Controller
         $id_judul_skripsi = JudulSkripsi::whereIn('id', $id_dosen_pembimbing)->orWhereIn('id', $id_dosen_penguji)->get('id');
 
         $seminar_proposal = SeminarProposal::whereIn('judul_skripsi_id_judul_skripsi', $id_judul_skripsi)
-            ->orderBy('waktu_seminar_proposal', 'desc')
+            ->where('status_seminar_proposal', '!=', 'Pengajuan')
+            ->orderBy('status_seminar_proposal', 'asc')
+            ->orderBy('waktu_seminar_proposal', 'asc')
             ->get('id');
         foreach ($seminar_proposal as $seminar) {
             $data_seminar_proposal = SeminarProposal::findorfail($seminar->id);

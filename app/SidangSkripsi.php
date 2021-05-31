@@ -23,4 +23,9 @@ class SidangSkripsi extends Model
     {
         return $this->hasOne('App\JudulSkripsi');
     }
+
+    public function hasil_sidang_skripsi()
+    {
+        return $this->hasMany('App\HasilSidangSkripsi');
+    }
 }

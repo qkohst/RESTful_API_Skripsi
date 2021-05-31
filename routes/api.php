@@ -243,6 +243,17 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('persetujuansidang', 'PersetujuanSidangSkripsiController', [
                     'only' => ['index', 'show', 'update']
                 ]);
+
+                Route::resource('sidangskripsi', 'DosenVerifikasiSidangSkripsiController', [
+                    'only' => ['index', 'show', 'update']
+                ]);
+                Route::patch('sidangskripsi/{id}/nilai', [
+                    'uses' => 'DosenVerifikasiSidangSkripsiController@input_nilai'
+                ]);
+                Route::get('sidangskripsi/{id}/nilai', [
+                    'uses' => 'DosenVerifikasiSidangSkripsiController@lihat_nilai'
+                ]);
+
             });
         });
     });
