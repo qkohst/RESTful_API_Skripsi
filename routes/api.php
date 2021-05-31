@@ -68,6 +68,10 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('seminarproposal', 'AdminSeminarProposalController', [
                     'only' => ['index', 'show']
                 ]);
+
+                Route::resource('sidangskripsi', 'AdminSidangSkripsiController', [
+                    'only' => ['index', 'show']
+                ]);
             });
         });
 
