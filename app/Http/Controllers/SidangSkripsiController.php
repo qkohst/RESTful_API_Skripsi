@@ -6,10 +6,12 @@ use App\AdminProdi;
 use App\Dosen;
 use App\DosenPembimbing;
 use App\DosenPenguji;
+use App\HasilSeminarProposal;
 use App\HasilSidangSkripsi;
 use App\JudulSkripsi;
 use App\Mahasiswa;
 use App\ProgramStudi;
+use App\SeminarProposal;
 use App\SidangSkripsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -405,6 +407,134 @@ class SidangSkripsiController extends Controller
         return response()->json([
             'message' => 'List of Data',
             'rekap_nilai_hasil_sidang_skripsi' => $data,
+        ], 200);
+    }
+
+    public function rekap_nilai($id)
+    {
+        $sidang_skripsi = SidangSkripsi::findorfail($id);
+        $nilai_sidang_pembimbing1 = HasilSidangSkripsi::where([
+            ['sidang_skripsi_id_sidang', $sidang_skripsi->id],
+            ['jenis_dosen_hasil_sidang_skripsi', 'Pembimbing 1']
+        ])->first();
+
+        $nilai_sidang_pembimbing2 = HasilSidangSkripsi::where([
+            ['sidang_skripsi_id_sidang', $sidang_skripsi->id],
+            ['jenis_dosen_hasil_sidang_skripsi', 'Pembimbing 2']
+        ])->first();
+
+        $nilai_sidang_penguji1 = HasilSidangSkripsi::where([
+            ['sidang_skripsi_id_sidang', $sidang_skripsi->id],
+            ['jenis_dosen_hasil_sidang_skripsi', 'Penguji 1']
+        ])->first();
+
+        $nilai_sidang_penguji2 = HasilSidangSkripsi::where([
+            ['sidang_skripsi_id_sidang', $sidang_skripsi->id],
+            ['jenis_dosen_hasil_sidang_skripsi', 'Penguji 2']
+        ])->first();
+
+        if (is_null($nilai_sidang_pembimbing1) || is_null($nilai_sidang_pembimbing2) || is_null($nilai_sidang_penguji1) || is_null($nilai_sidang_penguji2)) {
+            $response = [
+                'message' => 'the verification process by the dosen pembimbing and penguji has not been completed',
+            ];
+            return response()->json($response, 404);
+        } elseif ($nilai_sidang_pembimbing1->status_verifikasi_hasil_sidang_skripsi == 'Revisi' || $nilai_sidang_pembimbing2->status_verifikasi_hasil_sidang_skripsi == 'Revisi' || $nilai_sidang_penguji1->status_verifikasi_hasil_sidang_skripsi == 'Revisi' || $nilai_sidang_penguji2->status_verifikasi_hasil_sidang_skripsi == 'Revisi') {
+            $response = [
+                'message' => 'Incomplete data, please wait for the input process to complete',
+            ];
+            return response()->json($response, 404);
+        }
+
+        //hitung nilai akhir sidang skripsi
+        $rata2_nilaia_sidang_pembimbing1 = ($nilai_sidang_pembimbing1->nilai_a1_hasil_sidang_skripsi + $nilai_sidang_pembimbing1->nilai_a2_hasil_sidang_skripsi + $nilai_sidang_pembimbing1->nilai_a3_hasil_sidang_skripsi) / 3;
+        $rata2_nilaia_sidang_pembimbing2 = ($nilai_sidang_pembimbing2->nilai_a1_hasil_sidang_skripsi + $nilai_sidang_pembimbing2->nilai_a2_hasil_sidang_skripsi + $nilai_sidang_pembimbing2->nilai_a3_hasil_sidang_skripsi) / 3;
+
+        $rata2_nilaib_sidang_pembimbing1 = ((15 * $nilai_sidang_pembimbing1->nilai_b1_hasil_sidang_skripsi) + (15 * $nilai_sidang_pembimbing1->nilai_b2_hasil_sidang_skripsi) + (15 * $nilai_sidang_pembimbing1->nilai_b3_hasil_sidang_skripsi) + (15 * $nilai_sidang_pembimbing1->nilai_b4_hasil_sidang_skripsi) + (20 * $nilai_sidang_pembimbing1->nilai_b5_hasil_sidang_skripsi) + (10 * $nilai_sidang_pembimbing1->nilai_b6_hasil_sidang_skripsi) + (10 * $nilai_sidang_pembimbing1->nilai_b7_hasil_sidang_skripsi)) / 100;
+        $rata2_nilaib_sidang_pembimbing2 = ((15 * $nilai_sidang_pembimbing2->nilai_b1_hasil_sidang_skripsi) + (15 * $nilai_sidang_pembimbing2->nilai_b2_hasil_sidang_skripsi) + (15 * $nilai_sidang_pembimbing2->nilai_b3_hasil_sidang_skripsi) + (15 * $nilai_sidang_pembimbing2->nilai_b4_hasil_sidang_skripsi) + (20 * $nilai_sidang_pembimbing2->nilai_b5_hasil_sidang_skripsi) + (10 * $nilai_sidang_pembimbing2->nilai_b6_hasil_sidang_skripsi) + (10 * $nilai_sidang_pembimbing2->nilai_b7_hasil_sidang_skripsi)) / 100;
+
+        $rata2_nilaic_sidang_pembimbing1 = ((20 * $nilai_sidang_pembimbing1->nilai_c1_hasil_sidang_skripsi) + (50 * $nilai_sidang_pembimbing1->nilai_c2_hasil_sidang_skripsi) + (30 * $nilai_sidang_pembimbing1->nilai_c3_hasil_sidang_skripsi)) / 100;
+        $rata2_nilaic_sidang_pembimbing2 = ((20 * $nilai_sidang_pembimbing2->nilai_c1_hasil_sidang_skripsi) + (50 * $nilai_sidang_pembimbing2->nilai_c2_hasil_sidang_skripsi) + (30 * $nilai_sidang_pembimbing2->nilai_c3_hasil_sidang_skripsi)) / 100;
+
+        $rata2_nilaib_sidang_penguji1 = ((15 * $nilai_sidang_penguji1->nilai_b1_hasil_sidang_skripsi) + (15 * $nilai_sidang_penguji1->nilai_b2_hasil_sidang_skripsi) + (15 * $nilai_sidang_penguji1->nilai_b3_hasil_sidang_skripsi) + (15 * $nilai_sidang_penguji1->nilai_b4_hasil_sidang_skripsi) + (20 * $nilai_sidang_penguji1->nilai_b5_hasil_sidang_skripsi) + (10 * $nilai_sidang_penguji1->nilai_b6_hasil_sidang_skripsi) + (10 * $nilai_sidang_penguji1->nilai_b7_hasil_sidang_skripsi)) / 100;
+        $rata2_nilaib_sidang_penguji2 = ((15 * $nilai_sidang_penguji2->nilai_b1_hasil_sidang_skripsi) + (15 * $nilai_sidang_penguji2->nilai_b2_hasil_sidang_skripsi) + (15 * $nilai_sidang_penguji2->nilai_b3_hasil_sidang_skripsi) + (15 * $nilai_sidang_penguji2->nilai_b4_hasil_sidang_skripsi) + (20 * $nilai_sidang_penguji2->nilai_b5_hasil_sidang_skripsi) + (10 * $nilai_sidang_penguji2->nilai_b6_hasil_sidang_skripsi) + (10 * $nilai_sidang_penguji2->nilai_b7_hasil_sidang_skripsi)) / 100;
+
+        $rata2_nilaic_sidang_penguji1 = ((20 * $nilai_sidang_penguji1->nilai_c1_hasil_sidang_skripsi) + (50 * $nilai_sidang_penguji1->nilai_c2_hasil_sidang_skripsi) + (30 * $nilai_sidang_penguji1->nilai_c3_hasil_sidang_skripsi)) / 100;
+        $rata2_nilaic_sidang_penguji2 = ((20 * $nilai_sidang_penguji2->nilai_c1_hasil_sidang_skripsi) + (50 * $nilai_sidang_penguji2->nilai_c2_hasil_sidang_skripsi) + (30 * $nilai_sidang_penguji2->nilai_c3_hasil_sidang_skripsi)) / 100;
+
+        $rata2_nilaia_sidang = ($rata2_nilaia_sidang_pembimbing1 + $rata2_nilaia_sidang_pembimbing2) / 2;
+        $rata2_nilaib_sidang = ($rata2_nilaib_sidang_pembimbing1 + $rata2_nilaib_sidang_pembimbing2 + $rata2_nilaib_sidang_penguji1 + $rata2_nilaib_sidang_penguji2) / 4;
+        $rata2_nilaic_sidang = ($rata2_nilaic_sidang_pembimbing1 + $rata2_nilaic_sidang_pembimbing2 + $rata2_nilaic_sidang_penguji1 + $rata2_nilaic_sidang_penguji2) / 4;
+
+        $nilai_akhir_sidang = ((20 * $rata2_nilaia_sidang) + (30 * $rata2_nilaib_sidang) + (50 * $rata2_nilaic_sidang)) / 100;
+        //akhir hitung nilai sidang skripsi
+
+        $judul_skripsi = JudulSkripsi::findorfail($sidang_skripsi->judul_skripsi_id_judul_skripsi);
+        $seminar_proposal = SeminarProposal::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
+        $nilai_seminar_pembimbing1 = HasilSeminarProposal::where([
+            ['seminar_proposal_id_seminar', $seminar_proposal->id],
+            ['jenis_dosen_hasil_seminar_proposal', 'Pembimbing 1']
+        ])->first();
+
+        $nilai_seminar_pembimbing2 = HasilSeminarProposal::where([
+            ['seminar_proposal_id_seminar', $seminar_proposal->id],
+            ['jenis_dosen_hasil_seminar_proposal', 'Pembimbing 2']
+        ])->first();
+
+        $nilai_seminar_penguji1 = HasilSeminarProposal::where([
+            ['seminar_proposal_id_seminar', $seminar_proposal->id],
+            ['jenis_dosen_hasil_seminar_proposal', 'Penguji 1']
+        ])->first();
+
+        $nilai_seminar_penguji2 = HasilSeminarProposal::where([
+            ['seminar_proposal_id_seminar', $seminar_proposal->id],
+            ['jenis_dosen_hasil_seminar_proposal', 'Penguji 2']
+        ])->first();
+
+        //hitung nilai akhir seminar proposal
+        $rata2_nilaia_seminar_pembimbing1 = ($nilai_seminar_pembimbing1->nilai_a1_hasil_seminar_proposal + $nilai_seminar_pembimbing1->nilai_a2_hasil_seminar_proposal + $nilai_seminar_pembimbing1->nilai_a3_hasil_seminar_proposal) / 3;
+        $rata2_nilaia_seminar_pembimbing2 = ($nilai_seminar_pembimbing2->nilai_a1_hasil_seminar_proposal + $nilai_seminar_pembimbing2->nilai_a2_hasil_seminar_proposal + $nilai_seminar_pembimbing2->nilai_a3_hasil_seminar_proposal) / 3;
+
+        $rata2_nilaib_seminar_pembimbing1 = ((15 * $nilai_seminar_pembimbing1->nilai_b1_hasil_seminar_proposal) + (15 * $nilai_seminar_pembimbing1->nilai_b2_hasil_seminar_proposal) + (15 * $nilai_seminar_pembimbing1->nilai_b3_hasil_seminar_proposal) + (15 * $nilai_seminar_pembimbing1->nilai_b4_hasil_seminar_proposal) + (20 * $nilai_seminar_pembimbing1->nilai_b5_hasil_seminar_proposal) + (10 * $nilai_seminar_pembimbing1->nilai_b6_hasil_seminar_proposal) + (10 * $nilai_seminar_pembimbing1->nilai_b7_hasil_seminar_proposal)) / 100;
+        $rata2_nilaib_seminar_pembimbing2 = ((15 * $nilai_seminar_pembimbing2->nilai_b1_hasil_seminar_proposal) + (15 * $nilai_seminar_pembimbing2->nilai_b2_hasil_seminar_proposal) + (15 * $nilai_seminar_pembimbing2->nilai_b3_hasil_seminar_proposal) + (15 * $nilai_seminar_pembimbing2->nilai_b4_hasil_seminar_proposal) + (20 * $nilai_seminar_pembimbing2->nilai_b5_hasil_seminar_proposal) + (10 * $nilai_seminar_pembimbing2->nilai_b6_hasil_seminar_proposal) + (10 * $nilai_seminar_pembimbing2->nilai_b7_hasil_seminar_proposal)) / 100;
+
+        $rata2_nilaic_seminar_pembimbing1 = ((20 * $nilai_seminar_pembimbing1->nilai_c1_hasil_seminar_proposal) + (50 * $nilai_seminar_pembimbing1->nilai_c2_hasil_seminar_proposal) + (30 * $nilai_seminar_pembimbing1->nilai_c3_hasil_seminar_proposal)) / 100;
+        $rata2_nilaic_seminar_pembimbing2 = ((20 * $nilai_seminar_pembimbing2->nilai_c1_hasil_seminar_proposal) + (50 * $nilai_seminar_pembimbing2->nilai_c2_hasil_seminar_proposal) + (30 * $nilai_seminar_pembimbing2->nilai_c3_hasil_seminar_proposal)) / 100;
+
+        $rata2_nilaib_seminar_penguji1 = ((15 * $nilai_seminar_penguji1->nilai_b1_hasil_seminar_proposal) + (15 * $nilai_seminar_penguji1->nilai_b2_hasil_seminar_proposal) + (15 * $nilai_seminar_penguji1->nilai_b3_hasil_seminar_proposal) + (15 * $nilai_seminar_penguji1->nilai_b4_hasil_seminar_proposal) + (20 * $nilai_seminar_penguji1->nilai_b5_hasil_seminar_proposal) + (10 * $nilai_seminar_penguji1->nilai_b6_hasil_seminar_proposal) + (10 * $nilai_seminar_penguji1->nilai_b7_hasil_seminar_proposal)) / 100;
+        $rata2_nilaib_seminar_penguji2 = ((15 * $nilai_seminar_penguji2->nilai_b1_hasil_seminar_proposal) + (15 * $nilai_seminar_penguji2->nilai_b2_hasil_seminar_proposal) + (15 * $nilai_seminar_penguji2->nilai_b3_hasil_seminar_proposal) + (15 * $nilai_seminar_penguji2->nilai_b4_hasil_seminar_proposal) + (20 * $nilai_seminar_penguji2->nilai_b5_hasil_seminar_proposal) + (10 * $nilai_seminar_penguji2->nilai_b6_hasil_seminar_proposal) + (10 * $nilai_seminar_penguji2->nilai_b7_hasil_seminar_proposal)) / 100;
+
+        $rata2_nilaic_seminar_penguji1 = ((20 * $nilai_seminar_penguji1->nilai_c1_hasil_seminar_proposal) + (50 * $nilai_seminar_penguji1->nilai_c2_hasil_seminar_proposal) + (30 * $nilai_seminar_penguji1->nilai_c3_hasil_seminar_proposal)) / 100;
+        $rata2_nilaic_seminar_penguji2 = ((20 * $nilai_seminar_penguji2->nilai_c1_hasil_seminar_proposal) + (50 * $nilai_seminar_penguji2->nilai_c2_hasil_seminar_proposal) + (30 * $nilai_seminar_penguji2->nilai_c3_hasil_seminar_proposal)) / 100;
+
+        $rata2_nilaia_seminar = ($rata2_nilaia_seminar_pembimbing1 + $rata2_nilaia_seminar_pembimbing2) / 2;
+        $rata2_nilaib_seminar = ($rata2_nilaib_seminar_pembimbing1 + $rata2_nilaib_seminar_pembimbing2 + $rata2_nilaib_seminar_penguji1 + $rata2_nilaib_seminar_penguji2) / 4;
+        $rata2_nilaic_seminar = ($rata2_nilaic_seminar_pembimbing1 + $rata2_nilaic_seminar_pembimbing2 + $rata2_nilaic_seminar_penguji1 + $rata2_nilaic_seminar_penguji2) / 4;
+
+        $nilai_akhir_seminar = ((20 * $rata2_nilaia_seminar) + (30 * $rata2_nilaib_seminar) + (50 * $rata2_nilaic_seminar)) / 100;
+        //akhir hitung nilai seminar proposal
+
+        $nilai_akhir = ($nilai_akhir_sidang + $nilai_akhir_seminar) / 2;
+
+        $data = [
+            'id' => $sidang_skripsi->id,
+            'nilai_seminar_proposal' => [
+                'rata2_nilaia_seminar_proposal' => round($rata2_nilaia_seminar, 0),
+                'rata2_nilaib_seminar_proposal' => round($rata2_nilaib_seminar, 0),
+                'rata2_nilaic_seminar_proposal' => round($rata2_nilaic_seminar, 0),
+                'nilai_akhir_seminar_proposal' => round($nilai_akhir_seminar, 0),
+            ],
+            'nilai_sidang_skripsi' => [
+                'rata2_nilaia_sidang_skripsi' => round($rata2_nilaia_sidang, 0),
+                'rata2_nilaib_sidang_skripsi' => round($rata2_nilaib_sidang, 0),
+                'rata2_nilaic_sidang_skripsi' => round($rata2_nilaic_sidang, 0),
+                'nilai_akhir_sidang_skripsi' => round($nilai_akhir_sidang, 0),
+            ],
+            'nilai_akhir' => round($nilai_akhir, 0),
+        ];
+
+        return response()->json([
+            'message' => 'List of Data',
+            'rekap_nilai_akhir' => $data,
         ], 200);
     }
 }

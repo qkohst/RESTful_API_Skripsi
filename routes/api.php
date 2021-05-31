@@ -134,6 +134,9 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('sidangskripsi/{id}/daftarnilai', [
                     'uses' => 'SidangSkripsiController@daftar_nilai'
                 ]);
+                Route::get('sidangskripsi/{id}/rekapnilai', [
+                    'uses' => 'SidangSkripsiController@rekap_nilai'
+                ]);
             });
         });
 
@@ -212,6 +215,9 @@ Route::group(['prefix' => 'v1'], function () {
                 ]);
                 Route::get('hasilsidangskripsi/daftarnilai', [
                     'uses' => 'MahasiswaHasilSidangSkripsiController@daftar_nilai'
+                ]);
+                Route::get('hasilsidangskripsi/rekapnilai', [
+                    'uses' => 'MahasiswaHasilSidangSkripsiController@rekap_nilai'
                 ]);
                 Route::resource('hasilsidangskripsi', 'MahasiswaHasilSidangSkripsiController', [
                     'only' => ['index', 'show']
