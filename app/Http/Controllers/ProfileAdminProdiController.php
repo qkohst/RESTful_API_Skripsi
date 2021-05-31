@@ -40,7 +40,7 @@ class ProfileAdminProdiController extends Controller
             'no_surat_tugas_admin_prodi' => $admin_prodi->no_surat_tugas_admin_prodi,
             'email_admin_prodi' => $admin_prodi->email_admin_prodi,
             'no_hp_admin_prodi' => $admin_prodi->no_hp_admin_prodi,
-            'updated_at' => $admin_prodi->updated_at->diffForHumans(),
+            'tanggal_pembaruan_admin_prodi' => $admin_prodi->updated_at
         ];
         return response()->json([
             'message' => 'Profile Admin Prodi',

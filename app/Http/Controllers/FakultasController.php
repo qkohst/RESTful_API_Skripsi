@@ -87,8 +87,6 @@ class FakultasController extends Controller
                 'nama_fakultas' => $fakultas->nama_fakultas,
                 'singkatan_fakultas' => $fakultas->singkatan_fakultas,
                 'status_fakultas' => $fakultas->status_fakultas,
-                'created_at' => $fakultas->created_at->diffForHumans(),
-                'updated_at' => $fakultas->updated_at->diffForHumans(),
             ];
             $response = [
                 'message' => 'Data details',

@@ -72,7 +72,7 @@ class SeminarProposalController extends Controller
                     $seminar->penguji_dan_waktu_seminar_proposal = 'Menunggu Persetujuan Penguji';
                 }
             }
-            $seminar->created_at = $data_seminar_proposal->created_at;
+            $seminar->tanggal_pengajuan_seminar_proposal = $data_seminar_proposal->created_at;
         }
 
         return response()->json([

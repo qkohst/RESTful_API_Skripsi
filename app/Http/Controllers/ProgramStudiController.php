@@ -15,22 +15,21 @@ class ProgramStudiController extends Controller
      */
     public function index()
     {
-        $program_studi = ProgramStudi::get([
-            'id',
-            'fakultas_id_fakultas',
-            'kode_program_studi',
-            'nama_program_studi',
-            'singkatan_program_studi',
-            'status_program_studi',
-        ]);
+        $program_studi = ProgramStudi::orderBy('kode_program_studi', 'asc')
+            ->get('id');
 
-        foreach ($program_studi as $data_program_studi) {
-
+        foreach ($program_studi as $prodi) {
+            $data_program_studi = ProgramStudi::findorfail($prodi->id);
             $data_fakultas = Fakultas::findorfail($data_program_studi->fakultas_id_fakultas);
-            $data_program_studi->fakultas = [
+            $prodi->fakultas = [
                 'id' => $data_fakultas->id,
+                'kode_fakultas' => $data_fakultas->kode_fakultas,
                 'nama_fakultas' => $data_fakultas->nama_fakultas
             ];
+            $prodi->kode_program_studi = $data_program_studi->kode_program_studi;
+            $prodi->nama_program_studi = $data_program_studi->nama_program_studi;
+            $prodi->singkatan_program_studi = $data_program_studi->singkatan_program_studi;
+            $prodi->status_program_studi = $data_program_studi->status_program_studi;
         }
 
         $response = [
@@ -116,8 +115,6 @@ class ProgramStudiController extends Controller
                 'nama_program_studi' => $program_studi->nama_program_studi,
                 'singkatan_program_studi' => $program_studi->singkatan_program_studi,
                 'status_program_studi' => $program_studi->status_program_studi,
-                'created_at' => $program_studi->created_at->diffForHumans(),
-                'updated_at' => $program_studi->updated_at->diffForHumans(),
             ];
 
             $response = [

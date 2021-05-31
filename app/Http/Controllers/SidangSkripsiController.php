@@ -59,7 +59,7 @@ class SidangSkripsiController extends Controller
             } else {
                 $sidang->waktu_sidang_skripsi = $data_sidang_skripsi->waktu_sidang_skripsi;
             }
-            $sidang->created_at = $data_sidang_skripsi->created_at;
+            $sidang->tanggal_pengajuan_sidang_skripsi = $data_sidang_skripsi->created_at;
         }
 
         return response()->json([

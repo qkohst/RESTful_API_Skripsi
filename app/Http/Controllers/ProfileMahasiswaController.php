@@ -48,7 +48,7 @@ class ProfileMahasiswaController extends Controller
                 'nama_file' => $mahasiswa->foto_mahasiswa,
                 'url' => 'fileFotoProfile/' . $mahasiswa->foto_mahasiswa
             ],
-            'updated_at' => $mahasiswa->updated_at->diffForHumans(),
+            'tanggal_pembaruan_mahasiswa' => $mahasiswa->updated_at
         ];
 
         return response()->json([
@@ -125,7 +125,7 @@ class ProfileMahasiswaController extends Controller
             ],
             'updated_at' => $mahasiswa->updated_at->diffForHumans(),
         ];
-        
+
         return response()->json([
             'message' => 'Profile updated successfully',
             'mahasiswa' => $data

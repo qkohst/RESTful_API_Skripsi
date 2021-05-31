@@ -25,21 +25,19 @@ class PersetujuanKRSController extends Controller
         $persetujuan_krs = FileKrs::whereIn('mahasiswa_id_mahasiswa', $mahasiswa)
             ->orderBy('status_persetujuan_admin_prodi_file_krs', 'asc')
             ->orderBy('updated_at', 'asc')
-            ->get([
-                'id',
-                'mahasiswa_id_mahasiswa',
-                'status_persetujuan_admin_prodi_file_krs',
-                'catatan_file_krs',
-                'created_at',
-            ]);
+            ->get('id');
 
         foreach ($persetujuan_krs as $krs) {
-            $mahasiswa = Mahasiswa::findorfail($krs->mahasiswa_id_mahasiswa);
+            $data_file_krs = FileKrs::findorfail($krs->id);
+            $mahasiswa = Mahasiswa::findorfail($data_file_krs->mahasiswa_id_mahasiswa);
             $krs->mahasiswa = [
                 'id' => $mahasiswa->id,
                 'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
                 'nama_mahasiswa' => $mahasiswa->nama_mahasiswa
             ];
+            $krs->tanggal_pengajuan_file_krs = $data_file_krs->created_at;
+            $krs->status_persetujuan_admin_prodi_file_krs = $data_file_krs->status_persetujuan_admin_prodi_file_krs;
+            $krs->catatan_file_krs = $data_file_krs->catatan_file_krs;
         }
 
         return response()->json([

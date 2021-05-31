@@ -22,28 +22,25 @@ class PersetujuanJudulController extends Controller
         $dosen_pembimbing = DosenPembimbing::where('dosen_id_dosen', $dosen->id)
             ->orderBy('persetujuan_dosen_pembimbing', 'asc')
             ->orderBy('updated_at', 'desc')
-            ->get([
-                'id',
-                'judul_skripsi_id_judul_skripsi',
-                'jabatan_dosen_pembimbing',
-                'persetujuan_dosen_pembimbing',
-                'created_at'
-            ]);
+            ->get('id');
 
         foreach ($dosen_pembimbing as $pembimbing) {
-            $judul_skripsi = JudulSkripsi::findorfail($pembimbing->judul_skripsi_id_judul_skripsi);
+            $data_dosen_pembimbing = DosenPembimbing::findorfail($pembimbing->id);
+            $judul_skripsi = JudulSkripsi::findorfail($data_dosen_pembimbing->judul_skripsi_id_judul_skripsi);
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
-
-            $pembimbing->judul_skripsi = [
-                'id' => $judul_skripsi->id,
-                'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
-            ];
 
             $pembimbing->mahasiswa = [
                 'id' => $mahasiswa->id,
                 'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
                 'nama_mahasiswa' => $mahasiswa->nama_mahasiswa
             ];
+            $pembimbing->judul_skripsi = [
+                'id' => $judul_skripsi->id,
+                'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
+            ];
+            $pembimbing->jabatan_dosen_pembimbing = 'Pembimbing ' . $data_dosen_pembimbing->jabatan_dosen_pembimbing;
+            $pembimbing->persetujuan_dosen_pembimbing = $data_dosen_pembimbing->persetujuan_dosen_pembimbing;
+            $pembimbing->tanggal_pengajuan_dosen_pembimbing = $data_dosen_pembimbing->created_at;
         }
 
         return response()->json([
@@ -85,10 +82,9 @@ class PersetujuanJudulController extends Controller
                     'id' => $judul_skripsi->id,
                     'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi,
                 ],
-                'jabatan_dosen_pembimbing' => $dosen_pembimbing->jabatan_dosen_pembimbing,
+                'jabatan_dosen_pembimbing' => 'Pembimbing ' . $dosen_pembimbing->jabatan_dosen_pembimbing,
                 'persetujuan_dosen_pembimbing' => $dosen_pembimbing->persetujuan_dosen_pembimbing,
                 'catatan_dosen_pembimbing' => $dosen_pembimbing->catatan_dosen_pembimbing,
-                'created_at' => $dosen_pembimbing->created_at
             ];
 
             $response = [

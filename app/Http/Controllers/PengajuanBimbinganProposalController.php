@@ -25,23 +25,21 @@ class PengajuanBimbinganProposalController extends Controller
 
         $bimbingan_proposal = BimbinganProposal::whereIn('dosen_pembimbing_id_dosen_pembimbing', $id_dosen_pembimbing)
             ->orderBy('id', 'desc')
-            ->get([
-                'id',
-                'dosen_pembimbing_id_dosen_pembimbing',
-                'topik_bimbingan_proposal',
-                'status_persetujuan_bimbingan_proposal',
-                'created_at'
-            ]);
+            ->get('id');
         foreach ($bimbingan_proposal as $bimbingan) {
-            $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan->dosen_pembimbing_id_dosen_pembimbing);
+            $data_bimbingan_proposal = BimbinganProposal::findorfail($bimbingan->id);
+            $dosen_pembimbing = DosenPembimbing::findorfail($data_bimbingan_proposal->dosen_pembimbing_id_dosen_pembimbing);
             $dosen = Dosen::findorfail($dosen_pembimbing->dosen_id_dosen);
 
             $bimbingan->dosen_pembimbing = [
                 'id' => $dosen_pembimbing->id,
                 'nama_dosen' => $dosen->nama_dosen . ', ' . $dosen->gelar_dosen,
                 'nidn_dosen' => $dosen->nidn_dosen,
-                'jabatan_dosen_pembimbing' => $dosen_pembimbing->jabatan_dosen_pembimbing
+                'jabatan_dosen_pembimbing' => 'Pembimbing ' . $dosen_pembimbing->jabatan_dosen_pembimbing
             ];
+            $bimbingan->topik_bimbingan_proposal = $data_bimbingan_proposal->topik_bimbingan_proposal;
+            $bimbingan->status_persetujuan_bimbingan_proposal = $data_bimbingan_proposal->status_persetujuan_bimbingan_proposal;
+            $bimbingan->tanggal_pengajuan_bimbingan_proposal = $data_bimbingan_proposal->created_at;
         }
 
         return response()->json([
@@ -160,7 +158,7 @@ class PengajuanBimbinganProposalController extends Controller
                 ],
                 'status_bimbingan_proposal' => $bimbingan_proposal->status_persetujuan_bimbingan_proposal,
                 'catatan_bimbingan_proposal' => $bimbingan_proposal->catatan_bimbingan_proposal,
-                'created_at' => $bimbingan_proposal->created_at
+                'tanggal_pengajuan_bimbingan_proposal' => $bimbingan_proposal->created_at
             ];
 
             $response = [

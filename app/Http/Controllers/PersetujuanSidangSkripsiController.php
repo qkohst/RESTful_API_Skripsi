@@ -47,10 +47,10 @@ class PersetujuanSidangSkripsiController extends Controller
             ];
             if ($dosen_pembimbing->jabatan_dosen_pembimbing == '1') {
                 $sidang->status_persetujuan_sidang_skripsi = $data_sidang_skripsi->persetujuan_pembimbing1_sidang_skripsi;
-                $sidang->created_at = $data_sidang_skripsi->created_at;
+                $sidang->tanggal_pengajuan_persetujuan_sidang_skripsi = $data_sidang_skripsi->created_at;
             } else {
                 $sidang->status_persetujuan_sidang = $data_sidang_skripsi->persetujuan_pembimbing2_sidang_skripsi;
-                $sidang->created_at = $data_sidang_skripsi->created_at;
+                $sidang->tanggal_pengajuan_persetujuan_sidang_skripsi = $data_sidang_skripsi->created_at;
             }
         }
         return response()->json([
@@ -97,7 +97,7 @@ class PersetujuanSidangSkripsiController extends Controller
                     ],
                     'status_persetujuan_sidang' => $sidang_skripsi->persetujuan_pembimbing1_sidang_skripsi,
                     'catatan_persetujuan_sidang' => $sidang_skripsi->catatan_pembimbing1_sidang_skripsi,
-                    'created_at' => $sidang_skripsi->created_at
+                    'tanggal_pengajuan_persetujuan_sidang' => $sidang_skripsi->created_at
                 ];
                 $response = [
                     'message' => 'Data details',

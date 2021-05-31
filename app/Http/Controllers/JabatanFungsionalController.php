@@ -79,8 +79,6 @@ class JabatanFungsionalController extends Controller
                 'id' => $jabatan_fungsional->id,
                 'nama_jabatan_fungsional' => $jabatan_fungsional->nama_jabatan_fungsional,
                 'deskripsi_jabatan_fungsional' => $jabatan_fungsional->deskripsi_jabatan_fungsional,
-                'created_at' => $jabatan_fungsional->created_at->diffForHumans(),
-                'updated_at' => $jabatan_fungsional->updated_at->diffForHumans(),
             ];
             $response = [
                 'message' => 'Data details',

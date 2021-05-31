@@ -47,10 +47,10 @@ class PersetujuanSeminarProposalController extends Controller
             ];
             if ($dosen_pembimbing->jabatan_dosen_pembimbing == '1') {
                 $seminar->status_persetujuan_seminar = $data_seminar_proposal->persetujuan_pembimbing1_seminar_proposal;
-                $seminar->created_at = $data_seminar_proposal->created_at;
+                $seminar->tanggal_pengajuan_persetujuan_seminar = $data_seminar_proposal->created_at;
             } else {
                 $seminar->status_persetujuan_seminar = $data_seminar_proposal->persetujuan_pembimbing2_seminar_proposal;
-                $seminar->created_at = $data_seminar_proposal->created_at;
+                $seminar->tanggal_pengajuan_persetujuan_seminar = $data_seminar_proposal->created_at;
             }
         }
 
@@ -97,7 +97,6 @@ class PersetujuanSeminarProposalController extends Controller
                     ],
                     'status_persetujuan_seminar' => $seminar_proposal->persetujuan_pembimbing1_seminar_proposal,
                     'catatan_persetujuan_seminar' => $seminar_proposal->catatan_pembimbing1_seminar_proposal,
-                    'created_at' => $seminar_proposal->created_at
                 ];
                 $response = [
                     'message' => 'Data details',
@@ -123,7 +122,7 @@ class PersetujuanSeminarProposalController extends Controller
                 ],
                 'status_persetujuan_seminar' => $seminar_proposal->persetujuan_pembimbing2_seminar_proposal,
                 'catatan_persetujuan_seminar' => $seminar_proposal->catatan_pembimbing2_seminar_proposal,
-                'created_at' => $seminar_proposal->created_at
+                'tanggal_pengajuan_persetujuan_seminar' => $seminar_proposal->created_at,
             ];
             $response = [
                 'message' => 'Data details',

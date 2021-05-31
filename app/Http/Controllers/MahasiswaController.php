@@ -273,8 +273,6 @@ class MahasiswaController extends Controller
                 'email_mahasiswa' => $mahasiswa->email_mahasiswa,
                 'no_hp_mahasiswa' => $mahasiswa->no_hp_mahasiswa,
                 'status_mahasiswa' => $mahasiswa->status_mahasiswa,
-                'created_at' => $mahasiswa->created_at->diffForHumans(),
-                'updated_at' => $mahasiswa->updated_at->diffForHumans(),
             ];
 
             $response = [

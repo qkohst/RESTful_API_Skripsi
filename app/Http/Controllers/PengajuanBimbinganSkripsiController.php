@@ -46,8 +46,8 @@ class PengajuanBimbinganSkripsiController extends Controller
                 'nidn_dosen' => $data_dosen->nidn_dosen
             ];
             $bimbingan->topik_bimbingan_skripsi = $data_bimbingan_skripsi->topik_bimbingan_skripsi;
-            $bimbingan->tanggal_pengajuan_bimbingan_skripsi = $data_bimbingan_skripsi->created_at;
             $bimbingan->status_persetujuan_bimbingan_skripsi = $data_bimbingan_skripsi->status_persetujuan_bimbingan_skripsi;
+            $bimbingan->tanggal_pengajuan_bimbingan_skripsi = $data_bimbingan_skripsi->created_at;
         }
 
         return response()->json([

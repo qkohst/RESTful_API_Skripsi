@@ -24,15 +24,10 @@ class BimbinganProposalController extends Controller
         $bimbingan_proposal = BimbinganProposal::whereIn('dosen_pembimbing_id_dosen_pembimbing', $id_dosen_pembimbing)
             ->orderBy('status_persetujuan_bimbingan_proposal', 'asc')
             ->orderBy('updated_at', 'desc')
-            ->get([
-                'id',
-                'dosen_pembimbing_id_dosen_pembimbing',
-                'topik_bimbingan_proposal',
-                'status_persetujuan_bimbingan_proposal',
-                'created_at'
-            ]);
+            ->get('id');
         foreach ($bimbingan_proposal as $bimbingan) {
-            $dosen_pembimbing = DosenPembimbing::findorfail($bimbingan->dosen_pembimbing_id_dosen_pembimbing);
+            $data_bimbingan_proposal = BimbinganProposal::findorfail($bimbingan->id);
+            $dosen_pembimbing = DosenPembimbing::findorfail($data_bimbingan_proposal->dosen_pembimbing_id_dosen_pembimbing);
             $judul_skripsi = JudulSkripsi::findorfail($dosen_pembimbing->judul_skripsi_id_judul_skripsi);
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
             $bimbingan->mahasiswa = [
@@ -40,6 +35,9 @@ class BimbinganProposalController extends Controller
                 'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
                 'nama_mahasiswa' => $mahasiswa->nama_mahasiswa
             ];
+            $bimbingan->topik_bimbingan_proposal = $data_bimbingan_proposal->topik_bimbingan_proposal;
+            $bimbingan->status_persetujuan_bimbingan_proposal = $data_bimbingan_proposal->status_persetujuan_bimbingan_proposal;
+            $bimbingan->tanggal_pengajuan_bimbingan_proposal = $data_bimbingan_proposal->created_at;
         }
         return response()->json([
             'message' => 'List of Data',
@@ -88,7 +86,6 @@ class BimbinganProposalController extends Controller
                 ],
                 'status_persetujuan_bimbingan_proposal' => $bimbingan_proposal->status_persetujuan_bimbingan_proposal,
                 'catatan_bimbingan_proposal' => $bimbingan_proposal->catatan_bimbingan_proposal,
-                'created_at' => $bimbingan_proposal->created_at
             ];
 
             $response = [
@@ -124,7 +121,7 @@ class BimbinganProposalController extends Controller
         $dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
         if ($dosen_pembimbing->dosen_id_dosen != $dosen->id) {
             return response()->json([
-                'message' => 'You do not have access to data with id '.$bimbingan_proposal->id
+                'message' => 'You do not have access to data with id ' . $bimbingan_proposal->id
             ], 400);
         }
         if ($bimbingan_proposal->status_persetujuan_bimbingan_proposal != 'Disetujui') {

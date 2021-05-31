@@ -16,20 +16,19 @@ class AdminProdiController extends Controller
      */
     public function index()
     {
-        $admin_prodi = AdminProdi::get([
-            'id',
-            'program_studi_id_program_studi',
-            'nama_admin_prodi',
-            'jenis_kelamin_admin_prodi',
-            'nidn_admin_prodi'
-        ]);
+        $admin_prodi = AdminProdi::orderBy('program_studi_id_program_studi', 'asc')
+            ->get('id');
 
-        foreach ($admin_prodi as $data_admin_prodi) {
+        foreach ($admin_prodi as $admin) {
+            $data_admin_prodi = AdminProdi::findorfail($admin->id);
             $data_program_studi = ProgramStudi::findorfail($data_admin_prodi->program_studi_id_program_studi);
-            $data_admin_prodi->program_studi = [
+            $admin->program_studi = [
                 'id' => $data_program_studi->id,
                 'nama_program_studi' => $data_program_studi->nama_program_studi
             ];
+            $admin->nama_admin_prodi = $data_admin_prodi->nama_admin_prodi;
+            $admin->jenis_kelamin_admin_prodi = $data_admin_prodi->jenis_kelamin_admin_prodi;
+            $admin->nidn_admin_prodi = $data_admin_prodi->nidn_admin_prodi;
         }
 
         $response = [
@@ -247,8 +246,6 @@ class AdminProdiController extends Controller
                 'no_surat_tugas_admin_prodi' => $admin_prodi->no_surat_tugas_admin_prodi,
                 'email_admin_prodi' => $admin_prodi->email_admin_prodi,
                 'no_hp_admin_prodi' => $admin_prodi->no_hp_admin_prodi,
-                'created_at' => $admin_prodi->created_at->diffForHumans(),
-                'updated_at' => $admin_prodi->updated_at->diffForHumans(),
             ];
 
             $response = [

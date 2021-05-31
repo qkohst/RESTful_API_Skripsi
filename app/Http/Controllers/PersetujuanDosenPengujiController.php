@@ -39,9 +39,9 @@ class PersetujuanDosenPengujiController extends Controller
                 'id' => $data_judul_skripsi->id,
                 'nama_judul_skripsi' => $data_judul_skripsi->nama_judul_skripsi
             ];
-            $penguji->jabatan_dosen_penguji = $data_dosen_penguji->jabatan_dosen_penguji;
+            $penguji->jabatan_dosen_penguji = 'Penguji ' . $data_dosen_penguji->jabatan_dosen_penguji;
             $penguji->status_persetujuan_dosen_penguji = $data_dosen_penguji->persetujuan_dosen_penguji;
-            $penguji->created_at = $data_dosen_penguji->created_at;
+            $penguji->tanggal_pengajuan_dosen_penguji = $data_dosen_penguji->created_at;
         }
 
         return response()->json([
@@ -88,7 +88,7 @@ class PersetujuanDosenPengujiController extends Controller
                     'tempat_seminar_proposal' => $seminar_proposal->tempat_seminar_proposal,
                     'waktu_seminar_proposal' => $seminar_proposal->waktu_seminar_proposal
                 ],
-                'jabatan_dosen_penguji' => $dosen_penguji->jabatan_dosen_penguji,
+                'jabatan_dosen_penguji' => 'Penguji ' . $dosen_penguji->jabatan_dosen_penguji,
                 'status_persetujuan_dosen_penguji' => $dosen_penguji->persetujuan_dosen_penguji
             ];
 

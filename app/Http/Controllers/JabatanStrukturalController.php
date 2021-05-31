@@ -80,8 +80,6 @@ class JabatanStrukturalController extends Controller
                 'id' => $jabatan_struktural->id,
                 'nama_jabatan_struktural' => $jabatan_struktural->nama_jabatan_struktural,
                 'deskripsi_jabatan_struktural' => $jabatan_struktural->deskripsi_jabatan_struktural,
-                'created_at' => $jabatan_struktural->created_at->diffForHumans(),
-                'updated_at' => $jabatan_struktural->updated_at->diffForHumans(),
             ];
             $response = [
                 'message' => 'Data details',

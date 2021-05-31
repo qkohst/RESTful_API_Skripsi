@@ -15,18 +15,20 @@ class MahasiswaDosenAktifController extends Controller
         $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
         $program_studi = ProgramStudi::where('id', $mahasiswa->program_studi_id_program_studi)->first();
 
-        $dosen = Dosen::where([
+        $dosen_aktif = Dosen::where([
             ['program_studi_id_program_studi', $program_studi->id],
             ['status_dosen', 'Aktif']
-        ])->orderBy('nama_dosen', 'asc')->get([
-            'id',
-            'nidn_dosen',
-            'nama_dosen'
-        ]);
+        ])->orderBy('nama_dosen', 'asc')->get('id');
+
+        foreach ($dosen_aktif as $dosen) {
+            $data_dosen = Dosen::findorfail($dosen->id);
+            $dosen->nidn_dosen = $data_dosen->nidn_dosen;
+            $dosen->nama_dosen = $data_dosen->nama_dosen . ', ' . $data_dosen->gelar_dosen;
+        }
 
         return response()->json([
             'message' => 'Data dosen at ' . $program_studi->nama_program_studi . ' with an active status',
-            'dosen' => $dosen
+            'dosen_aktif' => $dosen_aktif
         ], 200);
     }
 }

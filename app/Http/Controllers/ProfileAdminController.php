@@ -39,7 +39,7 @@ class ProfileAdminController extends Controller
             ],
             'email_admin' => $admin->email_admin,
             'no_hp_admin' => $admin->no_hp_admin,
-            'updated_at' => $admin->updated_at,
+            'tanggal_pembaruan_admin' => $admin->updated_at
         ];
         return response()->json([
             'message' => 'Profile Admin',

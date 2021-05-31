@@ -22,15 +22,17 @@ class DosenController extends Controller
     {
         $admin_prodi = AdminProdi::where('user_id_user', Auth::user()->id)->first();
         $program_studi = ProgramStudi::where('id', $admin_prodi->program_studi_id_program_studi)->first();
-        $dosen = Dosen::where('program_studi_id_program_studi', $program_studi->id)->orderby('nama_dosen', 'asc')->get([
-            'id',
-            'nama_dosen',
-            'nidn_dosen',
-            'nip_dosen',
-            'jenis_kelamin_dosen',
-            'tanggal_lahir_dosen',
-            'status_dosen',
-        ]);
+        $dosen = Dosen::where('program_studi_id_program_studi', $program_studi->id)
+            ->orderby('nama_dosen', 'asc')->get('id');
+        foreach ($dosen as $data_dosen) {
+            $identitas_dosen = Dosen::findorfail($data_dosen->id);
+            $data_dosen->nama_dosen = $identitas_dosen->nama_dosen . ', ' . $identitas_dosen->gelar_dosen;
+            $data_dosen->nidn_dosen = $identitas_dosen->nidn_dosen;
+            $data_dosen->nip_dosen = $identitas_dosen->nip_dosen;
+            $data_dosen->jenis_kelamin_dosen = $identitas_dosen->jenis_kelamin_dosen;
+            $data_dosen->tanggal_lahir_dosen = $identitas_dosen->tanggal_lahir_dosen;
+            $data_dosen->status_dosen = $identitas_dosen->status_dosen;
+        }
         $response = [
             'message' => 'List Dosen of Program Studi ' . $program_studi->nama_program_studi,
             'dosen' => $dosen,
@@ -354,7 +356,6 @@ class DosenController extends Controller
 
                 ],
                 'status_dosen' => $dosen->status_dosen,
-                'updated_at' => $dosen->updated_at->diffForHumans(),
             ];
 
             $response = [
@@ -549,11 +550,13 @@ class DosenController extends Controller
         $dosen = Dosen::where([
             ['program_studi_id_program_studi', $program_studi->id],
             ['status_dosen', 'Aktif']
-        ])->orderBy('nama_dosen', 'asc')->get([
-            'id',
-            'nidn_dosen',
-            'nama_dosen'
-        ]);
+        ])->orderBy('nama_dosen', 'asc')->get('id');
+
+        foreach ($dosen as $data_dosen) {
+            $identitas_dosen = Dosen::findorfail($data_dosen->id);
+            $data_dosen->nidn_dosen = $identitas_dosen->nidn_dosen;
+            $data_dosen->nama_dosen = $identitas_dosen->nama_dosen . ', ' . $identitas_dosen->gelar_dosen;
+        }
 
         return response()->json([
             'message' => 'Data dosen at ' . $program_studi->nama_program_studi . ' with an active status',

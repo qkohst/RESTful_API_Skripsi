@@ -38,8 +38,8 @@ class BimbinganSkripsiController extends Controller
                 'nama_mahasiswa' => $mahasiswa->nama_mahasiswa
             ];
             $bimbingan->topik_bimbingan_skripsi = $data_bimbingan_skripsi->topik_bimbingan_skripsi;
-            $bimbingan->tanggal_pengajuan_bimbingan_skripsi = $data_bimbingan_skripsi->created_at;
             $bimbingan->status_persetujuan_bimbingan_skripsi = $data_bimbingan_skripsi->status_persetujuan_bimbingan_skripsi;
+            $bimbingan->tanggal_pengajuan_bimbingan_skripsi = $data_bimbingan_skripsi->created_at;
         }
 
         return response()->json([
@@ -89,7 +89,6 @@ class BimbinganSkripsiController extends Controller
                 ],
                 'status_persetujuan_bimbingan_skripsi' => $bimbingan_skripsi->status_persetujuan_bimbingan_skripsi,
                 'catatan_bimbingan_skripsi' => $bimbingan_skripsi->catatan_bimbingan_skripsi,
-                'tanggal_pengajuan_bimbingan_skripsi' => $bimbingan_skripsi->created_at
             ];
 
             $response = [
@@ -135,7 +134,7 @@ class BimbinganSkripsiController extends Controller
 
             $judul_skripsi = JudulSkripsi::findorfail($dosen_pembimbing->judul_skripsi_id_judul_skripsi);
             $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
-            
+
             $data = [
                 'id' => $bimbingan_skripsi->id,
                 'mahasiswa' => [

@@ -76,7 +76,7 @@ class ProfileDosenController extends Controller
 
             ],
             'status_dosen' => $dosen->status_dosen,
-            'updated_at' => $dosen->updated_at->diffForHumans()
+            'tanggal_pembaruan_dosen' => $dosen->updated_at
         ];
 
         return response()->json([

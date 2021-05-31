@@ -102,7 +102,7 @@ class PersyaratanSkripsiController extends Controller
             ],
             'status_persetujuan_admin_prodi_file_krs' => $file_krs->status_persetujuan_admin_prodi_file_krs,
             'catatan_file_krs' => $file_krs->catatan_file_krs,
-            'created_at' => $file_krs->created_at->diffForHumans(),
+            'tanggal_pengajuan_file_krs' => $file_krs->created_at
         ];
         return response()->json($data, 200);
     }
@@ -256,11 +256,11 @@ class PersyaratanSkripsiController extends Controller
                 'id' => $judul_skripsi->id,
                 'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
             ],
-            'nama_dosen_pembimbing' => $dosen->nama_dosen . ', ' . $dosen->gelar_dosen,
-            'nidn_dosen_pembimbing' => $dosen->nidn_dosen,
-            'persetujuan_dosen_pembimbing' => $pembimbing1->persetujuan_dosen_pembimbing,
-            'catatan_dosen_pembimbing' => $pembimbing1->catatan_dosen_pembimbing,
-            'crated_at' => $pembimbing1->created_at
+            'nama_dosen_pembimbing1' => $dosen->nama_dosen . ', ' . $dosen->gelar_dosen,
+            'nidn_dosen_pembimbing1' => $dosen->nidn_dosen,
+            'persetujuan_dosen_pembimbing1' => $pembimbing1->persetujuan_dosen_pembimbing,
+            'catatan_dosen_pembimbing1' => $pembimbing1->catatan_dosen_pembimbing,
+            'tanggal_pengajuan_dosen_pembimbing1' => $pembimbing1->created_at
         ];
 
         return response()->json([
@@ -413,11 +413,11 @@ class PersyaratanSkripsiController extends Controller
                 'id' => $judul_skripsi->id,
                 'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
             ],
-            'nama_dosen_pembimbing' => $dosen->nama_dosen . ', ' . $dosen->gelar_dosen,
-            'nidn_dosen_pembimbing' => $dosen->nidn_dosen,
-            'persetujuan_dosen_pembimbing' => $pembimbing2->persetujuan_dosen_pembimbing,
-            'catatan_dosen_pembimbing' => $pembimbing2->catatan_dosen_pembimbing,
-            'crated_at' => $pembimbing2->created_at
+            'nama_dosen_pembimbing2' => $dosen->nama_dosen . ', ' . $dosen->gelar_dosen,
+            'nidn_dosen_pembimbing2' => $dosen->nidn_dosen,
+            'persetujuan_dosen_pembimbing2' => $pembimbing2->persetujuan_dosen_pembimbing,
+            'catatan_dosen_pembimbing2' => $pembimbing2->catatan_dosen_pembimbing,
+            'tanggal_pengajuan_dosen_pembimbing2' => $pembimbing2->created_at
         ];
 
         return response()->json([
