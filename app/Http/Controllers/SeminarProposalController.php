@@ -455,7 +455,7 @@ class SeminarProposalController extends Controller
             $seminar_proposal->status_seminar_proposal = 'Selesai';
             $seminar_proposal->update();
             $response = [
-                'message' => 'Verification of the proposal seminar with id ' . $seminar_proposal->id . ' was successful',
+                'message' => 'Verification of the seminar proposal with id ' . $seminar_proposal->id . ' was successful',
             ];
             return response()->json($response, 200);
         }

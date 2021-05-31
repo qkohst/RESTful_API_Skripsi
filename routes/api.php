@@ -121,6 +121,15 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('sidangskripsi', 'SidangSkripsiController', [
                     'except' => ['create', 'edit', 'destroy', 'store']
                 ]);
+                Route::get('sidangskripsi/{id}/hasil', [
+                    'uses' => 'SidangSkripsiController@hasil_sidang'
+                ]);
+                Route::patch('sidangskripsi/{id}/verifikasi', [
+                    'uses' => 'SidangSkripsiController@verifikasi_sidang'
+                ]);
+                Route::get('sidangskripsi/{id}/daftarnilai', [
+                    'uses' => 'SidangSkripsiController@daftar_nilai'
+                ]);
             });
         });
 
