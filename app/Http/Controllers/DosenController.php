@@ -54,7 +54,7 @@ class DosenController extends Controller
             'nidn_dosen' => 'required|unique:dosen|numeric|digits:10',
             'nip_dosen' => 'nullable|unique:dosen|numeric|digits:18',
             'tempat_lahir_dosen' => 'required|min:3',
-            'tanggal_lahir_dosen' => 'required|date',
+            'tanggal_lahir_dosen' => 'required|date|before:today',
             'jenis_kelamin_dosen' => 'required|in:L,P',
             'status_perkawinan_dosen' => 'required|in:Belum Kawin,Kawin,Cerai Hidup,Cerai Mati',
             'agama_dosen' => 'required|in:Islam, Protestan, Katolik, Hindu, Budha, Khonghucu, Kepercayaan',
@@ -356,6 +356,7 @@ class DosenController extends Controller
 
                 ],
                 'status_dosen' => $dosen->status_dosen,
+                'tanggal_pembaruan_dosen' => $dosen->updated_at,
             ];
 
             $response = [
@@ -386,7 +387,7 @@ class DosenController extends Controller
         $this->validate($request, [
             'nama_dosen' => 'required|min:3',
             'tempat_lahir_dosen' => 'required|min:3',
-            'tanggal_lahir_dosen' => 'required|date',
+            'tanggal_lahir_dosen' => 'required|date|before:today',
             'nip_dosen' => 'nullable|numeric|digits:18|unique:dosen' . ($id ? ",id,$id" : ''),
             'nik_dosen' => 'required|numeric|digits:16|unique:dosen' . ($id ? ",id,$id" : ''),
             'jabatan_fungsional_id_jabatan_fungsional' => 'nullable|exists:jabatan_fungsional,id',

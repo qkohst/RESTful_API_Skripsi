@@ -64,7 +64,7 @@ class ProfileAdminController extends Controller
             'nip_admin' => 'nullable|numeric|digits:18|unique:admin' . ($id ? ",id,$id" : ''),
             'nik_admin' => 'required|numeric|digits:16|unique:admin' . ($id ? ",id,$id" : ''),
             'tempat_lahir_admin' => 'required|min:3',
-            'tanggal_lahir_admin' => 'required|date',
+            'tanggal_lahir_admin' => 'required|date|before:today',
             'jenis_kelamin_admin' => 'required|in:L,P',
             'email_admin' => 'required|email|unique:admin' . ($id ? ",id,$id" : ''),
             'no_hp_admin' => 'required|numeric|digits_between:11,13|unique:admin' . ($id ? ",id,$id" : ''),

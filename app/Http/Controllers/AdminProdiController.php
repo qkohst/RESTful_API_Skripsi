@@ -53,7 +53,7 @@ class AdminProdiController extends Controller
             'nip_admin_prodi' => 'nullable|unique:admin_prodi|numeric|digits:18',
             'nama_admin_prodi' => 'required|min:3',
             'tempat_lahir_admin_prodi' => 'required|min:3',
-            'tanggal_lahir_admin_prodi' => 'required|date',
+            'tanggal_lahir_admin_prodi' => 'required|date|before:today',
             'jenis_kelamin_admin_prodi' => 'required|in:L,P',
             'foto_admin_prodi' => 'nullable|mimes:jpg,jpeg,png|max:2000',
             'no_surat_tugas_admin_prodi' => 'required|unique:admin_prodi|min:5',
@@ -246,6 +246,7 @@ class AdminProdiController extends Controller
                 'no_surat_tugas_admin_prodi' => $admin_prodi->no_surat_tugas_admin_prodi,
                 'email_admin_prodi' => $admin_prodi->email_admin_prodi,
                 'no_hp_admin_prodi' => $admin_prodi->no_hp_admin_prodi,
+                'tanggal_pembaruan_admin_prodi' => $admin_prodi->updated_at,
             ];
 
             $response = [

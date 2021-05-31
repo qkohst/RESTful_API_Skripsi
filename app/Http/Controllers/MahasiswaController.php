@@ -20,7 +20,7 @@ class MahasiswaController extends Controller
     {
         $admin_prodi = AdminProdi::where('user_id_user', Auth::user()->id)->first();
         $program_studi = ProgramStudi::where('id', $admin_prodi->program_studi_id_program_studi)->first();
-        $mahasiswa = Mahasiswa::where('program_studi_id_program_studi', $program_studi->id)->orderby('npm_mahasiswa','asc')->get([
+        $mahasiswa = Mahasiswa::where('program_studi_id_program_studi', $program_studi->id)->orderby('npm_mahasiswa', 'asc')->get([
             'id',
             'nama_mahasiswa',
             'npm_mahasiswa',
@@ -49,7 +49,7 @@ class MahasiswaController extends Controller
             'npm_mahasiswa' => 'required|unique:mahasiswa|numeric|digits:10',
             'semester_mahasiswa' => 'required|numeric|between:1,14',
             'tempat_lahir_mahasiswa' => 'required|min:3',
-            'tanggal_lahir_mahasiswa' => 'required|date',
+            'tanggal_lahir_mahasiswa' => 'required|date|before:today',
             'jenis_kelamin_mahasiswa' => 'required|in:L,P',
             'status_perkawinan_mahasiswa' => 'required|in:Belum Kawin,Kawin,Cerai Hidup,Cerai Mati',
             'agama_mahasiswa' => 'required|in:Islam, Protestan, Katolik, Hindu, Budha, Khonghucu, Kepercayaan',
@@ -273,6 +273,7 @@ class MahasiswaController extends Controller
                 'email_mahasiswa' => $mahasiswa->email_mahasiswa,
                 'no_hp_mahasiswa' => $mahasiswa->no_hp_mahasiswa,
                 'status_mahasiswa' => $mahasiswa->status_mahasiswa,
+                'tanggal_pembaruan_mahasiswa' => $mahasiswa->updated_at,
             ];
 
             $response = [
@@ -303,7 +304,7 @@ class MahasiswaController extends Controller
         $this->validate($request, [
             'nama_mahasiswa' => 'required|min:3',
             'tempat_lahir_mahasiswa' => 'required|min:3',
-            'tanggal_lahir_mahasiswa' => 'required|date',
+            'tanggal_lahir_mahasiswa' => 'required|date|before:today',
             'status_mahasiswa' => 'required|in:Aktif,Non Aktif,Drop Out,Lulus',
         ]);
 

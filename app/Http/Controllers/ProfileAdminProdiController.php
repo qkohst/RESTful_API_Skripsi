@@ -62,7 +62,7 @@ class ProfileAdminProdiController extends Controller
         $id = $admin_prodi->id;
         $this->validate($request, [
             'tempat_lahir_admin_prodi' => 'required|min:3',
-            'tanggal_lahir_admin_prodi' => 'required|date',
+            'tanggal_lahir_admin_prodi' => 'required|date|before:today',
             'jenis_kelamin_admin_prodi' => 'required|in:L,P',
             'email_admin_prodi' => 'required|email|unique:admin_prodi' . ($id ? ",id,$id" : ''),
             'no_hp_admin_prodi' => 'required|numeric|digits_between:11,13|unique:admin_prodi' . ($id ? ",id,$id" : ''),
