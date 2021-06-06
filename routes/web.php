@@ -17,5 +17,5 @@ Route::get('/', function () {
     return view('dashboard');
 });
 Route::get('/docs', function () {
-    return view('docs/authentication/index');
+    return view('docs/index');
 });

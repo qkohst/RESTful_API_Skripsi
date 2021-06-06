@@ -34,13 +34,13 @@
             <span></span>
           </button>
           <div class="site-logo"><a class="navbar-brand" href="/"><img class="logo-icon mr-2" src="assets/images/logo.png" width="30" height="30" alt="logo"><span class="logo-text">RESTfulAPI<span class="text-alt">Docs</span></span></a></div>
+          <small>Versi : 1.0</small>
         </div>
         <!--//docs-logo-wrapper-->
         <div class="docs-top-utilities d-flex justify-content-end align-items-center">
-          <a href="/docs" class="btn btn-light d-none d-lg-flex mx-1">Memulai</a>
-          <a href="/docs" class="btn btn-light d-none d-lg-flex mx-1">Dokumentasi</a>
-          <a href="#" class="btn btn-light d-none d-lg-flex mx-1">Login</a>
-          <a href="#" class="btn btn-primary d-none d-lg-flex mx-1">Get API Key</a>
+          <a href="/docs#section-1" class="btn text-primary d-none d-lg-flex mx-1">Memulai</a>
+          <a href="/docs#section-3" class="btn text-primary d-none d-lg-flex mx-1">Dokumentasi</a>
+          <a href="#" class="btn btn-primary d-none d-lg-flex mx-1">Login</a>
         </div>
         <!--//docs-top-utilities-->
       </div>
@@ -52,33 +52,31 @@
   <div id="docs-sidebar" class="docs-sidebar d-lg-none">
     <ul class="section-items list-unstyled nav flex-column pb-3">
       <li class="nav-item">
-        <a href="#" class="btn btn-light mx-1">Memulai</a>
+        <a href="/docs#section-1" class="btn text-perimary mx-1">Memulai</a>
       </li>
       <li class="nav-item">
-        <a href="/docs" class="btn btn-light mx-1">Dokumentasi</a>
+        <a href="/docs#section-3" class="btn text-perimary mx-1">Dokumentasi</a>
       </li>
       <li class="nav-item">
-        <a href="#" class="btn btn-light mx-1">Login</a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="btn btn-primary mx-1">Get API Key</a>
+        <a href="#" class="btn text-perimary mx-1">Login</a>
       </li>
     </ul>
   </div>
   <!--//docs-sidebar-->
 
 
-  <div class="page-header theme-bg-dark py-5 text-center position-relative">
+  <section class="cta-section text-center py-5 theme-bg-dark position-relative">
     <div class="theme-bg-shapes-right"></div>
     <div class="theme-bg-shapes-left"></div>
     <div class="container">
-      <h1 class="page-heading single-col-max mx-auto">RESTful API E-Skripsi</h1>
-      <div class="page-intro single-col-max mx-auto">Dokumentasi RESTful API Sistem Informasi Monitoring dan Evaluasi Tugas Akhir Mahasiswa Universitas PGRI Ronggolawe Tuban</div>
-      <button type="button" class="btn btn-light mt-3">
-        Get API Key
-      </button>
+      <h1 class="mb-2 text-white mb-3">RESTful API E-Skripsi</h1>
+      <div class="section-intro text-white mb-3 single-col-max mx-auto">Dokumentasi RESTful API Sistem Informasi Monitoring dan Evaluasi Tugas Akhir Mahasiswa Universitas PGRI Ronggolawe Tuban</div>
+      <div class="pt-3 text-center">
+        <a class="btn btn-light" href="#">Get
+          API Key<i class="fas fa-arrow-alt-circle-right ml-2"></i></a>
+      </div>
     </div>
-  </div>
+  </section>
   <!--//page-header-->
   <div class="page-content">
     <div class="container">

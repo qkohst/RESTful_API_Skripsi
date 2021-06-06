@@ -38,11 +38,12 @@
             <span></span>
           </button>
           <div class="site-logo"><a class="navbar-brand" href="/"><img class="logo-icon mr-2" src="assets/images/logo.png" width="30" height="30" alt="logo"><span class="logo-text">RESTfulAPI<span class="text-alt">Docs</span></span></a></div>
+          <small>Versi : 1.0</small>
         </div>
         <!--//docs-logo-wrapper-->
         <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+          <a href="/" class="btn text-primary d-none d-lg-flex mx-1">Dashboard</a>
           <a href="#" class="btn btn-light d-none d-lg-flex mx-1">Login</a>
-          <a href="#" class="btn btn-primary d-none d-lg-flex mx-1">Get API Key</a>
         </div>
         <!--//docs-top-utilities-->
       </div>
@@ -54,34 +55,28 @@
 
   <div class="docs-wrapper">
     <div id="docs-sidebar" class="docs-sidebar">
-      <div class="top-search-box d-lg-none p-3">
-        <form class="search-form">
-          <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
-          <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
-        </form>
-      </div>
       <nav id="docs-nav" class="docs-nav navbar">
         <ul class="section-items list-unstyled nav flex-column pb-3">
           <li class="nav-item section-title">
-            <a class="nav-link scrollto active" href="#section-1">
-              <span class="theme-icon-holder mr-2"><i class="fas fa-map-signs"></i></span>Memulai
-            </a>
+            <a class="nav-link scrollto active" href="#section-1"><span class="theme-icon-holder mr-2"><i class="fas fa-star-half-alt"></i></span>Memulai</a>
           </li>
-          <li class="nav-item section-title mt-0"><a class="nav-link scrollto" href="#section-2"><span class="theme-icon-holder mr-2"><i class="fas fa-arrow-down"></i></span>Authentikasi</a></li>
+          <li class="nav-item section-title mt-0"><a class="nav-link scrollto" href="#section-2"><span class="theme-icon-holder mr-2"><i class="fas fa-file-alt"></i></span>Pengantar</a></li>
           <li class="nav-item section-title mt-0 mb-0"><a class="nav-link scrollto" href="#section-3"><span class="theme-icon-holder mr-2"><i class="fab fa-readme"></i></i></span>Dokumentasi</a></li>
-          <li class="nav-item section-title mt-0 mb-0"><a class="nav-link scrollto" href="#section-3"><span class="theme-icon-holder mr-2"><i class="fas fa-user"></i></span>User Authoritation</a></li>
-          <li class="nav-item"><a class="nav-link scrollto" href="#item-3-1">User Login</a></li>
-          <li class="nav-item"><a class="nav-link scrollto" href="#item-3-2">Ganti Password</a></li>
-          <li class="nav-item"><a class="nav-link scrollto" href="#item-3-3">Logout</a></li>
-          <li class="nav-item section-title mt-0 mb-0"><a class="nav-link scrollto" href="#section-3"><span class="theme-icon-holder mr-2"><i class="fas fa-user"></i></span>User Admin</a></li>
-          <li class="nav-item section-title mt-0 mb-0"><a class="nav-link scrollto" href="#section-3"><span class="theme-icon-holder mr-2"><i class="fas fa-user"></i></span>Fakultas</a></li>
-          <li class="nav-item"><a class="nav-link scrollto" href="#item-3-1">Data Fakultas</a></li>
-          <li class="nav-item"><a class="nav-link scrollto" href="#item-3-2">Tambah Fakultas</a></li>
-          <li class="nav-item"><a class="nav-link scrollto" href="#item-3-3">Logout</a></li>
-          <li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-9"><span class="theme-icon-holder mr-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
-          <li class="nav-item"><a class="nav-link scrollto" href="#item-9-1">Section Item 9.1</a></li>
-          <li class="nav-item"><a class="nav-link scrollto" href="#item-9-2">Section Item 9.2</a></li>
-          <li class="nav-item"><a class="nav-link scrollto" href="#item-9-3">Section Item 9.3</a></li>
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-4">Auth</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-4-1">Login</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-4-2">Ganti Password</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-4-3">Logout</a></li>
+          </ul>
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-5">Admin/Fakultas</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-1">Data Fakultas</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-2">Tambah Fakultas</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-3">Detail Fakultas</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-4">Update Fakultas</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-5">Hapus Fakultas</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-6">Fakultas Aktif</a></li>
+          </ul>
         </ul>
       </nav>
       <!--//docs-nav-->
@@ -89,7 +84,11 @@
     <!--//docs-sidebar-->
     <div class="docs-content">
       <div class="container">
-        @yield('mulai')
+        @include('docs.mulai');
+        @include('docs.pengantar');
+        @include('docs.docsindex');
+        @include('docs.auth');
+        @include('docs.admin.fakultas.index');
         <!-- Content Here  -->
 
         <footer class="footer theme-bg-dark">

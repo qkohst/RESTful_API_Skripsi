@@ -1,6 +1,3 @@
-@extends('docs.index')
-
-@section('mulai')
 <article class="docs-article" id="section-1">
   <header class="docs-header">
     <h1 class="docs-heading">Memulai<span class="docs-time">Last updated: 2019-06-01</span></h1>
@@ -12,5 +9,3 @@
     <!--//docs-intro-->
   </header>
 </article>
-@yield('mainB')
-@endsection
