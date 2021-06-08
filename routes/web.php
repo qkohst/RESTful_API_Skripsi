@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('dashboard');
 });
+
 Route::get('/docs', function () {
     return view('docs/index');
 });
+
+Route::get('/login', 'Docs\AuthController@index');
+Route::get('/register', 'Docs\AuthController@form_register');

@@ -40,7 +40,7 @@
         <div class="docs-top-utilities d-flex justify-content-end align-items-center">
           <a href="/docs#section-1" class="btn text-primary d-none d-lg-flex mx-1">Memulai</a>
           <a href="/docs#section-3" class="btn text-primary d-none d-lg-flex mx-1">Dokumentasi</a>
-          <a href="#" class="btn btn-primary d-none d-lg-flex mx-1">Login</a>
+          <a target="_black" href="/login" class="btn btn-primary d-none d-lg-flex mx-1">Login</a>
         </div>
         <!--//docs-top-utilities-->
       </div>
@@ -58,27 +58,26 @@
         <a href="/docs#section-3" class="btn text-perimary mx-1">Dokumentasi</a>
       </li>
       <li class="nav-item">
-        <a href="#" class="btn text-perimary mx-1">Login</a>
+        <a target="_black" href="/login" class="btn text-perimary mx-1">Login</a>
       </li>
     </ul>
   </div>
   <!--//docs-sidebar-->
 
-
-  <section class="cta-section text-center py-5 theme-bg-dark position-relative">
-    <div class="theme-bg-shapes-right"></div>
-    <div class="theme-bg-shapes-left"></div>
-    <div class="container">
-      <h1 class="mb-2 text-white mb-3">RESTful API E-Skripsi</h1>
-      <div class="section-intro text-white mb-3 single-col-max mx-auto">Dokumentasi RESTful API Sistem Informasi Monitoring dan Evaluasi Tugas Akhir Mahasiswa Universitas PGRI Ronggolawe Tuban</div>
-      <div class="pt-3 text-center">
-        <a class="btn btn-light" href="#">Get
-          API Key<i class="fas fa-arrow-alt-circle-right ml-2"></i></a>
-      </div>
-    </div>
-  </section>
-  <!--//page-header-->
   <div class="page-content">
+    <section class="cta-section text-center py-5 theme-bg-dark position-relative">
+      <div class="theme-bg-shapes-right"></div>
+      <div class="theme-bg-shapes-left"></div>
+      <div class="container">
+        <h1 class="mb-2 text-white mb-3">RESTful API E-Skripsi</h1>
+        <div class="text-white mb-3 single-col-max mx-auto">Dokumentasi RESTful API Sistem Informasi Monitoring dan Evaluasi Tugas Akhir Mahasiswa Universitas PGRI Ronggolawe Tuban</div>
+        <div class="pt-3 text-center">
+          <a class="btn btn-light" target="_black" href="/login">Get
+            API Key<i class="fas fa-arrow-alt-circle-right ml-2"></i></a>
+        </div>
+      </div>
+    </section>
+    <!--//page-header-->
     <div class="container">
       <div class="docs-overview py-5">
         <div class="row justify-content-center">
