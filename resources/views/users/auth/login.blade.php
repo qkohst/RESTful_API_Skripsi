@@ -10,15 +10,16 @@
       <div class="mb-4">
         <h3><strong>Login</strong> Sebagai Developer</h3>
       </div>
-      <form action="#" method="post">
+      <form method="POST" action="/postlogin">
+        {!! csrf_field() !!}
         <div class="form-group first">
           <label for="email">Email</label>
-          <input type="email" class="form-control" id="email" required>
+          <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
 
         </div>
         <div class="form-group last mb-4">
           <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" required>
+          <input type="password" class="form-control" id="password" name="password" value="{{ old('password') }}" required>
 
         </div>
 

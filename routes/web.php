@@ -21,8 +21,10 @@ Route::get('/docs', function () {
     return view('docs/index');
 });
 
-Route::get('/login', 'Docs\AuthController@index');
+Route::get('/login', 'Docs\AuthController@form_login');
+Route::post('/postlogin', 'Docs\AuthController@post_login');
 Route::get('/register', 'Docs\AuthController@form_register');
+Route::post('/postregister', 'Docs\AuthController@post_register');
 
 Route::get('/developer', function () {
     return view('users/dashboard');

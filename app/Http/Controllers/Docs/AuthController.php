@@ -4,17 +4,38 @@ namespace App\Http\Controllers\Docs;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\UserDeveloper;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+
+
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function form_login()
     {
         return view('users.auth.login');
+    }
+
+    public function post_login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+        if ($validator->fails()) {
+            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+        }
+        $user = UserDeveloper::where([
+            'email' => $request->email,
+            'password' => $request->password
+        ])->first();
+        // dd($user);
+        if (is_null($user)) {
+            return back()->with('toast_error', 'Email atau Password Salah');
+        }
+        return redirect('/developer')->withSuccess('Login Berhasil !');
     }
 
     public function form_register()
@@ -22,69 +43,30 @@ class AuthController extends Controller
         return view('users.auth.register');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function post_register(Request $request)
     {
-        //
-    }
+        $validator = Validator::make($request->all(), [
+            'nama_depan' => 'required|min:3',
+            'nama_belakang' => 'required|min:2',
+            'email' => 'required|unique:user_developer|email',
+            'password' => 'required|min:6',
+            'konfirmasi_password' => 'same:password',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $user_developer = new UserDeveloper([
+            'nama_depan' => $request->input('nama_depan'),
+            'nama_belakang' => $request->input('nama_belakang'),
+            'email' => $request->input('email'),
+            // 'password' => $request->input('password'),
+            'password' => bcrypt($request->input('password')),
+            'role' => 'Developer',
+            'status' => 'Aktif',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if ($validator->fails()) {
+            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+        } elseif ($user_developer->save()) {
+            return redirect('/login')->withSuccess('Pendaftaran Berhasil Silahkan Login !');
+        }
     }
 }

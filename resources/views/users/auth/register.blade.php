@@ -10,31 +10,32 @@
       <div class="mb-4">
         <h3><strong>Daftar</strong> Sebagai Developer</h3>
       </div>
-      <form action="#" method="post">
+      <form method="POST" action="/postregister">
+        {!! csrf_field() !!}
         <div class="form-group first">
           <label for="nama_depan">Nama Depan</label>
-          <input type="text" class="form-control" id="nama_depan" required>
+          <input type="text" class="form-control" id="nama_depan" name="nama_depan" value="{{ old('nama_depan') }}" required>
 
         </div>
 
         <div class="form-group first">
           <label for="nama_belakang">Nama Belakang</label>
-          <input type="text" class="form-control" id="nama_belakang" required>
+          <input type="text" class="form-control" id="nama_belakang" name="nama_belakang" value="{{ old('nama_belakang') }}"  required>
 
         </div>
         <div class="form-group first">
           <label for="email">Email</label>
-          <input type="email" class="form-control" id="email" required>
+          <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
 
         </div>
         <div class="form-group last mb-4">
           <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" required>
+          <input type="password" class="form-control" id="password" name="password" value="{{ old('password') }}" required>
 
         </div>
         <div class="form-group last mb-4">
-          <label for="confirm_password">Konfirmasi Password</label>
-          <input type="password" class="form-control" id="confirm_password" required>
+          <label for="konfirmasi_password">Konfirmasi Password</label>
+          <input type="password" class="form-control" id="konfirmasi_password" name="konfirmasi_password" value="{{ old('konfirmasi_password') }}" required>
 
         </div>
 

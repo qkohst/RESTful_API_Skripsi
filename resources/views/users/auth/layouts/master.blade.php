@@ -21,6 +21,7 @@
 <body>
 
   <div class="content">
+    @include('sweetalert::alert')
     <div class="container">
       <div class="row">
         <div class="col-md-6 order-md-2">
@@ -30,7 +31,6 @@
       </div>
     </div>
   </div>
-
 
   <script src="assets/authassets/js/jquery-3.3.1.min.js"></script>
   <script src="assets/authassets/js/popper.min.js"></script>
