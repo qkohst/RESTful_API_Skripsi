@@ -33,14 +33,14 @@
             <span></span>
             <span></span>
           </button>
-          <div class="site-logo"><a class="navbar-brand" href="/"><img class="logo-icon mr-2" src="assets/images/logo.png" width="30" height="30" alt="logo"><span class="logo-text">RESTfulAPI<span class="text-alt">Docs</span></span></a></div>
+          <div class="site-logo"><a class="navbar-brand" href="/developer"><img class="logo-icon mr-2" src="assets/images/logo.png" width="30" height="30" alt="logo"><span class="logo-text">RESTfulAPI<span class="text-alt">User</span></span></a></div>
           <small>Versi : 1.0</small>
         </div>
         <!--//docs-logo-wrapper-->
         <div class="docs-top-utilities d-flex justify-content-end align-items-center">
-          <a href="/docs#section-1" class="btn text-primary d-none d-lg-flex mx-1">Memulai</a>
-          <a href="/docs#section-3" class="btn text-primary d-none d-lg-flex mx-1">Dokumentasi</a>
-          <a target="_black" href="/login" class="btn btn-primary d-none d-lg-flex mx-1">Login</a>
+          <a href="/developer" class="btn text-primary d-none d-lg-flex mx-1">Dashboard</a>
+          <a href="#" class="btn text-primary d-none d-lg-flex mx-1">Aplikasi Saya</a>
+          <a  href="#" class="btn btn-primary d-none d-lg-flex mx-1">Logout</a>
         </div>
         <!--//docs-top-utilities-->
       </div>
@@ -52,13 +52,13 @@
   <div id="docs-sidebar" class="docs-sidebar d-lg-none">
     <ul class="section-items list-unstyled nav flex-column pb-3">
       <li class="nav-item">
-        <a href="/docs#section-1" class="btn text-perimary mx-1">Memulai</a>
+        <a href="/developer" class="btn text-perimary mx-1">Dashboard</a>
       </li>
       <li class="nav-item">
-        <a href="/docs#section-3" class="btn text-perimary mx-1">Dokumentasi</a>
+        <a href="#" class="btn text-perimary mx-1">Aplikasi Saya</a>
       </li>
       <li class="nav-item">
-        <a target="_black" href="/login" class="btn text-perimary mx-1">Login</a>
+        <a  href="#" class="btn text-perimary mx-1">Logout</a>
       </li>
     </ul>
   </div>
@@ -69,11 +69,11 @@
       <div class="theme-bg-shapes-right"></div>
       <div class="theme-bg-shapes-left"></div>
       <div class="container">
-        <h1 class="mb-2 text-white mb-3">RESTful API E-Skripsi</h1>
-        <div class="text-white mb-3 single-col-max mx-auto">Dokumentasi RESTful API Sistem Informasi Monitoring dan Evaluasi Tugas Akhir Mahasiswa Universitas PGRI Ronggolawe Tuban</div>
+        <h1 class="text-white mb-3">RESTful API E-Skripsi</h1>
+        <h3 class="mb-2 text-white">Selamat Datang Qkoh St</h3>
+        <div class="text-white single-col-max mx-auto">Anda Login Sebagai Developer</div>
         <div class="pt-3 text-center">
-          <a class="btn btn-light" target="_black" href="/login">Get
-            API Key<i class="fas fa-arrow-alt-circle-right ml-2"></i></a>
+          <a class="btn btn-light" target="_black" href="/login">Buat Project Baru<i class="fas fa-folder-plus ml-2"></i></a>
         </div>
       </div>
     </section>

@@ -23,3 +23,7 @@ Route::get('/docs', function () {
 
 Route::get('/login', 'Docs\AuthController@index');
 Route::get('/register', 'Docs\AuthController@form_register');
+
+Route::get('/developer', function () {
+    return view('users/dashboard');
+});
