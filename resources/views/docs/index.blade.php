@@ -111,7 +111,7 @@
           </div>
         </footer>
 
-        <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-chevron-up"></i></button>
+        <button onclick="topFunction()" id="myBtn" title="Back To Top"><i class="fas fa-chevron-up"></i></button>
       </div>
     </div>
   </div>
