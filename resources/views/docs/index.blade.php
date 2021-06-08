@@ -25,6 +25,9 @@
   <!-- Theme CSS -->
   <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
 
+  <!-- MyStyle CSS -->
+  <link id="theme-style" rel="stylesheet" href="assets/css/mystyle.css">
+
 </head>
 
 <body class="docs-page">
@@ -84,11 +87,11 @@
     <!--//docs-sidebar-->
     <div class="docs-content">
       <div class="container">
-        @include('docs.mulai');
-        @include('docs.pengantar');
-        @include('docs.docsindex');
-        @include('docs.auth');
-        @include('docs.admin.fakultas.index');
+        @include('docs.mulai')
+        @include('docs.pengantar')
+        @include('docs.docsindex')
+        @include('docs.auth')
+        @include('docs.admin.fakultas.index')
         <!-- Content Here  -->
 
         <footer class="footer theme-bg-dark">
@@ -106,8 +109,9 @@
             <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
             <small class="copyright text-white">Developed by <a class="text-white" href="#" target="_blank">Qkoh St</a> for developers</small>
           </div>
-
         </footer>
+
+        <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-chevron-up"></i></button>
       </div>
     </div>
   </div>
@@ -128,6 +132,7 @@
   <script src="assets/plugins/lightbox/dist/ekko-lightbox.min.js"></script>
   <script src="assets/js/docs.js"></script>
 
+  <script src="assets/js/mycode.js"></script>
 </body>
 
 </html>
