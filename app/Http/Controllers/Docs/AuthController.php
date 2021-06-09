@@ -75,7 +75,7 @@ class AuthController extends Controller
         if (Auth::guard('developer')->check()) // this means that the admin was logged in.
         {
             Auth::guard('developer')->logout();
-            return redirect('/login');
+            return redirect('/login')->withSuccess('Logout Berhasil !');
         }
     }
 }

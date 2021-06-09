@@ -151,7 +151,7 @@
   <!--//page-content-->
 
   @include('footer')
-
+  @include('sweetalert::alert')
   <!-- Javascript -->
   <script src="assets/plugins/jquery-3.4.1.min.js"></script>
   <script src="assets/plugins/popper.min.js"></script>

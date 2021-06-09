@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class CheckRole
+class checkRoleUserDev
 {
     /**
      * Handle an incoming request.
@@ -13,13 +13,11 @@ class CheckRole
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next,  $role)
     {
         if ($request->user()->role == $role) {
             return $next($request);
-        } 
-        return response()->json([
-            'error' => 'No Authorization'
-        ], 401);
+        }
+        return back()->with('toast_error', 'No Authorization');
     }
 }
