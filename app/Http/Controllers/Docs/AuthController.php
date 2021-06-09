@@ -7,11 +7,16 @@ use Illuminate\Http\Request;
 use App\UserDeveloper;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 
 
 class AuthController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('guest:developer')->except('post_logout');
+    }
 
     public function form_login()
     {
@@ -27,15 +32,10 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
         }
-        $user = UserDeveloper::where([
-            'email' => $request->email,
-            'password' => $request->password
-        ])->first();
-        // dd($user);
-        if (is_null($user)) {
+        if (!Auth::guard('developer')->attempt(['email' => $request->email, 'password' => $request->password])) {
             return back()->with('toast_error', 'Email atau Password Salah');
         }
-        return redirect('/developer')->withSuccess('Login Berhasil !');
+        return redirect('/dashboard')->withSuccess('Login Berhasil !');
     }
 
     public function form_register()

@@ -26,6 +26,6 @@ Route::post('/postlogin', 'Docs\AuthController@post_login');
 Route::get('/register', 'Docs\AuthController@form_register');
 Route::post('/postregister', 'Docs\AuthController@post_register');
 
-Route::get('/developer', function () {
+Route::get('/dashboard', function () {
     return view('users/dashboard');
 });
