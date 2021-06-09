@@ -15,12 +15,12 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('guest:developer')->except('post_logout');
+        $this->middleware('guest:developer')->except('logout');
     }
 
     public function form_login()
     {
-        return view('users.auth.login');
+        return view('auth.login');
     }
 
     public function post_login(Request $request)
@@ -40,7 +40,7 @@ class AuthController extends Controller
 
     public function form_register()
     {
-        return view('users.auth.register');
+        return view('auth.register');
     }
 
     public function post_register(Request $request)
@@ -67,6 +67,15 @@ class AuthController extends Controller
             return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
         } elseif ($user_developer->save()) {
             return redirect('/login')->withSuccess('Pendaftaran Berhasil Silahkan Login !');
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        if (Auth::guard('developer')->check()) // this means that the admin was logged in.
+        {
+            Auth::guard('developer')->logout();
+            return redirect('/login');
         }
     }
 }

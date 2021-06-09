@@ -33,13 +33,14 @@
             <span></span>
             <span></span>
           </button>
-          <div class="site-logo"><a class="navbar-brand" href="/dashboard"><img class="logo-icon mr-2" src="assets/images/logo.png" width="30" height="30" alt="logo"><span class="logo-text">RESTfulAPI<span class="text-alt">User</span></span></a></div>
+          <div class="site-logo"><a class="navbar-brand" href="/dashboard"><img class="logo-icon mr-2" src="assets/images/logo.png" width="30" height="30" alt="logo"><span class="logo-text">RESTfulAPI<span class="text-alt">Admin</span></span></a></div>
           <small>Versi : 1.0</small>
         </div>
         <!--//docs-logo-wrapper-->
         <div class="docs-top-utilities d-flex justify-content-end align-items-center">
           <a href="/dashboard" class="btn text-primary d-none d-lg-flex mx-1">Dashboard</a>
-          <a href="#" class="btn text-primary d-none d-lg-flex mx-1">Aplikasi Saya</a>
+          <a href="#" class="btn text-primary d-none d-lg-flex mx-1">Developer</a>
+          <a href="#" class="btn text-primary d-none d-lg-flex mx-1">API Client</a>
           <a href="{{ route('logout') }}" class="btn btn-primary d-none d-lg-flex mx-1" onclick="event.preventDefault();
             document.getElementById('logout-form').submit();">Logout</a>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -59,7 +60,10 @@
         <a href="/dashboard" class="btn text-perimary mx-1">Dashboard</a>
       </li>
       <li class="nav-item">
-        <a href="#" class="btn text-perimary mx-1">Aplikasi Saya</a>
+        <a href="#" class="btn text-perimary mx-1">Developer</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="btn text-perimary mx-1">API Client</a>
       </li>
       <li class="nav-item">
         <a href="{{ route('logout') }}" class="btn btn-primary d-none d-lg-flex mx-1" onclick="event.preventDefault();
@@ -78,11 +82,8 @@
       <div class="theme-bg-shapes-left"></div>
       <div class="container">
         <h1 class="text-white mb-3">RESTful API E-Skripsi</h1>
-        <h3 class="mb-2 text-white">Selamat Datang Qkoh St</h3>
-        <div class="text-white single-col-max mx-auto">Anda Login Sebagai Developer</div>
-        <div class="pt-3 text-center">
-          <a class="btn btn-light" target="_black" href="/login">Buat Project Baru<i class="fas fa-folder-plus ml-2"></i></a>
-        </div>
+        <h3 class="mb-2 text-white">Selamat Datang Admin API</h3>
+        <div class="text-white single-col-max mx-auto">Anda Login Sebagai Admin</div>
       </div>
     </section>
     <!--//page-header-->

@@ -1,4 +1,4 @@
-@extends('users.auth.layouts.master')
+@extends('auth.layouts.master')
 @section('title')
 <title>Developer | Daftar</title>
 @endsection

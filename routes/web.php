@@ -21,11 +21,10 @@ Route::get('/docs', function () {
     return view('docs/index');
 });
 
-Route::get('/login', 'Docs\AuthController@form_login');
+Route::get('/login', 'Docs\AuthController@form_login')->name('login');
 Route::post('/postlogin', 'Docs\AuthController@post_login');
 Route::get('/register', 'Docs\AuthController@form_register');
 Route::post('/postregister', 'Docs\AuthController@post_register');
+Route::post('/logout', 'Docs\AuthController@logout')->name('logout');
 
-Route::get('/dashboard', function () {
-    return view('users/dashboard');
-});
+Route::get('/dashboard', 'Docs\DashboardController@index');
