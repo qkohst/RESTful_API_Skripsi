@@ -23,4 +23,9 @@ class UserDeveloper extends Model implements AuthenticatableContract
     protected $hidden = [
         'password',
     ];
+
+    public function api_client()
+    {
+        return $this->hasMany('App\ApiClient');
+    }
 }
