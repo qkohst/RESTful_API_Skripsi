@@ -42,7 +42,7 @@
         <div class="docs-top-utilities d-flex justify-content-end align-items-center">
           <a href="/dashboard" class="btn text-primary d-none d-lg-flex mx-1">Dashboard</a>
           <a href="{{ route('developer.index') }}" class="btn text-primary d-none d-lg-flex mx-1">Developer</a>
-          <a href="#" class="btn text-primary d-none d-lg-flex mx-1">API Client</a>
+          <a href="{{ route('apiclient.index') }}" class="btn text-primary d-none d-lg-flex mx-1">API Client</a>
           <a href="{{ route('logout') }}" class="btn btn-primary d-none d-lg-flex mx-1" onclick="event.preventDefault();
             document.getElementById('logout-form').submit();">Logout</a>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -65,7 +65,7 @@
         <a href="{{ route('developer.index') }}" class="btn text-perimary mx-1">Developer</a>
       </li>
       <li class="nav-item">
-        <a href="#" class="btn text-perimary mx-1">API Client</a>
+        <a href="{{ route('apiclient.index') }}" class="btn text-perimary mx-1">API Client</a>
       </li>
       <li class="nav-item">
         <a href="{{ route('logout') }}" class="btn btn-primary d-none d-lg-flex mx-1" onclick="event.preventDefault();

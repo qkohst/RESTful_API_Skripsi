@@ -20,6 +20,9 @@
   <!-- Theme CSS -->
   <link id="theme-style" rel="stylesheet" href="/assets/css/theme.css">
 
+  <!-- MyStyle CSS -->
+  <link id="theme-style" rel="stylesheet" href="/assets/css/mystyle.css">
+
 </head>
 
 <body>
@@ -78,6 +81,8 @@
 
   @include('footer')
   @include('sweetalert::alert')
+  <button onclick="topFunction()" id="myBtn" title="Back To Top"><i class="fas fa-chevron-up"></i></button>
+
 
   <!-- Javascript -->
   <script src="/assets/plugins/jquery-3.4.1.min.js"></script>
@@ -85,6 +90,9 @@
   <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 
   <script src="/assets/js/docs.js"></script>
+
+  <script src="/assets/js/mycode.js"></script>
+
 
 
 </body>

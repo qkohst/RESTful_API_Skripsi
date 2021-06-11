@@ -36,6 +36,9 @@ Route::group(['middleware' => 'auth:developer'], function () {
             Route::resource('developer', 'Docs\DeveloperController', [
                 'only' => ['index', 'show', 'update']
             ]);
+            Route::resource('apiclient', 'Docs\ApiClientController', [
+                'only' => ['index', 'show']
+            ]);
         });
     });
 

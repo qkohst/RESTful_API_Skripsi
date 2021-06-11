@@ -86,10 +86,10 @@
               <div class="card-body">
                 <h5 class="card-title mb-3">
                   <span class="theme-icon-holder card-icon-holder mr-2">
-                    <i class="fas fa-map-signs"></i>
+                    <i class="fas fa-star-half-alt"></i>
                   </span>
                   <!--//card-icon-holder-->
-                  <span class="card-title-text">Introduction</span>
+                  <span class="card-title-text">Memulai</span>
                 </h5>
                 <div class="card-text">
                   Section overview goes here. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
@@ -106,10 +106,10 @@
               <div class="card-body">
                 <h5 class="card-title mb-3">
                   <span class="theme-icon-holder card-icon-holder mr-2">
-                    <i class="fas fa-arrow-down"></i>
+                    <i class="fas fa-file-alt"></i>
                   </span>
                   <!--//card-icon-holder-->
-                  <span class="card-title-text">Installation</span>
+                  <span class="card-title-text">Pengantar</span>
                 </h5>
                 <div class="card-text">
                   Section overview goes here. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
@@ -126,10 +126,10 @@
               <div class="card-body">
                 <h5 class="card-title mb-3">
                   <span class="theme-icon-holder card-icon-holder mr-2">
-                    <i class="fas fa-box fa-fw"></i>
+                    <i class="fab fa-readme"></i>
                   </span>
                   <!--//card-icon-holder-->
-                  <span class="card-title-text">APIs</span>
+                  <span class="card-title-text">Dokumentasi</span>
                 </h5>
                 <div class="card-text">
                   Section overview goes here. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
@@ -142,6 +142,7 @@
           </div>
           <!--//col-->
         </div>
+        <!--//row-->
         <!--//row-->
       </div>
       <!--//container-->

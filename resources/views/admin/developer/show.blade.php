@@ -76,7 +76,7 @@
             <div class="card-text">
               <span>{{$client->deskripsi}}</span>
             </div>
-            <a class="card-link-mask" href="#"></a>
+            <a class="card-link-mask" href="{{ route('apiclient.show', $client->id) }}"></a>
           </div>
           <!--//card-body-->
         </div>

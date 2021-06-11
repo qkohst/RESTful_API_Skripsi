@@ -64,7 +64,7 @@
             <a class="nav-link scrollto active" href="#section-1"><span class="theme-icon-holder mr-2"><i class="fas fa-star-half-alt"></i></span>Memulai</a>
           </li>
           <li class="nav-item section-title mt-0"><a class="nav-link scrollto" href="#section-2"><span class="theme-icon-holder mr-2"><i class="fas fa-file-alt"></i></span>Pengantar</a></li>
-          <li class="nav-item section-title mt-0 mb-0"><a class="nav-link scrollto" href="#section-3"><span class="theme-icon-holder mr-2"><i class="fab fa-readme"></i></i></span>Dokumentasi</a></li>
+          <li class="nav-item section-title mt-0 mb-0"><a class="nav-link scrollto" href="#section-3"><span class="theme-icon-holder mr-2"><i class="fab fa-readme"></i></span>Dokumentasi</a></li>
           <ul class="nav-item mx-0">
             <a class="nav-link scrollto" href="#section-4">Auth</a>
             <li class="nav-item"><a class="nav-link scrollto" href="#item-4-1">Login</a></li>
