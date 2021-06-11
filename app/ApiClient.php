@@ -9,8 +9,9 @@ class ApiClient extends Model
     protected $table = 'api_client';
     protected $fillable = [
         'user_developer_id',
-        'nama_aplikasi',
+        'nama_project',
         'platform',
+        'deskripsi',
         'api_key',
         'status',
     ];

@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<section class="cta-section text-center py-5 theme-bg-dark position-relative">
+<section class="cta-section text-center py-4 theme-bg-dark position-relative">
   <div class="theme-bg-shapes-right"></div>
   <div class="theme-bg-shapes-left"></div>
   <div class="container">

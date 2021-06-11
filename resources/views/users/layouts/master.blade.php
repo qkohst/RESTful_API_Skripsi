@@ -15,10 +15,10 @@
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
 
   <!-- FontAwesome JS-->
-  <script defer src="assets/fontawesome/js/all.min.js"></script>
+  <script defer src="/assets/fontawesome/js/all.min.js"></script>
 
   <!-- Theme CSS -->
-  <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+  <link id="theme-style" rel="stylesheet" href="/assets/css/theme.css">
 
 </head>
 
@@ -32,13 +32,13 @@
             <span></span>
             <span></span>
           </button>
-          <div class="site-logo"><a class="navbar-brand" href="/dashboard"><img class="logo-icon mr-2" src="assets/images/logo.png" width="30" height="30" alt="logo"><span class="logo-text">RESTfulAPI<span class="text-alt">User</span></span></a></div>
+          <div class="site-logo"><a class="navbar-brand" href="/dashboard"><img class="logo-icon mr-2" src="/assets/images/logo.png" width="30" height="30" alt="logo"><span class="logo-text">RESTfulAPI<span class="text-alt">User</span></span></a></div>
           <small>Versi : 1.0</small>
         </div>
         <!--//docs-logo-wrapper-->
         <div class="docs-top-utilities d-flex justify-content-end align-items-center">
           <a href="/dashboard" class="btn text-primary d-none d-lg-flex mx-1">Dashboard</a>
-          <a href="#" class="btn text-primary d-none d-lg-flex mx-1">Aplikasi Saya</a>
+          <a href="{{ route('myapp.index') }}" class="btn text-primary d-none d-lg-flex mx-1">Project Saya</a>
           <a href="{{ route('logout') }}" class="btn btn-primary d-none d-lg-flex mx-1" onclick="event.preventDefault();
             document.getElementById('logout-form').submit();">Logout</a>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -58,7 +58,7 @@
         <a href="/dashboard" class="btn text-perimary mx-1">Dashboard</a>
       </li>
       <li class="nav-item">
-        <a href="#" class="btn text-perimary mx-1">Aplikasi Saya</a>
+        <a href="{{ route('myapp.index') }}" class="btn text-perimary mx-1">Project Saya</a>
       </li>
       <li class="nav-item">
         <a href="{{ route('logout') }}" class="btn btn-primary d-none d-lg-flex mx-1" onclick="event.preventDefault();
@@ -80,11 +80,11 @@
   @include('sweetalert::alert')
 
   <!-- Javascript -->
-  <script src="assets/plugins/jquery-3.4.1.min.js"></script>
-  <script src="assets/plugins/popper.min.js"></script>
-  <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/assets/plugins/jquery-3.4.1.min.js"></script>
+  <script src="/assets/plugins/popper.min.js"></script>
+  <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 
-  <script src="assets/js/docs.js"></script>
+  <script src="/assets/js/docs.js"></script>
 
 
 </body>

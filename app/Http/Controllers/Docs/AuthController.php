@@ -57,7 +57,6 @@ class AuthController extends Controller
             'nama_depan' => $request->input('nama_depan'),
             'nama_belakang' => $request->input('nama_belakang'),
             'email' => $request->input('email'),
-            // 'password' => $request->input('password'),
             'password' => bcrypt($request->input('password')),
             'role' => 'Developer',
             'status' => 'Aktif',

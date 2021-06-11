@@ -13,10 +13,12 @@
     <h3 class="mb-2 text-white">Selamat Datang {{Auth::guard('developer')->user()->nama_depan}}</h3>
     <div class="text-white single-col-max mx-auto">Anda Login Sebagai Developer</div>
     <div class="pt-3 text-center">
-      <a class="btn btn-light" target="_black" href="/login">Buat Project Baru<i class="fas fa-folder-plus ml-2"></i></a>
+      <a href="{{ route('myapp.create') }}" class="btn btn-light">Buat Project Baru<i class="fas fa-folder-plus ml-2"></i></a>
     </div>
   </div>
 </section>
+
+<!-- // Modal Create Project  -->
 <!--//page-header-->
 <div class="container">
   <div class="docs-overview py-5">

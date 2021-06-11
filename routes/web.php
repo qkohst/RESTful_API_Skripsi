@@ -30,10 +30,20 @@ Route::group(['middleware' => 'auth:developer'], function () {
     Route::post('/logout', 'Docs\AuthController@logout')->name('logout');
     Route::get('/dashboard', 'Docs\DashboardController@index');
 
+    // Route Admin 
     Route::group(['prefix' => 'admin'], function () {
         Route::group(['middleware' => 'checkRoleUserDev:Admin'], function () {
             Route::resource('developer', 'Docs\DeveloperController', [
                 'except' => 'destroy'
+            ]);
+        });
+    });
+
+    // Route Developer 
+    Route::group(['prefix' => 'developer'], function () {
+        Route::group(['middleware' => 'checkRoleUserDev:Developer'], function () {
+            Route::resource('myapp', 'Docs\DeveloperApiClientController', [
+                'except' => ['edit', 'destroy']
             ]);
         });
     });

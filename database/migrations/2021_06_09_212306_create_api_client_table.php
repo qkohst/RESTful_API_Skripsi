@@ -16,8 +16,9 @@ class CreateApiClientTable extends Migration
         Schema::create('api_client', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_developer_id')->unsigned();
-            $table->string('nama_aplikasi', 30)->unique();
+            $table->string('nama_project', 30)->unique();
             $table->enum('platform', ['Mobile', 'Web']);
+            $table->string('deskripsi', 250);
             $table->string('api_key', 60)->unique();
             $table->enum('status', ['Aktif', 'Non Aktif']);
             $table->timestamps();
