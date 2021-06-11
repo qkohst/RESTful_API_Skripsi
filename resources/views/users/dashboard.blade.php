@@ -12,9 +12,16 @@
     <h1 class="text-white mb-3">RESTful API E-Skripsi</h1>
     <h3 class="mb-2 text-white">Selamat Datang {{Auth::guard('developer')->user()->nama_depan}}</h3>
     <div class="text-white single-col-max mx-auto">Anda Login Sebagai Developer</div>
+    @if(Auth::guard('developer')->user()->status =='Aktif')
     <div class="pt-3 text-center">
       <a href="{{ route('myapp.create') }}" class="btn btn-light">Buat Project Baru<i class="fas fa-folder-plus ml-2"></i></a>
     </div>
+    @else
+    <div class="pt-3 text-center">
+      <span class="badge badge-danger">User Anda Telah Dinonaktifkan Oleh Admin</span>
+      <h6 class="mt-2 text-white">Silahkan Hubungi Admin Untuk Info Lebih Lanjut !</h6>
+    </div>
+    @endif
   </div>
 </section>
 

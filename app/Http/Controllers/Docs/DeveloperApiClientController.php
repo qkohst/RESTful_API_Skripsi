@@ -28,7 +28,7 @@ class DeveloperApiClientController extends Controller
     {
         $developer = UserDeveloper::where('id', Auth::guard('developer')->user()->id)->first();
         $api_client = ApiClient::where('user_developer_id', $developer->id)->get();
-        return view('users/myapp/index', compact('api_client'));
+        return view('users.myapp.index', compact('developer', 'api_client'));
     }
 
     /**
@@ -38,7 +38,7 @@ class DeveloperApiClientController extends Controller
      */
     public function create()
     {
-        return view('users/myapp/create');
+        return view('users.myapp.create');
     }
 
     /**
@@ -82,7 +82,7 @@ class DeveloperApiClientController extends Controller
     public function show($id)
     {
         $data_api_client = ApiClient::findorfail($id);
-        return view('users/myapp/show', compact('data_api_client'));
+        return view('users.myapp.show', compact('data_api_client'));
     }
 
     /**
@@ -94,9 +94,8 @@ class DeveloperApiClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data_api_client = ApiClient::find($id);
-        $data_api_client->update($request->all());
+        $data = ApiClient::find($id);
+        $data->update($request->all());
         return back()->withSuccess('Status API Key Berhasil Dirubah !');
     }
-
 }

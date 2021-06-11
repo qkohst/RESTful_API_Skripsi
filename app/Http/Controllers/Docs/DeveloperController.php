@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Docs;
 
+use App\ApiClient;
 use App\Http\Controllers\Controller;
 use App\UserDeveloper;
 use Illuminate\Http\Request;
@@ -20,31 +21,9 @@ class DeveloperController extends Controller
     public function index()
     {
         $developer = UserDeveloper::where('role', 'Developer')
-        ->orderBy('nama_depan','asc')
-        ->get();
-        // dd($developer);
+            ->orderBy('nama_depan', 'asc')
+            ->get();
         return view('admin.developer.index', compact('developer'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -55,18 +34,10 @@ class DeveloperController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $data = UserDeveloper::findorfail($id);
+        $api_client = ApiClient::where('user_developer_id', $data->id)->get();
+        $count_api = $api_client->count();
+        return view('admin.developer.show', compact('data', 'api_client', 'count_api'));
     }
 
     /**
@@ -78,17 +49,17 @@ class DeveloperController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = UserDeveloper::find($id);
+        if ($data->status == 'Aktif') {
+            $api_client = ApiClient::where('user_developer_id', $data->id)->get();
+            foreach ($api_client as $client){
+                $client->update($request->all());
+            }
+            $data->update($request->all());
+            return back()->withSuccess('Status User Berhasil Dirubah !');
+        }
+        $data->update($request->all());
+        return back()->withSuccess('Status User Berhasil Dirubah !');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

@@ -17,6 +17,7 @@
   <div class="docs-overview py-3">
     <div class="d-flex justify-content-end align-items-center">
       <!-- Button enable or desable  -->
+      @if(Auth::guard('developer')->user()->status =='Aktif')
       @if($data_api_client->status =='Aktif')
       <form action="/developer/myapp/{{$data_api_client->id}}" method="POST">
         @csrf
@@ -32,6 +33,8 @@
         <button type="submit" class="btn text-primary" onclick="return confirm('Rubah Status API Key ?')"><i class="fas fa-toggle-on"></i> Enable API Key</button>
       </form>
       @endif
+      @endif
+
       <!-- // Button enable or desable -->
     </div>
 

@@ -34,7 +34,7 @@ Route::group(['middleware' => 'auth:developer'], function () {
     Route::group(['prefix' => 'admin'], function () {
         Route::group(['middleware' => 'checkRoleUserDev:Admin'], function () {
             Route::resource('developer', 'Docs\DeveloperController', [
-                'except' => 'destroy'
+                'only' => ['index', 'show', 'update']
             ]);
         });
     });

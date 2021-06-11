@@ -1,7 +1,7 @@
-@extends('users.layouts.master')
+@extends('admin.layouts.master')
 
 @section('title')
-<title>User | Project Saya </title>
+<title>Admin | Developer</title>
 @endsection
 
 @section('content')
@@ -9,17 +9,41 @@
   <div class="theme-bg-shapes-right"></div>
   <div class="theme-bg-shapes-left"></div>
   <div class="container">
-    <h1 class="text-white">Project Saya</h1>
-    @if($developer->status =='Aktif')
-    <div class="pt-3 text-center">
-      <a href="{{ route('myapp.create') }}" class="btn btn-light">Buat Project Baru<i class="fas fa-folder-plus ml-2"></i></a>
-    </div>
-    @endif
+    <h1 class="text-white">Detail Developer</h1>
   </div>
 </section>
 <!--//page-header-->
-<div class="container">
+<div class="container py-3">
   <div class="docs-overview py-3">
+    <div class="table-responsive my-3">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th class="theme-bg-light">Nama</th>
+            <td>{{$data->nama_depan}} {{$data->nama_belakang}} </td>
+          </tr>
+          <tr>
+            <th class="theme-bg-light">Email</th>
+            <td>{{$data->email}} </td>
+          </tr>
+          <tr>
+            <th class="theme-bg-light">Status Pengguna</th>
+            <td>
+              @if($data->status =='Aktif')
+              <span class="badge badge-success">{{$data->status}}</span>
+              @else
+              <span class="badge badge-danger">{{$data->status}}</span>
+              @endif
+            </td>
+          </tr>
+          <tr>
+            <th class="theme-bg-light">Jumlah Project</th>
+            <td>{{$count_api}} Aplikasi</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--//table-responsive-->
     <div class="row justify-content-center">
       @foreach($api_client as $client)
       <div class="col-12 col-lg-4 py-3">
@@ -52,7 +76,7 @@
             <div class="card-text">
               <span>{{$client->deskripsi}}</span>
             </div>
-            <a class="card-link-mask" href="{{ route('myapp.show', $client->id) }}"></a>
+            <a class="card-link-mask" href="#"></a>
           </div>
           <!--//card-body-->
         </div>
@@ -62,7 +86,6 @@
       <!--//col-->
     </div>
     <!--//row-->
+    </dev>
   </div>
-  <!--//container-->
-</div>
-@endsection
+  @endsection
