@@ -94,7 +94,7 @@
                 <div class="card-text">
                   Section overview goes here. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
                 </div>
-                <a class="card-link-mask" href="docs-page.html#section-1"></a>
+                <a class="card-link-mask" href="/docs#section-1"></a>
               </div>
               <!--//card-body-->
             </div>
@@ -114,7 +114,7 @@
                 <div class="card-text">
                   Section overview goes here. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
                 </div>
-                <a class="card-link-mask" href="docs-page.html#section-2"></a>
+                <a class="card-link-mask" href="/docs#section-2"></a>
               </div>
               <!--//card-body-->
             </div>
@@ -134,7 +134,7 @@
                 <div class="card-text">
                   Section overview goes here. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
                 </div>
-                <a class="card-link-mask" href="docs-page.html#section-3"></a>
+                <a class="card-link-mask" href="/docs#section-3"></a>
               </div>
               <!--//card-body-->
             </div>

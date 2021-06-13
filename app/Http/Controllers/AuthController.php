@@ -29,7 +29,7 @@ class AuthController extends Controller
             'nama' => $user->nama,
             'username' => $user->username,
             'role' => $user->role,
-            'bearer_token' => $user->api_token,
+            'api_token' => $user->api_token,
         ];
         return response()->json([
             'message' => 'Login successfully',
