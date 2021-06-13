@@ -20,4 +20,9 @@ class ApiClient extends Model
     {
         return $this->belongsTo('App\UserDeveloper');
     }
+
+    public function api_client()
+    {
+        return $this->hasMany('App\TrafficRequest');
+    }
 }

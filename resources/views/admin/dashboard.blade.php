@@ -20,18 +20,8 @@
     <div class="row justify-content-center">
       <div class="col-12 col-lg-4 py-3">
         <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title mb-3">
-              <span class="theme-icon-holder card-icon-holder mr-2">
-                <i class="fas fa-chart-bar"></i>
-              </span>
-              <!--//card-icon-holder-->
-              <span class="card-title-text">Traffic Request</span>
-            </h5>
-            <div class="card-text">
-              Section overview goes here. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-            </div>
-            <a class="card-link-mask" href="docs-page.html#section-1"></a>
+          <div class="card-body" id="traffic_request">
+            <a class="card-link-mask" href="#"></a>
           </div>
           <!--//card-body-->
         </div>
@@ -40,18 +30,8 @@
       <!--//col-->
       <div class="col-12 col-lg-4 py-3">
         <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title mb-3">
-              <span class="theme-icon-holder card-icon-holder mr-2">
-                <i class="fas fa-desktop"></i>
-              </span>
-              <!--//card-icon-holder-->
-              <span class="card-title-text">Website Request</span>
-            </h5>
-            <div class="card-text">
-              Section overview goes here. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-            </div>
-            <a class="card-link-mask" href="docs-page.html#section-2"></a>
+          <div class="card-body" id="request_web">
+            <a class="card-link-mask" href="#"></a>
           </div>
           <!--//card-body-->
         </div>
@@ -60,18 +40,8 @@
       <!--//col-->
       <div class="col-12 col-lg-4 py-3">
         <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title mb-3">
-              <span class="theme-icon-holder card-icon-holder mr-2">
-                <i class="fas fa-mobile-alt"></i>
-              </span>
-              <!--//card-icon-holder-->
-              <span class="card-title-text">Mobile Request</span>
-            </h5>
-            <div class="card-text">
-              Section overview goes here. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-            </div>
-            <a class="card-link-mask" href="docs-page.html#section-3"></a>
+          <div class="card-body" id="request_mobile">
+            <a class="card-link-mask" href="#"></a>
           </div>
           <!--//card-body-->
         </div>
@@ -83,4 +53,140 @@
   </div>
   <!--//container-->
 </div>
+@endsection
+
+@section('highchars')
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script>
+  // Traffic Request 
+  Highcharts.chart('traffic_request', {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Traffic Request'
+    },
+    subtitle: {
+      text: 'Dalam Minggu Ini'
+    },
+    xAxis: {
+      categories: <?php echo json_encode($date_traffic); ?>,
+      crosshair: true
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Request'
+      }
+    },
+    tooltip: {
+      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        '<td style="padding:0"><b>{point.y:.0f} request</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      }
+    },
+    series: [{
+      name: 'Traffic Request',
+      data: <?php echo json_encode($count_traffic); ?>,
+
+    }]
+  });
+
+  //Request Mobile
+
+  Highcharts.chart('request_mobile', {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Mobile Client'
+    },
+    subtitle: {
+      text: 'Dalam Minggu Ini'
+    },
+    xAxis: {
+      categories: <?php echo json_encode($date_traffic_mobile); ?>,
+      crosshair: true
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Request'
+      }
+    },
+    tooltip: {
+      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        '<td style="padding:0"><b>{point.y:.0f} request </b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      }
+    },
+    series: [{
+      name: 'Mobile Client',
+      data: <?php echo json_encode($count_traffic_mobile); ?>,
+
+    }]
+  });
+
+  //Request Success
+
+  Highcharts.chart('request_web', {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Web Client'
+    },
+    subtitle: {
+      text: 'Dalam Minggu Ini'
+    },
+    xAxis: {
+      categories: <?php echo json_encode($date_traffic_web); ?>,
+      crosshair: true
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Request'
+      }
+    },
+    tooltip: {
+      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        '<td style="padding:0"><b>{point.y:.0f} request</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      }
+    },
+    series: [{
+      name: 'Web Client',
+      data: <?php echo json_encode($count_traffic_web); ?>,
+
+    }]
+  });
+</script>
 @endsection

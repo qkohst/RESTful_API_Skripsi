@@ -93,6 +93,7 @@
 
   <script src="/assets/js/mycode.js"></script>
 
+  @yield('highchars')
 
 
 </body>

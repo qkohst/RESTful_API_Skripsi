@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Docs;
 
 use App\ApiClient;
 use App\Http\Controllers\Controller;
+use App\TrafficRequest;
 use App\UserDeveloper;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 
@@ -82,7 +85,69 @@ class DeveloperApiClientController extends Controller
     public function show($id)
     {
         $data_api_client = ApiClient::findorfail($id);
-        return view('users.myapp.show', compact('data_api_client'));
+        // Traffic Request
+        $data = TrafficRequest::where('api_client_id', $id)
+            ->select([
+                DB::raw('count(id) as `count`'),
+                DB::raw('DATE(created_at) as day')
+            ])->groupBy('day')
+            ->where('created_at', '>=', Carbon::now()->subWeeks(1))
+            ->get();
+
+        $date_traffic = [];
+        foreach ($data as $entry) {
+            $date_traffic[] = $entry->day;
+        }
+
+        $count_traffic = [];
+        foreach ($data as $entry) {
+            $count_traffic[] = $entry->count;
+        }
+
+        // Request Success 
+        $data_success = TrafficRequest::where([
+            ['api_client_id', $id],
+            ['status', '1']
+        ])
+            ->select([
+                DB::raw('count(id) as `count`'),
+                DB::raw('DATE(created_at) as day')
+            ])->groupBy('day')
+            ->where('created_at', '>=', Carbon::now()->subWeeks(1))
+            ->get();
+
+        $date_traffic_success = [];
+        foreach ($data_success as $entry) {
+            $date_traffic_success[] = $entry->day;
+        }
+
+        $count_traffic_success  = [];
+        foreach ($data_success as $entry) {
+            $count_traffic_success[] = $entry->count;
+        }
+
+        // Request Errors 
+        $data_errors = TrafficRequest::where([
+            ['api_client_id', $id],
+            ['status', '0']
+        ])
+            ->select([
+                DB::raw('count(id) as `count`'),
+                DB::raw('DATE(created_at) as day')
+            ])->groupBy('day')
+            ->where('created_at', '>=', Carbon::now()->subWeeks(1))
+            ->get();
+
+        $date_traffic_errors = [];
+        foreach ($data_errors as $entry) {
+            $date_traffic_errors[] = $entry->day;
+        }
+
+        $count_traffic_errors  = [];
+        foreach ($data_errors as $entry) {
+            $count_traffic_errors[] = $entry->count;
+        }
+        return view('users.myapp.show', compact('data_api_client', 'date_traffic', 'count_traffic', 'date_traffic_success', 'count_traffic_success', 'date_traffic_errors', 'count_traffic_errors'));
     }
 
     /**

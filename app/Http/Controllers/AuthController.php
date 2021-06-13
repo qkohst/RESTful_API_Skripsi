@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\ApiClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Rules\MatchOldPassword;
+use App\TrafficRequest;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 
@@ -16,7 +18,16 @@ class AuthController extends Controller
             'username' => 'required|numeric',
             'password' => 'required|min:6'
         ]);
+
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         if (!Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
             return response()->json([
                 'message' => 'Incorrect username or password'
             ], 401);
@@ -31,6 +42,13 @@ class AuthController extends Controller
             'role' => $user->role,
             'api_token' => $user->api_token,
         ];
+
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
+
         return response()->json([
             'message' => 'Login successfully',
             'user' => $data
