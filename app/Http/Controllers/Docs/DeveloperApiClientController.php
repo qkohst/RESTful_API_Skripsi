@@ -148,4 +148,12 @@ class DeveloperApiClientController extends Controller
         $data->update($request->all());
         return back()->withSuccess('Status API Key Berhasil Dirubah !');
     }
+
+    public function risetapi_key($id)
+    {
+        $data = ApiClient::find($id);
+        $data->api_key = Str::random(60);
+        $data->update();
+        return back()->withSuccess('Reset Api Key Berhasil!');
+    }
 }

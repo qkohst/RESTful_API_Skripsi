@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth:developer'], function () {
             Route::resource('myapp', 'Docs\DeveloperApiClientController', [
                 'except' => ['edit', 'destroy']
             ]);
+            Route::post('myapp/{id}/risetapi_key', 'Docs\DeveloperApiClientController@risetapi_key')->name('risetapi_key');
         });
     });
 });

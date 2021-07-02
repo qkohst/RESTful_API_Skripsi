@@ -16,6 +16,10 @@
 <div class="container">
   <div class="docs-overview py-3">
     <div class="d-flex justify-content-end align-items-center">
+      <form action="/developer/myapp/{{$data_api_client->id}}/risetapi_key" method="POST">
+        @csrf
+        <button type="submit" class="btn text-warning" onclick="return confirm('Reset API Key ?')"><i class="fa fa-window-restore"></i> Reset API Key</button>
+      </form>
       <!-- Button enable or desable  -->
       @if(Auth::guard('developer')->user()->status =='Aktif')
       @if($data_api_client->status =='Aktif')
@@ -23,14 +27,14 @@
         @csrf
         @method('PUT')
         <input type="text" class="form-control d-none" id="status" name="status" value="Non Aktif">
-        <button type="submit" class="btn text-secondary" onclick="return confirm('Rubah Status API Key ?')"><i class="fas fa-toggle-off"></i> Desable API Key</button>
+        <button type="submit" class="btn text-secondary" onclick="return confirm('Desable API Key ?')"><i class="fas fa-toggle-off"></i> Desable API Key</button>
       </form>
       @else
       <form action="/developer/myapp/{{$data_api_client->id}}" method="POST">
         @csrf
         @method('PUT')
         <input type="text" class="form-control d-none" id="status" name="status" value="Aktif">
-        <button type="submit" class="btn text-primary" onclick="return confirm('Rubah Status API Key ?')"><i class="fas fa-toggle-on"></i> Enable API Key</button>
+        <button type="submit" class="btn text-primary" onclick="return confirm('Enable API Key ?')"><i class="fas fa-toggle-on"></i> Enable API Key</button>
       </form>
       @endif
       @endif
@@ -51,7 +55,9 @@
           </tr>
           <tr>
             <th class="theme-bg-light">api_key</th>
-            <td><code><b>{{$data_api_client->api_key}}</b></code></td>
+            <td>
+              <code><b>{{$data_api_client->api_key}}</b></code>
+            </td>
           </tr>
           <tr>
             <th class="theme-bg-light">status api_key </th>
@@ -141,6 +147,5 @@
       data: <?php echo json_encode($count_traffic_errors); ?>,
     }]
   });
-
 </script>
 @endsection
