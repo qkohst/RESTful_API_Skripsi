@@ -19,10 +19,12 @@ class CheckApiKey
         $api_client = ApiClient::where('api_key', $request->api_key)->first();
         if (is_null($api_client)) {
             return response()->json([
+                'status' => 'error',
                 'message' => 'Invalid Api Key'
             ], 400);
         } elseif ($api_client->status == 'Non Aktif') {
             return response()->json([
+                'status' => 'error',
                 'message' => 'Api Key is Non Aktif'
             ], 400);
         }

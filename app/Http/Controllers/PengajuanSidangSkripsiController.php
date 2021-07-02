@@ -11,6 +11,9 @@ use App\Mahasiswa;
 use App\SidangSkripsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\ApiClient;
+use App\TrafficRequest;
+use Illuminate\Support\Facades\Validator;
 
 class PengajuanSidangSkripsiController extends Controller
 {
@@ -23,17 +26,40 @@ class PengajuanSidangSkripsiController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
+        $validator = Validator::make($request->all(), [
             'file_sidang_skripsi' => 'required|mimes:pdf|max:5000',
         ]);
+        if ($validator->fails()) {
+            $response = [
+                'status'  => 'error',
+                'message' => $validator->messages()->all()[0]
+            ];
+
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
+            return response()->json($response, 422);
+        }
 
         $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
         $judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', $mahasiswa->id)->first();
 
         if (is_null($judul_skripsi)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'You are not allowed at this stage, please complete the process pengajuan judul',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
             return response()->json($response, 400);
         }
         $dosen_pembimbing = DosenPembimbing::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->get('id');
@@ -42,8 +68,15 @@ class PengajuanSidangSkripsiController extends Controller
             ->first();
         if (is_null($bimbingan_skripsi) || $bimbingan_skripsi->status_persetujuan_bimbingan_skripsi == 'Antrian') {
             $response = [
+                'status'  => 'error',
                 'message' => 'You are not allowed at this stage, please complete the process bimbingan skripsi',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
             return response()->json($response, 400);
         }
         $data_sidang_skripsi = SidangSkripsi::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
@@ -60,7 +93,7 @@ class PengajuanSidangSkripsiController extends Controller
                 'status_sidang_skripsi' => 'Pengajuan',
             ]);
             $sidang_skripsi->save();
-            $data_file_sidang_skripsi->move('fileSidang/', $sidang_skripsi_fileName);
+            $data_file_sidang_skripsi->move('api/v1/fileSidang/', $sidang_skripsi_fileName);
 
             $data = [
                 'id' => $sidang_skripsi->id,
@@ -75,10 +108,16 @@ class PengajuanSidangSkripsiController extends Controller
                 'status_sidang_skripsi' => $sidang_skripsi->status_sidang_skripsi,
                 'created_at' => $sidang_skripsi->created_at->diffForHumans(),
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '1',
+            ]);
+            $traffic->save();
 
             $response = [
+                'status'  => 'success',
                 'message' => 'File uploaded successfully',
-                'sidang_skripsi' => $data
+                'data' => $data
             ];
             return response()->json($response, 201);
         } else {
@@ -89,6 +128,7 @@ class PengajuanSidangSkripsiController extends Controller
                 $data_sidang_skripsi->persetujuan_pembimbing2_sidang_skripsi = 'Antrian';
                 $data_sidang_skripsi->catatan_pembimbing2_sidang_skripsi = '';
                 $data_sidang_skripsi->update();
+                $data_file_sidang_skripsi->move('api/v1/fileSidang/', $sidang_skripsi_fileName);
 
                 $data = [
                     'id' => $data_sidang_skripsi->id,
@@ -105,39 +145,74 @@ class PengajuanSidangSkripsiController extends Controller
                 ];
 
                 $response = [
+                    'status'  => 'success',
                     'message' => 'File updated successfully',
-                    'sidang_skripsi' => $data
+                    'data' => $data
                 ];
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '1',
+                ]);
+                $traffic->save();
+
                 return response()->json($response, 200);
             } elseif ($data_sidang_skripsi->persetujuan_pembimbing1_sidang_skripsi == 'Antrian' || $data_sidang_skripsi->persetujuan_pembimbing2_sidang_skripsi == 'Antrian') {
                 $response = [
-                    'message' => 'please wait for the approval of the dosen pembimbing',
+                    'status'  => 'error',
+                    'message' => 'Please wait for the approval of the dosen pembimbing',
                 ];
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '0',
+                ]);
+                $traffic->save();
+
                 return response()->json($response, 409);
             }
             $response = [
+                'status'  => 'error',
                 'message' => 'It is detected that the sidang skripsi has been approved by the dosen pembimbing, you cannot change data',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
             return response()->json($response, 409);
         }
     }
 
-    public function cek_persetujuan_dosbing()
+    public function cek_persetujuan_dosbing(Request $request)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
         $judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', $mahasiswa->id)->first();
 
         if (is_null($judul_skripsi)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'Judul Skripsi Not Found, please upload data',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
             return response()->json($response, 404);
         }
         $sidang_skripsi = SidangSkripsi::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
         if (is_null($sidang_skripsi)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'Sidang Skripsi Not Found, please upload data',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
             return response()->json($response, 404);
         }
         $data = [
@@ -150,36 +225,62 @@ class PengajuanSidangSkripsiController extends Controller
             'catatan_pembimbing1_sidang_skripsi' => $sidang_skripsi->catatan_pembimbing1_sidang_skripsi,
             'persetujuan_pembimbing2_sidang_skripsi' => $sidang_skripsi->persetujuan_pembimbing2_sidang_skripsi,
             'catatan_pembimbing2_sidang_skripsi' => $sidang_skripsi->catatan_pembimbing2_sidang_skripsi,
-            'created_at' => $sidang_skripsi->created_at
+            'tanggal_pengajuan_sidang_skripsi' => $sidang_skripsi->created_at->format('Y-m-d H:i:s'),
         ];
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
 
         return response()->json([
+            'status'  => 'success',
             'message' => 'Submission status',
-            'status_persetujuan_dosen_pembimbing' => $data
+            'data' => $data
         ], 200);
     }
 
-    public function cek_waktu()
+    public function cek_waktu(Request $request)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
         $judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', $mahasiswa->id)->first();
 
         if (is_null($judul_skripsi)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'Judul Skripsi Not Found, please upload data',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
             return response()->json($response, 404);
         }
         $sidang_skripsi = SidangSkripsi::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
         if (is_null($sidang_skripsi)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'Sidang Skripsi Not Found, please upload data',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
             return response()->json($response, 404);
         } elseif (is_null($sidang_skripsi->waktu_sidang_skripsi)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'Data not yet determined',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
             return response()->json($response, 404);
         } else {
             $penguji1 = DosenPenguji::where([
@@ -210,9 +311,15 @@ class PengajuanSidangSkripsiController extends Controller
                 'tempat_sidang_skripsi' => $sidang_skripsi->tempat_sidang_skripsi
             ];
             $response = [
-                'message' => 'Data information',
-                'waktu_sidang_skripsi' => $data
+                'status'  => 'success',
+                'message' => 'Information Waktu Sidang',
+                'data' => $data
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '1',
+            ]);
+            $traffic->save();
             return response()->json($response, 200);
         }
     }

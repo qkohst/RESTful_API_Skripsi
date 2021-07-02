@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['middleware' => 'checkApiKey'], function () {
-        
+
         Route::post('auth/login', 'AuthController@login');
 
         Route::group(['middleware' => 'auth:api'], function () {
@@ -94,6 +94,9 @@ Route::group(['prefix' => 'v1'], function () {
                         'uses' => 'MahasiswaController@resetpassword'
                     ]);
 
+                    Route::get('jabatanstruktural', 'JabatanStrukturalController@index');
+                    Route::get('jabatanfungsional', 'JabatanFungsionalController@index');
+
                     Route::get('dosen/aktif', [
                         'uses' => 'DosenController@filter_by_status'
                     ]);
@@ -135,9 +138,6 @@ Route::group(['prefix' => 'v1'], function () {
                     ]);
                     Route::get('sidangskripsi/{id}/daftarnilai', [
                         'uses' => 'SidangSkripsiController@daftar_nilai'
-                    ]);
-                    Route::get('sidangskripsi/{id}/rekapnilai', [
-                        'uses' => 'SidangSkripsiController@rekap_nilai'
                     ]);
                 });
             });
@@ -182,9 +182,13 @@ Route::group(['prefix' => 'v1'], function () {
                         'uses' => 'PersyaratanSkripsiController@lihat_status_juduldosbing2'
                     ]);
 
+                    Route::get('bimbinganproposal/beritaacara', [
+                        'uses' => 'PengajuanBimbinganProposalController@beritaacara'
+                    ]);
                     Route::resource('bimbinganproposal', 'PengajuanBimbinganProposalController', [
                         'only' => ['index', 'show', 'store']
                     ]);
+
 
                     Route::resource('seminarproposal', 'PengajuanSeminarProposalController', [
                         'only' => ['store']
@@ -202,6 +206,9 @@ Route::group(['prefix' => 'v1'], function () {
                         'only' => ['index', 'show']
                     ]);
 
+                    Route::get('bimbinganskripsi/beritaacara', [
+                        'uses' => 'PengajuanBimbinganSkripsiController@beritaacara'
+                    ]);
                     Route::resource('bimbinganskripsi', 'PengajuanBimbinganSkripsiController', [
                         'only' => ['index', 'show', 'store']
                     ]);
@@ -217,9 +224,6 @@ Route::group(['prefix' => 'v1'], function () {
                     ]);
                     Route::get('hasilsidangskripsi/daftarnilai', [
                         'uses' => 'MahasiswaHasilSidangSkripsiController@daftar_nilai'
-                    ]);
-                    Route::get('hasilsidangskripsi/rekapnilai', [
-                        'uses' => 'MahasiswaHasilSidangSkripsiController@rekap_nilai'
                     ]);
                     Route::resource('hasilsidangskripsi', 'MahasiswaHasilSidangSkripsiController', [
                         'only' => ['index', 'show']

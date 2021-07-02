@@ -12,6 +12,9 @@ use App\SidangSkripsi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\ApiClient;
+use App\TrafficRequest;
+use Illuminate\Support\Facades\Validator;
 
 class DosenVerifikasiSidangSkripsiController extends Controller
 {
@@ -20,8 +23,10 @@ class DosenVerifikasiSidangSkripsiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $dosen = Dosen::where('user_id_user', Auth::user()->id)->first();
         $id_dosen_penguji = DosenPenguji::where('dosen_id_dosen', $dosen->id)->get('judul_skripsi_id_judul_skripsi');
         $id_dosen_pembimbing = DosenPembimbing::where('dosen_id_dosen', $dosen->id)->get('judul_skripsi_id_judul_skripsi');
@@ -46,6 +51,10 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                 'id' => $data_judul_skripsi->id,
                 'nama_judul_skripsi' => $data_judul_skripsi->nama_judul_skripsi
             ];
+            $sidang->file_sidang_skripsi = [
+                'nama_file' => $data_sidang_skripsi->file_sidang_skripsi,
+                'url' => 'fileSidang/' . $data_sidang_skripsi->file_sidang_skripsi
+            ];
 
             $cek_pembimbing = DosenPembimbing::where([
                 ['dosen_id_dosen', $dosen->id],
@@ -57,9 +66,9 @@ class DosenVerifikasiSidangSkripsiController extends Controller
             ])->first();
 
             if (!is_null($cek_pembimbing)) {
-                $sidang->jabatan_dosen_sidang_skripsi = 'Dosen Pembimbing ' . $cek_pembimbing->jabatan_dosen_pembimbing;
+                $sidang->jabatan_dosen_sidang_skripsi = 'Pembimbing ' . $cek_pembimbing->jabatan_dosen_pembimbing;
             } elseif (!is_null($cek_penguji)) {
-                $sidang->jabatan_dosen_sidang_skripsi = 'Dosen Penguji ' . $cek_penguji->jabatan_dosen_penguji;
+                $sidang->jabatan_dosen_sidang_skripsi = 'Penguji ' . $cek_penguji->jabatan_dosen_penguji;
             }
 
             $sidang->waktu_sidang_skripsi = $data_sidang_skripsi->waktu_sidang_skripsi;
@@ -82,10 +91,16 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                 $sidang->status_verifikasi_sidang_skripsi = $cek_verifikasi->status_verifikasi_hasil_sidang_skripsi;
             }
         }
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
 
         return response()->json([
-            'message' => 'List of Data',
-            'sidang_skripsi' => $sidang_skripsi,
+            'status'  => 'success',
+            'message' => 'List of Data Sidang Skripsi',
+            'data' => $sidang_skripsi,
         ], 200);
     }
 
@@ -95,8 +110,10 @@ class DosenVerifikasiSidangSkripsiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         try {
             $sidang_skripsi = SidangSkripsi::findorfail($id);
             $judul_skripsi = JudulSkripsi::findorfail($sidang_skripsi->judul_skripsi_id_judul_skripsi);
@@ -114,8 +131,14 @@ class DosenVerifikasiSidangSkripsiController extends Controller
 
             if (is_null($cek_pembimbing) && is_null($cek_penguji)) {
                 $response = [
+                    'status'  => 'error',
                     'message' => 'You do not have access to data with id ' . $sidang_skripsi->id,
                 ];
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '0',
+                ]);
+                $traffic->save();
 
                 return response()->json($response, 400);
             }
@@ -131,6 +154,13 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                 $status_verifikasi_hasil_sidang_skripsi = $cek_verifikasi->status_verifikasi_hasil_sidang_skripsi;
                 $catatan_hasil_sidang_skripsi = $cek_verifikasi->catatan_hasil_sidang_skripsi;
             }
+            $jabatan_dosen_sidang_skripsi = null;
+            if (!is_null($cek_pembimbing)) {
+                $jabatan_dosen_sidang_skripsi = 'Pembimbing ' . $cek_pembimbing->jabatan_dosen_pembimbing;
+            } elseif (!is_null($cek_penguji)) {
+                $jabatan_dosen_sidang_skripsi = 'Penguji ' . $cek_penguji->jabatan_dosen_penguji;
+            }
+            $jabatan_dosen_sidang_skripsi;
 
             $data = [
                 'id' => $sidang_skripsi->id,
@@ -147,19 +177,33 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                     'nama_file' => $sidang_skripsi->file_sidang_skripsi,
                     'url' => 'fileSidang/' . $sidang_skripsi->file_sidang_skripsi
                 ],
+                'jabatan_dosen_sidang_skripsi' => $jabatan_dosen_sidang_skripsi,
                 'status_verifikasi_hasil_sidang_skripsi' => $status_verifikasi_hasil_sidang_skripsi,
                 'catatan_hasil_sidang_skripsi' => $catatan_hasil_sidang_skripsi
             ];
 
             $response = [
-                'message' => 'Data details',
-                'sidang_skripsi' => $data
+                'status'  => 'success',
+                'message' => 'Details Data Sidang Skripsi',
+                'data' => $data
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '1',
+            ]);
+            $traffic->save();
+
             return response()->json($response, 200);
         } catch (\Throwable $th) {
             $response = [
+                'status'  => 'error',
                 'message' => 'Data not found',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
 
             return response()->json($response, 404);
         }
@@ -174,14 +218,36 @@ class DosenVerifikasiSidangSkripsiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
+        $validator = Validator::make($request->all(), [
             'status_verifikasi_hasil_sidang_skripsi' => 'required|in:Revisi,Lulus Sidang',
             'catatan_hasil_sidang_skripsi' => 'required',
         ]);
+        if ($validator->fails()) {
+            $response = [
+                'status'  => 'error',
+                'message' => $validator->messages()->all()[0]
+            ];
+
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
+            return response()->json($response, 422);
+        }
 
         $sidang_skripsi = SidangSkripsi::findorfail($id);
         if ($sidang_skripsi->waktu_sidang_skripsi > Carbon::now() && $sidang_skripsi->status_sidang_skripsi == 'Proses') {
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
             return response()->json([
+                'status'  => 'error',
                 'message' => 'Verification cannot be carried out yet, because the Sidang Skripsi has not yet started'
             ], 400);
         } elseif ($sidang_skripsi->waktu_sidang_skripsi <= Carbon::now() && $sidang_skripsi->status_sidang_skripsi == 'Proses') {
@@ -200,6 +266,7 @@ class DosenVerifikasiSidangSkripsiController extends Controller
 
             if (is_null($cek_pembimbing) && is_null($cek_penguji)) {
                 $response = [
+                    'status'  => 'error',
                     'message' => 'You do not have access to data with id ' . $sidang_skripsi->id,
                 ];
                 return response()->json($response, 400);
@@ -229,14 +296,21 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                             'id' => $judul_skripsi->id,
                             'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                         ],
-                        'jenis_dosen_hasil_sidang_skripsi' => $verifikasi->jenis_dosen_hasil_sidang_skripsi,
+                        'jabatan_dosen_sidang_skripsi' => $verifikasi->jenis_dosen_hasil_sidang_skripsi,
                         'status_verifikasi_hasil_sidang_skripsi' => $verifikasi->status_verifikasi_hasil_sidang_skripsi,
                         'catatan_hasil_sidang_skripsi' => $verifikasi->catatan_hasil_sidang_skripsi,
                         'updated_at' => $verifikasi->created_at->diffForHumans()
                     ];
+                    $traffic = new TrafficRequest([
+                        'api_client_id' => $api_client->id,
+                        'status' => '1',
+                    ]);
+                    $traffic->save();
+
                     return response()->json([
-                        'message' => 'verification is successful',
-                        'verifikasi_hasil_sidang_skripsi' => $data,
+                        'status'  => 'success',
+                        'message' => 'Verification is successful',
+                        'data' => $data,
                     ], 200);
                 } elseif ($cek_verifikasi->status_verifikasi_hasil_sidang_skripsi == 'Revisi') {
                     $cek_verifikasi->status_verifikasi_hasil_sidang_skripsi = $request->status_verifikasi_hasil_sidang_skripsi;
@@ -253,17 +327,30 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                             'id' => $judul_skripsi->id,
                             'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                         ],
-                        'jenis_dosen_hasil_sidang_skripsi' => $cek_verifikasi->jenis_dosen_hasil_sidang_skripsi,
+                        'jabatan_dosen_sidang_skripsi' => $cek_verifikasi->jenis_dosen_hasil_sidang_skripsi,
                         'status_verifikasi_hasil_sidang_skripsi' => $cek_verifikasi->status_verifikasi_hasil_sidang_skripsi,
                         'catatan_hasil_sidang_skripsi' => $cek_verifikasi->catatan_hasil_sidang_skripsi,
                         'updated_at' => $cek_verifikasi->created_at->diffForHumans()
                     ];
+                    $traffic = new TrafficRequest([
+                        'api_client_id' => $api_client->id,
+                        'status' => '1',
+                    ]);
+                    $traffic->save();
+
                     return response()->json([
-                        'message' => 'update verification is successful',
-                        'verifikasi_hasil_sidang_skripsi' => $data,
+                        'status'  => 'success',
+                        'message' => 'Update verification is successful',
+                        'data' => $data,
                     ], 200);
                 } elseif ($cek_verifikasi->status_verifikasi_hasil_sidang_skripsi == 'Lulus Sidang') {
+                    $traffic = new TrafficRequest([
+                        'api_client_id' => $api_client->id,
+                        'status' => '0',
+                    ]);
+                    $traffic->save();
                     return response()->json([
+                        'status'  => 'error',
                         'message' => 'the data has been verified, you can not change the verification status. Please continue with the process input nilai'
                     ], 400);
                 }
@@ -293,14 +380,21 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                             'id' => $judul_skripsi->id,
                             'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                         ],
-                        'jenis_dosen_hasil_sidang_skripsi' => $verifikasi->jenis_dosen_hasil_sidang_skripsi,
+                        'jabatan_dosen_sidang_skripsi' => $verifikasi->jenis_dosen_hasil_sidang_skripsi,
                         'status_verifikasi_hasil_sidang_skripsi' => $verifikasi->status_verifikasi_hasil_sidang_skripsi,
                         'catatan_hasil_sidang_skripsi' => $verifikasi->catatan_hasil_sidang_skripsi,
                         'updated_at' => $verifikasi->created_at->diffForHumans()
                     ];
+                    $traffic = new TrafficRequest([
+                        'api_client_id' => $api_client->id,
+                        'status' => '1',
+                    ]);
+                    $traffic->save();
+
                     return response()->json([
-                        'message' => 'verification is successful',
-                        'verifikasi_hasil_sidang_skripsi' => $data,
+                        'status'  => 'success',
+                        'message' => 'Verification is successful',
+                        'data' => $data,
                     ], 200);
                 } elseif ($cek_verifikasi->status_verifikasi_hasil_sidang_skripsi == 'Revisi') {
                     $cek_verifikasi->status_verifikasi_hasil_sidang_skripsi = $request->status_verifikasi_hasil_sidang_skripsi;
@@ -317,29 +411,61 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                             'id' => $judul_skripsi->id,
                             'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                         ],
-                        'jenis_dosen_hasil_sidang_skripsi' => $cek_verifikasi->jenis_dosen_hasil_sidang_skripsi,
+                        'jabatan_dosen_sidang_skripsi' => $cek_verifikasi->jenis_dosen_hasil_sidang_skripsi,
                         'status_verifikasi_hasil_sidang_skripsi' => $cek_verifikasi->status_verifikasi_hasil_sidang_skripsi,
                         'catatan_hasil_sidang_skripsi' => $cek_verifikasi->catatan_hasil_sidang_skripsi,
                         'updated_at' => $cek_verifikasi->created_at->diffForHumans()
                     ];
+                    $traffic = new TrafficRequest([
+                        'api_client_id' => $api_client->id,
+                        'status' => '1',
+                    ]);
+                    $traffic->save();
+
                     return response()->json([
-                        'message' => 'update verification is successful',
-                        'verifikasi_hasil_sidang_skripsi' => $data,
+                        'status'  => 'success',
+                        'message' => 'Update verification is successful',
+                        'data' => $data,
                     ], 200);
                 } elseif ($cek_verifikasi->status_verifikasi_hasil_sidang_skripsi == 'Lulus Sidang') {
+                    $traffic = new TrafficRequest([
+                        'api_client_id' => $api_client->id,
+                        'status' => '0',
+                    ]);
+                    $traffic->save();
                     return response()->json([
+                        'status'  => 'error',
                         'message' => 'the data has been verified, you can not change the verification status. Please continue with the process input nilai'
                     ], 400);
                 }
             }
+        } elseif ($sidang_skripsi->status_sidang_skripsi == 'Selesai') {
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Sidang Skripsi Has Completed'
+            ], 400);
         }
     }
 
     public function input_nilai(Request $request, $id)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $sidang_skripsi = SidangSkripsi::findorfail($id);
         if ($sidang_skripsi->waktu_sidang_skripsi > Carbon::now() && $sidang_skripsi->status_sidang_skripsi == 'Proses') {
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
             return response()->json([
+                'status'  => 'error',
                 'message' => 'Input nilai cannot be carried out yet, because the seminar proposal has not yet started'
             ], 400);
         } elseif ($sidang_skripsi->waktu_sidang_skripsi <= Carbon::now() && $sidang_skripsi->status_sidang_skripsi == 'Proses') {
@@ -356,10 +482,24 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                 ['judul_skripsi_id_judul_skripsi', $judul_skripsi->id]
             ])->first();
 
+            $jabatan_dosen_sidang_skripsi = null;
+            if (!is_null($cek_pembimbing)) {
+                $jabatan_dosen_sidang_skripsi = 'Pembimbing ' . $cek_pembimbing->jabatan_dosen_pembimbing;
+            } elseif (!is_null($cek_penguji)) {
+                $jabatan_dosen_sidang_skripsi = 'Penguji ' . $cek_penguji->jabatan_dosen_penguji;
+            }
+            $jabatan_dosen_sidang_skripsi;
+
             if (is_null($cek_pembimbing) && is_null($cek_penguji)) {
                 $response = [
+                    'status'  => 'error',
                     'message' => 'You do not have access to data with id ' . $sidang_skripsi->id,
                 ];
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '0',
+                ]);
+                $traffic->save();
                 return response()->json($response, 400);
             }
 
@@ -367,20 +507,45 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                 ['dosen_id_dosen', $dosen->id],
                 ['sidang_skripsi_id_sidang', $sidang_skripsi->id]
             ])->first();
-            if ($cek_verifikasi->status_verifikasi_hasil_sidang_skripsi == 'Revisi') {
+            if (is_null($cek_verifikasi)) {
                 $response = [
+                    'status'  => 'error',
+                    'message' => 'Sidang Skripsi with id ' . $sidang_skripsi->id . ' not verified, please verify first.',
+                ];
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '0',
+                ]);
+                $traffic->save();
+
+                return response()->json($response, 400);
+            } elseif ($cek_verifikasi->status_verifikasi_hasil_sidang_skripsi == 'Revisi') {
+                $response = [
+                    'status'  => 'error',
                     'message' => 'You do not have access to data with id ' . $sidang_skripsi->id . ', because the verification status is Revisi. Please re-verify before input nilai'
                 ];
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '0',
+                ]);
+                $traffic->save();
+
                 return response()->json($response, 400);
             } elseif (!is_null($cek_pembimbing)) {
                 if ($cek_verifikasi->nilai_a1_hasil_sidang_skripsi != null) {
                     $response = [
+                        'status'  => 'error',
                         'message' => 'It is detected that you have made an assessment, on the data with an id ' . $sidang_skripsi->id
                     ];
+                    $traffic = new TrafficRequest([
+                        'api_client_id' => $api_client->id,
+                        'status' => '0',
+                    ]);
+                    $traffic->save();
                     return response()->json($response, 400);
                 }
 
-                $this->validate($request, [
+                $validator = Validator::make($request->all(), [
                     'nilai_a1_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
                     'nilai_a2_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
                     'nilai_a3_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
@@ -395,6 +560,21 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                     'nilai_c2_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
                     'nilai_c3_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
                 ]);
+                if ($validator->fails()) {
+                    $response = [
+                        'status'  => 'error',
+                        'message' => $validator->messages()->all()[0]
+                    ];
+
+                    $traffic = new TrafficRequest([
+                        'api_client_id' => $api_client->id,
+                        'status' => '0',
+                    ]);
+                    $traffic->save();
+
+                    return response()->json($response, 422);
+                }
+
                 $cek_verifikasi->nilai_a1_hasil_sidang_skripsi = $request->nilai_a1_hasil_sidang_skripsi;
                 $cek_verifikasi->nilai_a2_hasil_sidang_skripsi = $request->nilai_a2_hasil_sidang_skripsi;
                 $cek_verifikasi->nilai_a3_hasil_sidang_skripsi = $request->nilai_a3_hasil_sidang_skripsi;
@@ -421,6 +601,7 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                         'id' => $judul_skripsi->id,
                         'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                     ],
+                    'jabatan_dosen_sidang_skripsi' => $jabatan_dosen_sidang_skripsi,
                     'nilai_a1_hasil_sidang_skripsi' => $cek_verifikasi->nilai_a1_hasil_sidang_skripsi,
                     'nilai_a2_hasil_sidang_skripsi' => $cek_verifikasi->nilai_a2_hasil_sidang_skripsi,
                     'nilai_a3_hasil_sidang_skripsi' => $cek_verifikasi->nilai_a3_hasil_sidang_skripsi,
@@ -436,19 +617,32 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                     'nilai_c3_hasil_sidang_skripsi' => $cek_verifikasi->nilai_c3_hasil_sidang_skripsi
                 ];
 
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '1',
+                ]);
+                $traffic->save();
+
                 return response()->json([
+                    'status'  => 'success',
                     'message' => 'Input nilai is successful',
                     'nilai_hasil_sidang_skripsi' => $data,
                 ], 200);
             } elseif (!is_null($cek_penguji)) {
                 if ($cek_verifikasi->nilai_b1_hasil_sidang_skripsi != null) {
                     $response = [
+                        'status'  => 'error',
                         'message' => 'It is detected that you have made an assessment, on the data with an id ' . $sidang_skripsi->id
                     ];
+                    $traffic = new TrafficRequest([
+                        'api_client_id' => $api_client->id,
+                        'status' => '0',
+                    ]);
+                    $traffic->save();
                     return response()->json($response, 400);
                 }
 
-                $this->validate($request, [
+                $validator = Validator::make($request->all(), [
                     'nilai_b1_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
                     'nilai_b2_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
                     'nilai_b3_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
@@ -460,6 +654,20 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                     'nilai_c2_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
                     'nilai_c3_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
                 ]);
+                if ($validator->fails()) {
+                    $response = [
+                        'status'  => 'error',
+                        'message' => $validator->messages()->all()[0]
+                    ];
+
+                    $traffic = new TrafficRequest([
+                        'api_client_id' => $api_client->id,
+                        'status' => '0',
+                    ]);
+                    $traffic->save();
+
+                    return response()->json($response, 422);
+                }
                 $cek_verifikasi->nilai_b1_hasil_sidang_skripsi = $request->nilai_b1_hasil_sidang_skripsi;
                 $cek_verifikasi->nilai_b2_hasil_sidang_skripsi = $request->nilai_b2_hasil_sidang_skripsi;
                 $cek_verifikasi->nilai_b3_hasil_sidang_skripsi = $request->nilai_b3_hasil_sidang_skripsi;
@@ -483,6 +691,7 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                         'id' => $judul_skripsi->id,
                         'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                     ],
+                    'jabatan_dosen_sidang_skripsi' => $jabatan_dosen_sidang_skripsi,
                     'nilai_a1_hasil_sidang_skripsi' => $cek_verifikasi->nilai_a1_hasil_sidang_skripsi,
                     'nilai_a2_hasil_sidang_skripsi' => $cek_verifikasi->nilai_a2_hasil_sidang_skripsi,
                     'nilai_a3_hasil_sidang_skripsi' => $cek_verifikasi->nilai_a3_hasil_sidang_skripsi,
@@ -498,16 +707,35 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                     'nilai_c3_hasil_sidang_skripsi' => $cek_verifikasi->nilai_c3_hasil_sidang_skripsi
                 ];
 
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '1',
+                ]);
+                $traffic->save();
+
                 return response()->json([
+                    'status'  => 'success',
                     'message' => 'Input nilai is successful',
                     'nilai_hasil_sidang_skripsi' => $data,
                 ], 200);
             }
+        } elseif ($sidang_skripsi->status_sidang_skripsi == 'Selesai') {
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Sidang Skripsi Has Completed'
+            ], 400);
         }
     }
 
-    public function lihat_nilai($id)
+    public function lihat_nilai(Request $request, $id)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $sidang_skripsi = SidangSkripsi::findorfail($id);
         $judul_skripsi = JudulSkripsi::findorfail($sidang_skripsi->judul_skripsi_id_judul_skripsi);
         $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
@@ -524,8 +752,14 @@ class DosenVerifikasiSidangSkripsiController extends Controller
 
         if (is_null($cek_pembimbing) && is_null($cek_penguji)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'You do not have access to data with id ' . $sidang_skripsi->id,
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
 
             return response()->json($response, 400);
         }
@@ -537,11 +771,23 @@ class DosenVerifikasiSidangSkripsiController extends Controller
 
         if (is_null($cek_verifikasi)) {
             $response = [
-                'message' => 'Nilai sidang skripsi with id ' . $sidang_skripsi->id . ' not found, please verify first.',
+                'status'  => 'error',
+                'message' => 'Sidang skripsi with id ' . $sidang_skripsi->id . ' not verified, please verify first.',
             ];
-
-            return response()->json($response, 404);
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+            return response()->json($response, 400);
         } else {
+            $jabatan_dosen_sidang_skripsi = null;
+            if (!is_null($cek_pembimbing)) {
+                $jabatan_dosen_sidang_skripsi = 'Pembimbing ' . $cek_pembimbing->jabatan_dosen_pembimbing;
+            } elseif (!is_null($cek_penguji)) {
+                $jabatan_dosen_sidang_skripsi = 'Penguji ' . $cek_penguji->jabatan_dosen_penguji;
+            }
+            $jabatan_dosen_sidang_skripsi;
             $data = [
                 'id' => $sidang_skripsi->id,
                 'mahasiswa' => [
@@ -552,6 +798,7 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                     'id' => $judul_skripsi->id,
                     'nama_judul_skripsi' => $judul_skripsi->nama_judul_skripsi
                 ],
+                'jabatan_dosen_sidang_skripsi' => $jabatan_dosen_sidang_skripsi,
                 'nilai_a1_hasil_sidang_skripsi' => $cek_verifikasi->nilai_a1_hasil_sidang_skripsi,
                 'nilai_a2_hasil_sidang_skripsi' => $cek_verifikasi->nilai_a2_hasil_sidang_skripsi,
                 'nilai_a3_hasil_sidang_skripsi' => $cek_verifikasi->nilai_a3_hasil_sidang_skripsi,
@@ -568,9 +815,16 @@ class DosenVerifikasiSidangSkripsiController extends Controller
             ];
 
             $response = [
+                'status'  => 'success',
                 'message' => 'Data information',
-                'nilai_hasil_sidang_skripsi' => $data
+                'data' => $data
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '1',
+            ]);
+            $traffic->save();
+
             return response()->json($response, 200);
         }
     }

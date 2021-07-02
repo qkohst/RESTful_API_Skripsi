@@ -11,6 +11,9 @@ use App\Mahasiswa;
 use App\SeminarProposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\ApiClient;
+use App\TrafficRequest;
+use Illuminate\Support\Facades\Validator;
 
 class PengajuanSeminarProposalController extends Controller
 {
@@ -22,17 +25,39 @@ class PengajuanSeminarProposalController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
+        $validator = Validator::make($request->all(), [
             'file_seminar_proposal' => 'required|mimes:pdf|max:5000',
         ]);
+        if ($validator->fails()) {
+            $response = [
+                'status'  => 'error',
+                'message' => $validator->messages()->all()[0]
+            ];
+
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
+            return response()->json($response, 422);
+        }
 
         $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
         $judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', $mahasiswa->id)->first();
 
         if (is_null($judul_skripsi)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'You are not allowed at this stage, please complete the process pengajuan judul',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
             return response()->json($response, 400);
         }
 
@@ -42,8 +67,14 @@ class PengajuanSeminarProposalController extends Controller
             ->first();
         if (is_null($bimbingan_proposal) || $bimbingan_proposal->status_persetujuan_bimbingan_proposal == 'Antrian') {
             $response = [
+                'status'  => 'error',
                 'message' => 'You are not allowed at this stage, please complete the process bimbingan proposal',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
             return response()->json($response, 400);
         }
         $data_seminar_proposal = SeminarProposal::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
@@ -60,7 +91,7 @@ class PengajuanSeminarProposalController extends Controller
                 'status_seminar_proposal' => 'Pengajuan',
             ]);
             $seminar_proposal->save();
-            $data_file_seminar_proposal->move('fileSeminar/', $seminar_proposal_fileName);
+            $data_file_seminar_proposal->move('api/v1/fileSeminar/', $seminar_proposal_fileName);
 
             $data = [
                 'id' => $seminar_proposal->id,
@@ -75,10 +106,16 @@ class PengajuanSeminarProposalController extends Controller
                 'status_seminar_proposal' => $seminar_proposal->status_seminar_proposal,
                 'created_at' => $seminar_proposal->created_at->diffForHumans(),
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '1',
+            ]);
+            $traffic->save();
 
             $response = [
+                'status'  => 'success',
                 'message' => 'File uploaded successfully',
-                'seminar_proposal' => $data
+                'data' => $data
             ];
             return response()->json($response, 201);
         } else {
@@ -89,6 +126,7 @@ class PengajuanSeminarProposalController extends Controller
                 $data_seminar_proposal->persetujuan_pembimbing2_seminar_proposal = 'Antrian';
                 $data_seminar_proposal->catatan_pembimbing2_seminar_proposal = '';
                 $data_seminar_proposal->update();
+                $data_file_seminar_proposal->move('api/v1/fileSeminar/', $seminar_proposal_fileName);
 
                 $data = [
                     'id' => $data_seminar_proposal->id,
@@ -105,39 +143,74 @@ class PengajuanSeminarProposalController extends Controller
                 ];
 
                 $response = [
+                    'status'  => 'success',
                     'message' => 'File updated successfully',
-                    'seminar_proposal' => $data
+                    'data' => $data
                 ];
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '1',
+                ]);
+                $traffic->save();
+
                 return response()->json($response, 200);
             } elseif ($data_seminar_proposal->persetujuan_pembimbing1_seminar_proposal == 'Antrian' || $data_seminar_proposal->persetujuan_pembimbing2_seminar_proposal == 'Antrian') {
                 $response = [
-                    'message' => 'please wait for the approval of the dosen pembimbing',
+                    'status'  => 'error',
+                    'message' => 'Please wait for the approval of the dosen pembimbing',
                 ];
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '0',
+                ]);
+                $traffic->save();
                 return response()->json($response, 409);
             }
             $response = [
+                'status'  => 'error',
                 'message' => 'It is detected that the seminar proposal has been approved by the dosen pembimbing, you cannot change data',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
             return response()->json($response, 409);
         }
     }
 
-    public function cek_persetujuan_dosbing()
+    public function cek_persetujuan_dosbing(Request $request)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
         $judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', $mahasiswa->id)->first();
 
         if (is_null($judul_skripsi)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'Judul Skripsi Not Found, please upload data',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
             return response()->json($response, 404);
         }
         $seminar_proposal = SeminarProposal::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
         if (is_null($seminar_proposal)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'Seminar Proposal Not Found, please upload data',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
             return response()->json($response, 404);
         }
         $data = [
@@ -150,36 +223,62 @@ class PengajuanSeminarProposalController extends Controller
             'catatan_pembimbing1_seminar_proposal' => $seminar_proposal->catatan_pembimbing1_seminar_proposal,
             'persetujuan_pembimbing2_seminar_proposal' => $seminar_proposal->persetujuan_pembimbing2_seminar_proposal,
             'catatan_pembimbing2_seminar_proposal' => $seminar_proposal->catatan_pembimbing2_seminar_proposal,
-            'created_at' => $seminar_proposal->created_at
+            'tanggal_pengajuan_seminar_proposal' => $seminar_proposal->created_at->format('Y-m-d H:i:s'),
         ];
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
 
         return response()->json([
+            'status'  => 'success',
             'message' => 'Submission status',
-            'status_persetujuan_dosen_pembimbing' => $data
+            'data' => $data
         ], 200);
     }
 
-    public function cek_penguji_dan_waktu()
+    public function cek_penguji_dan_waktu(Request $request)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
         $judul_skripsi = JudulSkripsi::where('mahasiswa_id_mahasiswa', $mahasiswa->id)->first();
 
         if (is_null($judul_skripsi)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'Judul Skripsi Not Found, please upload data',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
             return response()->json($response, 404);
         }
         $seminar_proposal = SeminarProposal::where('judul_skripsi_id_judul_skripsi', $judul_skripsi->id)->first();
         if (is_null($seminar_proposal)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'Seminar Proposal Not Found, please upload data',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
             return response()->json($response, 404);
         } elseif (is_null($seminar_proposal->waktu_seminar_proposal)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'Data not yet determined',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
             return response()->json($response, 404);
         } else {
             $penguji1 = DosenPenguji::where([
@@ -211,15 +310,27 @@ class PengajuanSeminarProposalController extends Controller
                     'tempat_seminar_proposal' => $seminar_proposal->tempat_seminar_proposal
                 ];
                 $response = [
-                    'message' => 'Data information',
-                    'penguji_dan_waktu_seminar' => $data
+                    'status'  => 'success',
+                    'message' => 'Information of Penguji & Waktu Seminar',
+                    'data' => $data
                 ];
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '1',
+                ]);
+                $traffic->save();
                 return response()->json($response, 200);
             } else {
                 $response = [
+                    'status'  => 'error',
                     'message' => 'Waiting for the approval process from dosen penguji',
                 ];
-                return response()->json($response, 404);
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '0',
+                ]);
+                $traffic->save();
+                return response()->json($response, 400);
             }
         }
     }

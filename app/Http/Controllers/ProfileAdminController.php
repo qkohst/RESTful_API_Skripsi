@@ -6,6 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Admin;
+use App\ApiClient;
+use App\TrafficRequest;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
+
+
+
 
 class ProfileAdminController extends Controller
 {
@@ -14,8 +21,10 @@ class ProfileAdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function index(Request $request, User $user)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $admin = Admin::where('user_id_user', Auth::user()->id)->first();
         $user = $user->find(Auth::user()->id);
 
@@ -30,6 +39,7 @@ class ProfileAdminController extends Controller
             'nama_admin' => $admin->nama_admin,
             'nik_admin' => $admin->nik_admin,
             'nidn_admin' => $admin->nidn_admin,
+            'nip_admin' => $admin->nip_admin,
             'tempat_lahir_admin' => $admin->tempat_lahir_admin,
             'tanggal_lahir_admin' => $admin->tanggal_lahir_admin,
             'jenis_kelamin_admin' => $admin->jenis_kelamin_admin,
@@ -39,9 +49,17 @@ class ProfileAdminController extends Controller
             ],
             'email_admin' => $admin->email_admin,
             'no_hp_admin' => $admin->no_hp_admin,
-            'tanggal_pembaruan_admin' => $admin->updated_at
+            'tanggal_pembaruan_admin' => $admin->updated_at->format('Y-m-d H:i:s')
         ];
+
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
+
         return response()->json([
+            'status'  => 'success',
             'message' => 'Profile Admin',
             'data' => $data
         ], 200);
@@ -56,9 +74,12 @@ class ProfileAdminController extends Controller
      */
     public function update_profile(Request $request)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $admin = Admin::where('user_id_user', Auth::user()->id)->first();
         $id = $admin->id;
-        $this->validate($request, [
+
+        $validator = Validator::make($request->all(), [
             'nama_admin' => 'required|min:5',
             'nidn_admin' => 'required|numeric|digits:10|unique:admin' . ($id ? ",id,$id" : ''),
             'nip_admin' => 'nullable|numeric|digits:18|unique:admin' . ($id ? ",id,$id" : ''),
@@ -68,8 +89,22 @@ class ProfileAdminController extends Controller
             'jenis_kelamin_admin' => 'required|in:L,P',
             'email_admin' => 'required|email|unique:admin' . ($id ? ",id,$id" : ''),
             'no_hp_admin' => 'required|numeric|digits_between:11,13|unique:admin' . ($id ? ",id,$id" : ''),
-            'foto_admin' => 'nullable|mimes:jpg,jpeg,png|max:2000'
+            'foto_admin' => 'nullable|image|max:2000'
         ]);
+        if ($validator->fails()) {
+            $response = [
+                'status'  => 'error',
+                'message' => $validator->messages()->all()[0]
+            ];
+
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
+            return response()->json($response, 422);
+        }
 
         $admin->nama_admin = $request->input('nama_admin');
         $admin->nidn_admin = $request->input('nidn_admin');
@@ -84,7 +119,7 @@ class ProfileAdminController extends Controller
         if ($request->hasFile('foto_admin')) {
             $file_foto = $request->file('foto_admin');
             $fotoName = 'img-' . $admin->nidn_admin . '.' . $file_foto->getClientOriginalExtension();
-            $file_foto->move('fileFotoProfile/', $fotoName);
+            $file_foto->move('api/v1/fileFotoProfile/', $fotoName);
             $admin->foto_admin = $fotoName;
         }
 
@@ -96,7 +131,7 @@ class ProfileAdminController extends Controller
             $user->nama = $admin->nama_admin;
             $user->username = $admin->nidn_admin;
             $user->password = bcrypt($admin->nidn_admin);
-            $user->api_token = bcrypt($admin->nidn_admin . 'Admin');
+            $user->api_token = Str::random(100);
             $user->save();
 
             $data1 = [
@@ -109,6 +144,7 @@ class ProfileAdminController extends Controller
                 ],
                 'nik_admin' => $admin->nik_admin,
                 'nidn_admin' => $admin->nidn_admin,
+                'nip_admin' => $admin->nip_admin,
                 'tempat_lahir_admin' => $admin->tempat_lahir_admin,
                 'tanggal_lahir_admin' => $admin->tanggal_lahir_admin,
                 'jenis_kelamin_admin' => $admin->jenis_kelamin_admin,
@@ -121,9 +157,16 @@ class ProfileAdminController extends Controller
                 'updated_at' => $admin->updated_at->diffForHumans(),
             ];
 
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '1',
+            ]);
+            $traffic->save();
+
             return response()->json([
+                'status'  => 'success',
                 'message' => 'User profile and account data has been updated successfully, please log in with new username & password',
-                'admin' => $data1
+                'data' => $data1
             ], 200);
         }
 
@@ -137,6 +180,7 @@ class ProfileAdminController extends Controller
             ],
             'nik_admin' => $admin->nik_admin,
             'nidn_admin' => $admin->nidn_admin,
+            'nip_admin' => $admin->nip_admin,
             'tempat_lahir_admin' => $admin->tempat_lahir_admin,
             'tanggal_lahir_admin' => $admin->tanggal_lahir_admin,
             'jenis_kelamin_admin' => $admin->jenis_kelamin_admin,
@@ -148,9 +192,17 @@ class ProfileAdminController extends Controller
             'no_hp_admin' => $admin->no_hp_admin,
             'updated_at' => $admin->updated_at->diffForHumans(),
         ];
+
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
+
         return response()->json([
+            'status'  => 'success',
             'message' => 'Profile updated successfully',
-            'admin' => $data1
+            'data' => $data1
         ], 200);
     }
 }

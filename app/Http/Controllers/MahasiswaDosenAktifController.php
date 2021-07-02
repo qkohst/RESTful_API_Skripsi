@@ -7,11 +7,15 @@ use App\Mahasiswa;
 use App\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\ApiClient;
+use App\TrafficRequest;
 
 class MahasiswaDosenAktifController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $mahasiswa = Mahasiswa::where('user_id_user', Auth::user()->id)->first();
         $program_studi = ProgramStudi::where('id', $mahasiswa->program_studi_id_program_studi)->first();
 
@@ -25,10 +29,16 @@ class MahasiswaDosenAktifController extends Controller
             $dosen->nidn_dosen = $data_dosen->nidn_dosen;
             $dosen->nama_dosen = $data_dosen->nama_dosen . ', ' . $data_dosen->gelar_dosen;
         }
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
 
         return response()->json([
+            'status'  => 'success',
             'message' => 'Data dosen at ' . $program_studi->nama_program_studi . ' with an active status',
-            'dosen_aktif' => $dosen_aktif
+            'data' => $dosen_aktif
         ], 200);
     }
 }

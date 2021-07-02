@@ -8,6 +8,9 @@ use App\Mahasiswa;
 use App\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\ApiClient;
+use App\TrafficRequest;
+use Illuminate\Support\Facades\Validator;
 
 class PersetujuanKRSController extends Controller
 {
@@ -16,8 +19,10 @@ class PersetujuanKRSController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $admin_prodi = AdminProdi::where('user_id_user', Auth::user()->id)->first();
         $program_studi = ProgramStudi::where('id', $admin_prodi->program_studi_id_program_studi)->first();
 
@@ -35,14 +40,24 @@ class PersetujuanKRSController extends Controller
                 'npm_mahasiswa' => $mahasiswa->npm_mahasiswa,
                 'nama_mahasiswa' => $mahasiswa->nama_mahasiswa
             ];
-            $krs->tanggal_pengajuan_file_krs = $data_file_krs->created_at;
+            $krs->file_krs = [
+                'nama_file' => $data_file_krs->nama_file_krs,
+                'url' => 'fileKRS/' . $data_file_krs->nama_file_krs,
+            ];
+            $krs->tanggal_pengajuan_file_krs = $data_file_krs->created_at->format('Y-m-d H:i:s');
             $krs->status_persetujuan_admin_prodi_file_krs = $data_file_krs->status_persetujuan_admin_prodi_file_krs;
             $krs->catatan_file_krs = $data_file_krs->catatan_file_krs;
         }
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
 
         return response()->json([
-            'message' => 'List of Data',
-            'persetujuan_krs' => $persetujuan_krs,
+            'status'  => 'success',
+            'message' => 'List of Data Persetujuan KRS',
+            'data' => $persetujuan_krs,
         ], 200);
     }
 
@@ -52,8 +67,10 @@ class PersetujuanKRSController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         try {
             $file_krs = FileKrs::findorfail($id);
             $mahasiswa = Mahasiswa::findorfail($file_krs->mahasiswa_id_mahasiswa);
@@ -74,15 +91,27 @@ class PersetujuanKRSController extends Controller
             ];
 
             $response = [
-                'message' => 'Data details',
-                'persetujuan_krs' => $data
+                'status'  => 'success',
+                'message' => 'Details Persetujuan KRS',
+                'data' => $data
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '1',
+            ]);
+            $traffic->save();
 
             return response()->json($response, 200);
         } catch (\Throwable $th) {
             $response = [
+                'status'  => 'error',
                 'message' => 'Data not found',
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
 
             return response()->json($response, 404);
         }
@@ -97,10 +126,26 @@ class PersetujuanKRSController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
+        $validator = Validator::make($request->all(), [
             'status_persetujuan_admin_prodi_file_krs' => 'required|in:Antrian,Disetujui,Ditolak',
             'catatan_file_krs' => 'required|min:1',
         ]);
+        if ($validator->fails()) {
+            $response = [
+                'status'  => 'error',
+                'message' => $validator->messages()->all()[0]
+            ];
+
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
+            return response()->json($response, 422);
+        }
 
         $file_krs = FileKrs::findOrFail($id);
         if ($file_krs->status_persetujuan_admin_prodi_file_krs != 'Disetujui') {
@@ -121,13 +166,27 @@ class PersetujuanKRSController extends Controller
                 'catatan_file_krs' => $file_krs->catatan_file_krs,
                 'updated_at' => $file_krs->updated_at->diffForHumans(),
             ];
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '1',
+            ]);
+            $traffic->save();
 
             return response()->json([
-                'message' => 'verification is successful',
-                'persetujuan_krs' => $data,
+                'status'  => 'success',
+                'message' => 'Verification is successful',
+                'data' => $data,
             ], 200);
         }
+
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '0',
+        ]);
+        $traffic->save();
+
         return response()->json([
+            'status'  => 'error',
             'message' => 'the data has been verified, you can not change the verification status'
         ], 400);
     }

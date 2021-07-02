@@ -9,6 +9,8 @@ use App\Mahasiswa;
 use App\ProgramStudi;
 use App\SeminarProposal;
 use Illuminate\Http\Request;
+use App\ApiClient;
+use App\TrafficRequest;
 
 class AdminSeminarProposalController extends Controller
 {
@@ -17,8 +19,10 @@ class AdminSeminarProposalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $seminar_proposal = SeminarProposal::get('id');
 
         foreach ($seminar_proposal as $seminar) {
@@ -39,9 +43,17 @@ class AdminSeminarProposalController extends Controller
             ];
             $seminar->status_seminar_proposal = $data_seminar_proposal->status_seminar_proposal;
         }
+
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
+
         return response()->json([
-            'message' => 'List of Data',
-            'seminar_proposal' => $seminar_proposal,
+            'status'  => 'success',
+            'message' => 'List of Data Seminar Proposal',
+            'data' => $seminar_proposal,
         ], 200);
     }
 
@@ -51,8 +63,10 @@ class AdminSeminarProposalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $seminar_proposal = SeminarProposal::findorfail($id);
         $judul_skripsi = JudulSkripsi::findorfail($seminar_proposal->judul_skripsi_id_judul_skripsi);
         $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
@@ -80,14 +94,30 @@ class AdminSeminarProposalController extends Controller
 
         if (is_null($nilai_pembimbing1) || is_null($nilai_pembimbing2) || is_null($nilai_penguji1) || is_null($nilai_penguji2)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'the verification process by the dosen pembimbing and penguji has not been completed',
             ];
-            return response()->json($response, 404);
+
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
+            return response()->json($response, 400);
         } elseif ($nilai_pembimbing1->status_verifikasi_hasil_seminar_proposal == 'Revisi' || $nilai_pembimbing2->status_verifikasi_hasil_seminar_proposal == 'Revisi' || $nilai_penguji1->status_verifikasi_hasil_seminar_proposal == 'Revisi' || $nilai_penguji2->status_verifikasi_hasil_seminar_proposal == 'Revisi') {
             $response = [
+                'status'  => 'error',
                 'message' => 'Incomplete data, please wait for the process input nilai to complete',
             ];
-            return response()->json($response, 404);
+
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
+            return response()->json($response, 400);
         }
 
         $dosen_pembimbing1 = Dosen::findOrFail($nilai_pembimbing1->dosen_id_dosen);
@@ -159,10 +189,15 @@ class AdminSeminarProposalController extends Controller
             'nilai_akhir_seminar_proposal' => round($nilai_akhir, 0)
         ];
 
-
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
         return response()->json([
-            'message' => 'Data details',
-            'detail_seminar_proposal' => $data,
+            'status'  => 'success',
+            'message' => 'Details Data Seminar Proposal',
+            'data' => $data,
         ], 200);
     }
 }

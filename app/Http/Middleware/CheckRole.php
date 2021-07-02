@@ -17,9 +17,10 @@ class CheckRole
     {
         if ($request->user()->role == $role) {
             return $next($request);
-        } 
+        }
         return response()->json([
-            'error' => 'No Authorization'
+            'status' => 'error',
+            'message' => 'No Authorization'
         ], 401);
     }
 }

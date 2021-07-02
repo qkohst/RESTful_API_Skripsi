@@ -11,6 +11,8 @@ use App\ProgramStudi;
 use App\SeminarProposal;
 use App\SidangSkripsi;
 use Illuminate\Http\Request;
+use App\ApiClient;
+use App\TrafficRequest;
 
 class AdminSidangSkripsiController extends Controller
 {
@@ -19,8 +21,10 @@ class AdminSidangSkripsiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $sidang_skripsi = SidangSkripsi::get('id');
 
         foreach ($sidang_skripsi as $sidang) {
@@ -41,9 +45,16 @@ class AdminSidangSkripsiController extends Controller
             ];
             $sidang->status_sidang_skripsi = $data_sidang_skripsi->status_sidang_skripsi;
         }
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
+
         return response()->json([
-            'message' => 'List of Data',
-            'sidang_skripsi' => $sidang_skripsi,
+            'status'  => 'success',
+            'message' => 'List of Data Sidang Skripsi',
+            'data' => $sidang_skripsi,
         ], 200);
     }
 
@@ -53,8 +64,10 @@ class AdminSidangSkripsiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $sidang_skripsi = SidangSkripsi::findorfail($id);
         $judul_skripsi = JudulSkripsi::findorfail($sidang_skripsi->judul_skripsi_id_judul_skripsi);
         $mahasiswa = Mahasiswa::findorfail($judul_skripsi->mahasiswa_id_mahasiswa);
@@ -82,14 +95,30 @@ class AdminSidangSkripsiController extends Controller
 
         if (is_null($nilai_sidang_pembimbing1) || is_null($nilai_sidang_pembimbing2) || is_null($nilai_sidang_penguji1) || is_null($nilai_sidang_penguji2)) {
             $response = [
+                'status'  => 'error',
                 'message' => 'the verification process by the dosen pembimbing and penguji has not been completed',
             ];
-            return response()->json($response, 404);
+
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
+            return response()->json($response, 400);
         } elseif ($nilai_sidang_pembimbing1->status_verifikasi_hasil_sidang_skripsi == 'Revisi' || $nilai_sidang_pembimbing2->status_verifikasi_hasil_sidang_skripsi == 'Revisi' || $nilai_sidang_penguji1->status_verifikasi_hasil_sidang_skripsi == 'Revisi' || $nilai_sidang_penguji2->status_verifikasi_hasil_sidang_skripsi == 'Revisi') {
             $response = [
+                'status'  => 'error',
                 'message' => 'Incomplete data, please wait for the process input nilai to complete',
             ];
-            return response()->json($response, 404);
+
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
+            return response()->json($response, 400);
         }
 
         $dosen_pembimbing1 = Dosen::findOrFail($nilai_sidang_pembimbing1->dosen_id_dosen);
@@ -164,7 +193,7 @@ class AdminSidangSkripsiController extends Controller
         $nilai_akhir_seminar = ((20 * $rata2_nilaia_seminar) + (30 * $rata2_nilaib_seminar) + (50 * $rata2_nilaic_seminar)) / 100;
         //akhir hitung nilai seminar proposal
 
-        $nilai_akhir = ($nilai_akhir_sidang + $nilai_akhir_seminar) / 2;
+        $nilai_akhir = (60 / 100 * $nilai_akhir_sidang) + (40 / 100 * $nilai_akhir_seminar);
 
         $data = [
             'id' => $sidang_skripsi->id,
@@ -207,10 +236,16 @@ class AdminSidangSkripsiController extends Controller
             'nilai_akhir_sidang_skripsi' => round($nilai_akhir, 0)
         ];
 
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
 
         return response()->json([
-            'message' => 'Data details',
-            'detail_sidang_skripsi' => $data,
+            'status'  => 'success',
+            'message' => 'Details Data Sidang Skripsi',
+            'data' => $data,
         ], 200);
     }
 }

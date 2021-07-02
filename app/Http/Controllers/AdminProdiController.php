@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\AdminProdi;
 use App\ProgramStudi;
 use App\User;
+use App\ApiClient;
+use App\TrafficRequest;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
 
 class AdminProdiController extends Controller
 {
@@ -14,8 +19,10 @@ class AdminProdiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         $admin_prodi = AdminProdi::orderBy('program_studi_id_program_studi', 'asc')
             ->get('id');
 
@@ -31,9 +38,16 @@ class AdminProdiController extends Controller
             $admin->nidn_admin_prodi = $data_admin_prodi->nidn_admin_prodi;
         }
 
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '1',
+        ]);
+        $traffic->save();
+
         $response = [
-            'message' => 'List of Data',
-            'admin_prodi' => $admin_prodi
+            'status'  => 'success',
+            'message' => 'List of Data Admin Prodi',
+            'data' => $admin_prodi
         ];
         return response()->json($response, 200);
     }
@@ -46,8 +60,10 @@ class AdminProdiController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'program_studi_id_program_studi' => 'required|exists:program_studi,id',
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
+        $validator = Validator::make($request->all(), [
+            'program_studi_id_program_studi' => 'required|exists:program_studi,id|unique:admin_prodi',
             'nik_admin_prodi' => 'required|unique:admin_prodi|numeric|digits:16',
             'nidn_admin_prodi' => 'required|unique:admin_prodi|numeric|digits:10',
             'nip_admin_prodi' => 'nullable|unique:admin_prodi|numeric|digits:18',
@@ -55,11 +71,25 @@ class AdminProdiController extends Controller
             'tempat_lahir_admin_prodi' => 'required|min:3',
             'tanggal_lahir_admin_prodi' => 'required|date|before:today',
             'jenis_kelamin_admin_prodi' => 'required|in:L,P',
-            'foto_admin_prodi' => 'nullable|mimes:jpg,jpeg,png|max:2000',
+            'foto_admin_prodi' => 'nullable|image|max:2000',
             'no_surat_tugas_admin_prodi' => 'required|unique:admin_prodi|min:5',
             'email_admin_prodi' => 'required|unique:admin_prodi|email',
             'no_hp_admin_prodi' => 'required|unique:admin_prodi|numeric|digits_between:11,13',
         ]);
+        if ($validator->fails()) {
+            $response = [
+                'status'  => 'error',
+                'message' => $validator->messages()->all()[0]
+            ];
+
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
+            return response()->json($response, 422);
+        }
 
         //Menyimpan Data User
         $user = new User([
@@ -67,7 +97,7 @@ class AdminProdiController extends Controller
             'username' => $request->input('nidn_admin_prodi'),
             'password' => bcrypt($request->input('nidn_admin_prodi')),
             'role' => 'Admin Prodi',
-            'api_token' => bcrypt($request->username . 'Admin Prodi'),
+            'api_token' => Str::random(100),
 
         ]);
 
@@ -81,7 +111,7 @@ class AdminProdiController extends Controller
                 if ($request->hasFile('foto_admin_prodi')) {
                     $file_foto = $request->file('foto_admin_prodi');
                     $fotoName = 'img-' . $user->username . '.' . $file_foto->getClientOriginalExtension();
-                    $file_foto->move('fileFotoProfile/', $fotoName);
+                    $file_foto->move('api/v1/fileFotoProfile/', $fotoName);
 
                     $admin_prodi = new AdminProdi([
                         'user_id_user' => $user->id,
@@ -130,9 +160,16 @@ class AdminProdiController extends Controller
                         'created_at' => $admin_prodi->created_at->diffForHumans(),
                     ];
 
+                    $traffic = new TrafficRequest([
+                        'api_client_id' => $api_client->id,
+                        'status' => '1',
+                    ]);
+                    $traffic->save();
+
                     $response = [
+                        'status'  => 'success',
                         'message' => 'Data added successfully',
-                        'admin_prodi' => $data
+                        'data' => $data
                     ];
                     return response()->json($response, 201);
                 }
@@ -185,26 +222,47 @@ class AdminProdiController extends Controller
                     'created_at' => $admin_prodi->created_at->diffForHumans(),
                 ];
 
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '1',
+                ]);
+                $traffic->save();
+
                 $response = [
+                    'status'  => 'success',
                     'message' => 'Data added successfully',
-                    'admin_prodi' => $data
+                    'data' => $data
                 ];
                 return response()->json($response, 201);
             } catch (\Illuminate\Database\QueryException $ex) {
                 // response ketika data admin prodi gagal disimpan 
                 $user_delete = User::findOrFail($user->id);
                 $user_delete->delete();
+                $traffic = new TrafficRequest([
+                    'api_client_id' => $api_client->id,
+                    'status' => '0',
+                ]);
+                $traffic->save();
+
                 $response = [
+                    'status'  => 'error',
                     'message' => 'an error occurred while saving the data admin prodi, make sure that you have entered the correct data format!'
                 ];
-                return response()->json($response, 404);
+                return response()->json($response, 400);
             }
         }
         // response ketika data user gagal disimpan 
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '0',
+        ]);
+        $traffic->save();
+
         $response = [
+            'status'  => 'error',
             'message' => 'an error occurred while saving the data user admin prodi'
         ];
-        return response()->json($response, 404);
+        return response()->json($response, 400);
     }
 
     /**
@@ -213,8 +271,10 @@ class AdminProdiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         try {
             $admin_prodi = AdminProdi::findorfail($id);
             $data_user = User::findorfail($admin_prodi->user_id_user);
@@ -246,17 +306,31 @@ class AdminProdiController extends Controller
                 'no_surat_tugas_admin_prodi' => $admin_prodi->no_surat_tugas_admin_prodi,
                 'email_admin_prodi' => $admin_prodi->email_admin_prodi,
                 'no_hp_admin_prodi' => $admin_prodi->no_hp_admin_prodi,
-                'tanggal_pembaruan_admin_prodi' => $admin_prodi->updated_at,
+                'tanggal_pembaruan_admin_prodi' => $admin_prodi->updated_at->format('Y-m-d H:i:s')
             ];
 
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '1',
+            ]);
+            $traffic->save();
+
             $response = [
-                'message' => 'Data details',
-                'detail_admin_prodi' => $data
+                'status'  => 'success',
+                'message' => 'Details Data Admin Prodi',
+                'data' => $data
             ];
 
             return response()->json($response, 200);
         } catch (\Throwable $th) {
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
             $response = [
+                'status'  => 'error',
                 'message' => 'Data not found',
             ];
 
@@ -273,11 +347,28 @@ class AdminProdiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
+        $validator = Validator::make($request->all(), [
             'nama_admin_prodi' => 'required|min:3',
             'nik_admin_prodi' => 'required|numeric|digits:16|unique:program_studi' . ($id ? ",id,$id" : ''),
             'nip_admin_prodi' => 'nullable|numeric|digits:18|unique:program_studi' . ($id ? ",id,$id" : ''),
         ]);
+
+        if ($validator->fails()) {
+            $response = [
+                'status'  => 'error',
+                'message' => $validator->messages()->all()[0]
+            ];
+
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
+            return response()->json($response, 422);
+        }
 
         $admin_prodi = AdminProdi::findorfail($id);
         $admin_prodi->nama_admin_prodi = $request->input('nama_admin_prodi');
@@ -309,14 +400,28 @@ class AdminProdiController extends Controller
                 'updated_at' => $admin_prodi->updated_at->diffForHumans(),
             ];
 
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '1',
+            ]);
+            $traffic->save();
+
             $response = [
+                'status'  => 'success',
                 'message' => 'Data Edited Successfully',
-                'admin_prodi' => $data
+                'data' => $data
             ];
 
             return response()->json($response, 200);
         } catch (\Throwable $th) {
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
             return response()->json([
+                'status'  => 'error',
                 'message' => 'an error occurred while updating the data'
             ], 404);
         }
@@ -328,18 +433,34 @@ class AdminProdiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
         try {
             $admin_prodi = AdminProdi::findOrFail($id);
             $user = User::findOrFail($admin_prodi->user_id_user);
             $admin_prodi->delete();
             $user->delete();
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '1',
+            ]);
+            $traffic->save();
+
             return response()->json([
+                'status'  => 'success',
                 'message' => 'Data user & admin prodi with id ' . $admin_prodi->id . ' deleted successfully'
             ], 200);
         } catch (\Illuminate\Database\QueryException $ex) {
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
             return response()->json([
+                'status'  => 'error',
                 'message' => 'Sorry the data cannot be deleted, there are still data in other tables that are related to this data!'
             ], 404);
         }
@@ -347,16 +468,33 @@ class AdminProdiController extends Controller
 
     public function resetpassword(Request $request, $id)
     {
-        $this->validate($request, [
+        $api_client = ApiClient::where('api_key', $request->api_key)->first();
+
+        $validator = Validator::make($request->all(), [
             'nidn_admin_prodi' => 'required|numeric|digits:10'
         ]);
+        if ($validator->fails()) {
+            $response = [
+                'status'  => 'error',
+                'message' => $validator->messages()->all()[0]
+            ];
+
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '0',
+            ]);
+            $traffic->save();
+
+            return response()->json($response, 422);
+        }
+
         $admin_prodi = AdminProdi::findOrFail($id);
         $user = User::findorfail($admin_prodi->user_id_user);
         $program_studi = ProgramStudi::findorfail($admin_prodi->program_studi_id_program_studi);
 
         if ($user->username == $request->input('nidn_admin_prodi')) {
             $user->password = bcrypt($request->input('nidn_admin_prodi'));
-            $user->api_token = bcrypt($request->input('nidn_admin_prodi') . 'Admin Prodi');
+            $user->api_token = Str::random(100);
             $user->update();
 
             $data = [
@@ -372,17 +510,28 @@ class AdminProdiController extends Controller
                 ]
             ];
 
+            $traffic = new TrafficRequest([
+                'api_client_id' => $api_client->id,
+                'status' => '1',
+            ]);
+            $traffic->save();
+
             return response()->json([
-                'message' => 'password reset successful',
-                'admin_prodi' => $data
+                'status'  => 'success',
+                'message' => 'Password Reset Successful',
+                'data' => $data
             ], 205);
         }
 
+        $traffic = new TrafficRequest([
+            'api_client_id' => $api_client->id,
+            'status' => '0',
+        ]);
+        $traffic->save();
+
         return response()->json([
-            'message' => 'The given data was invalid.',
-            'errors' => [
-                'nidn_admin_prodi' => 'The nidn admin prodi you entered is invalid'
-            ],
+            'status'  => 'error',
+            'message' => 'The nidn admin prodi you entered is invalid',
         ], 400);
     }
 }
