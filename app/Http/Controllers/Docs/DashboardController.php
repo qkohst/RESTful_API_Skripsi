@@ -46,10 +46,6 @@ class DashboardController extends Controller
                 ->where('created_at', '>=', Carbon::now()->subWeeks(1))
                 ->get();
 
-            $date_traffic_mobile = [];
-            foreach ($data_mobile as $entry) {
-                $date_traffic_mobile[] = $entry->day;
-            }
 
             $count_traffic_mobile = [];
             foreach ($data_mobile as $entry) {
@@ -65,17 +61,12 @@ class DashboardController extends Controller
                 ->where('created_at', '>=', Carbon::now()->subWeeks(1))
                 ->get();
 
-            $date_traffic_web = [];
-            foreach ($data_web as $entry) {
-                $date_traffic_web[] = $entry->day;
-            }
-
             $count_traffic_web = [];
             foreach ($data_web as $entry) {
                 $count_traffic_web[] = $entry->count;
             }
             // dd($count_traffic);
-            return view('admin/dashboard', compact('date_traffic', 'count_traffic', 'date_traffic_web', 'count_traffic_web', 'date_traffic_mobile', 'count_traffic_mobile'));
+            return view('admin/dashboard', compact('date_traffic', 'count_traffic_web', 'count_traffic_mobile'));
         } elseif (Auth::guard('developer')->user()->role == 'Developer') {
             return view('users/dashboard');
         }

@@ -18,29 +18,9 @@
 <div class="container">
   <div class="docs-overview py-5">
     <div class="row justify-content-center">
-      <div class="col-12 col-lg-4 py-3">
+      <div class="col-12 col-lg-12 py-3">
         <div class="card shadow-sm">
           <div class="card-body" id="traffic_request">
-            <a class="card-link-mask" href="#"></a>
-          </div>
-          <!--//card-body-->
-        </div>
-        <!--//card-->
-      </div>
-      <!--//col-->
-      <div class="col-12 col-lg-4 py-3">
-        <div class="card shadow-sm">
-          <div class="card-body" id="request_web">
-            <a class="card-link-mask" href="#"></a>
-          </div>
-          <!--//card-body-->
-        </div>
-        <!--//card-->
-      </div>
-      <!--//col-->
-      <div class="col-12 col-lg-4 py-3">
-        <div class="card shadow-sm">
-          <div class="card-body" id="request_mobile">
             <a class="card-link-mask" href="#"></a>
           </div>
           <!--//card-body-->
@@ -97,95 +77,12 @@
       }
     },
     series: [{
-      name: 'Traffic Request',
-      data: <?php echo json_encode($count_traffic); ?>,
-
-    }]
-  });
-
-  //Request Mobile
-
-  Highcharts.chart('request_mobile', {
-    chart: {
-      type: 'column'
-    },
-    title: {
-      text: 'Mobile Client'
-    },
-    subtitle: {
-      text: 'Dalam Minggu Ini'
-    },
-    xAxis: {
-      categories: <?php echo json_encode($date_traffic_mobile); ?>,
-      crosshair: true
-    },
-    yAxis: {
-      min: 0,
-      title: {
-        text: 'Request'
-      }
-    },
-    tooltip: {
-      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-        '<td style="padding:0"><b>{point.y:.0f} request </b></td></tr>',
-      footerFormat: '</table>',
-      shared: true,
-      useHTML: true
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      }
-    },
-    series: [{
-      name: 'Mobile Client',
-      data: <?php echo json_encode($count_traffic_mobile); ?>,
-
-    }]
-  });
-
-  //Request Success
-
-  Highcharts.chart('request_web', {
-    chart: {
-      type: 'column'
-    },
-    title: {
-      text: 'Web Client'
-    },
-    subtitle: {
-      text: 'Dalam Minggu Ini'
-    },
-    xAxis: {
-      categories: <?php echo json_encode($date_traffic_web); ?>,
-      crosshair: true
-    },
-    yAxis: {
-      min: 0,
-      title: {
-        text: 'Request'
-      }
-    },
-    tooltip: {
-      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-        '<td style="padding:0"><b>{point.y:.0f} request</b></td></tr>',
-      footerFormat: '</table>',
-      shared: true,
-      useHTML: true
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      }
-    },
-    series: [{
       name: 'Web Client',
       data: <?php echo json_encode($count_traffic_web); ?>,
 
+    }, {
+      name: 'Mobile Client',
+      data: <?php echo json_encode($count_traffic_mobile); ?>,
     }]
   });
 </script>

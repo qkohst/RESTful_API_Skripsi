@@ -53,29 +53,9 @@
     </div>
     <!--//table-responsive-->
     <div class="row justify-content-center">
-      <div class="col-12 col-lg-4 py-3">
+      <div class="col-12 col-lg-12 py-3">
         <div class="card shadow-sm">
           <div class="card-body" id="traffic_request">
-            <a class="card-link-mask" href="#"></a>
-          </div>
-          <!--//card-body-->
-        </div>
-        <!--//card-->
-      </div>
-      <!--//col-->
-      <div class="col-12 col-lg-4 py-3">
-        <div class="card shadow-sm">
-          <div class="card-body" id="request_success">
-            <a class="card-link-mask" href="#"></a>
-          </div>
-          <!--//card-body-->
-        </div>
-        <!--//card-->
-      </div>
-      <!--//col-->
-      <div class="col-12 col-lg-4 py-3">
-        <div class="card shadow-sm">
-          <div class="card-body" id="request_error">
             <a class="card-link-mask" href="#"></a>
           </div>
           <!--//card-body-->
@@ -131,95 +111,12 @@
         }
       },
       series: [{
-        name: 'Traffic Request',
-        data: <?php echo json_encode($count_traffic); ?>,
-
-      }]
-    });
-
-    //Request Success
-
-    Highcharts.chart('request_success', {
-      chart: {
-        type: 'column'
-      },
-      title: {
-        text: 'Request Success'
-      },
-      subtitle: {
-        text: 'Dalam Minggu Ini'
-      },
-      xAxis: {
-        categories: <?php echo json_encode($date_traffic_success); ?>,
-        crosshair: true
-      },
-      yAxis: {
-        min: 0,
-        title: {
-          text: 'Request'
-        }
-      },
-      tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-          '<td style="padding:0"><b>{point.y:.0f} request </b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-      },
-      plotOptions: {
-        column: {
-          pointPadding: 0.2,
-          borderWidth: 0
-        }
-      },
-      series: [{
         name: 'Request Success',
         data: <?php echo json_encode($count_traffic_success); ?>,
 
-      }]
-    });
-
-    //Request Success
-
-    Highcharts.chart('request_error', {
-      chart: {
-        type: 'column'
-      },
-      title: {
-        text: 'Request Errors'
-      },
-      subtitle: {
-        text: 'Dalam Minggu Ini'
-      },
-      xAxis: {
-        categories: <?php echo json_encode($date_traffic_errors); ?>,
-        crosshair: true
-      },
-      yAxis: {
-        min: 0,
-        title: {
-          text: 'Request'
-        }
-      },
-      tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-          '<td style="padding:0"><b>{point.y:.0f} request</b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-      },
-      plotOptions: {
-        column: {
-          pointPadding: 0.2,
-          borderWidth: 0
-        }
-      },
-      series: [{
-        name: 'Request Errors',
+      }, {
+        name: 'Request Error',
         data: <?php echo json_encode($count_traffic_errors); ?>,
-
       }]
     });
   </script>

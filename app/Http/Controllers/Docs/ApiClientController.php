@@ -48,11 +48,6 @@ class ApiClientController extends Controller
             $date_traffic[] = $entry->day;
         }
 
-        $count_traffic = [];
-        foreach ($data as $entry) {
-            $count_traffic[] = $entry->count;
-        }
-
         // Request Success 
         $data_success = TrafficRequest::where([
             ['api_client_id', $id],
@@ -64,11 +59,6 @@ class ApiClientController extends Controller
             ])->groupBy('day')
             ->where('created_at', '>=', Carbon::now()->subWeeks(1))
             ->get();
-
-        $date_traffic_success = [];
-        foreach ($data_success as $entry) {
-            $date_traffic_success[] = $entry->day;
-        }
 
         $count_traffic_success  = [];
         foreach ($data_success as $entry) {
@@ -87,17 +77,12 @@ class ApiClientController extends Controller
             ->where('created_at', '>=', Carbon::now()->subWeeks(1))
             ->get();
 
-        $date_traffic_errors = [];
-        foreach ($data_errors as $entry) {
-            $date_traffic_errors[] = $entry->day;
-        }
-
         $count_traffic_errors  = [];
         foreach ($data_errors as $entry) {
             $count_traffic_errors[] = $entry->count;
         }
         $data = ApiClient::findorfail($id);
 
-        return view('admin.apiclient.show', compact('data', 'date_traffic', 'count_traffic', 'date_traffic_success', 'count_traffic_success', 'date_traffic_errors', 'count_traffic_errors'));
+        return view('admin.apiclient.show', compact('data', 'date_traffic', 'count_traffic_success', 'count_traffic_errors'));
     }
 }
