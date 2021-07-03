@@ -1,9 +1,15 @@
 <article class="docs-article" id="section-2">
   <header class="docs-header">
-    <h1 class="docs-heading">Pengantar</h1>
+    <h1 class="docs-heading">Selamat Datang, Developers!<span class="docs-time">Last updated: 2021-07-03</span></h1>
     <section class="docs-intro">
-      <p>Untuk memulai, Anda memerlukan API Key. Silahkan login untuk mendapatkan API Key anda.</p>
-      <p>Anda harus tahu cara membuat http request dalam bahasa pemrograman yang anda pilih, kami telah menyertakan beberapa contoh untuk di bawah ini.</p>
+      <!-- <h4>Selamat datang, developers!</h4> -->
+      <p>
+        Ini merupakan Dokumentasi RESTful API (Application Programming Interface) E-Skripsi Universitas PGRI Ronggolawe Tuban yang dapat Anda pakai untuk membuat berbagai macam aplikasi,
+        dengan menerapkan arsitektur REST dengan format balasan berupa JSON yang didukung oleh hampir semua bahasa pemrograman sehingga mudah untuk diintegrasikan pada aplikasi anda.
+      </p>
+      <p>
+        Namun, jika Anda menemukan data yang tidak valid atau bug, silahkan <a href="https://www.instagram.com/qkoh_st" target="_black">laporkan ke tim kami</a>.
+      </p>
     </section>
     <!--//docs-intro-->
   </header>

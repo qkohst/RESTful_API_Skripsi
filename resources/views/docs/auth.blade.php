@@ -2,7 +2,7 @@
   <header class="docs-header">
     <h1 class="docs-heading pb-0">Auth</h1>
     <p>
-      Esse nostrud reprehenderit mollit sint nostrud laboris adipisicing tempor dolore consectetur magna Lorem enim deserunt.
+      Selain API Key anda juga membutuhkan <b>API Token</b> sebagai <b>Authorisasi</b> pada setiap endpoint yang ada, Api Token didapatkan pada proses login.
     </p>
   </header>
 
@@ -16,6 +16,11 @@
     <p>
       Login dengan menggunakan username dan password untuk mendapatkan api_token.
     </p>
+    <p>
+      Terdapat 4 level user yaitu Admin, Admin Prodi, Mahasiswa, dan Dosen. Untuk mendapat <code>username</code> dan <code>password</code> login silahkan hubungi <a href="https://www.instagram.com/qkoh_st" target="_black">tim kami</a>.
+    </p>
+
+    <!-- Parameter -->
     <h5>Request parameters:</h5>
     <div class="table-responsive">
       <table class="table table-bordered">
@@ -40,14 +45,16 @@
           <tr>
             <th class="theme-bg-light">api_key
               <small class="text-danger"> <sup>* required</sup></small>
-              <h6>string <small><i>(header)</i></small></h6>
+              <h6>string <small><i>(query)</i></small></h6>
             </th>
-            <td>API Key dari project aplikasi anda, letakkan pada HTTP Header</td>
+            <td>API Key dari project aplikasi anda</td>
           </tr>
         </tbody>
       </table>
     </div>
     <!--//table-responsive-->
+
+    <!-- Request Body -->
     <h5 class="pt-2">Request body:</h5>
     <div class="callout-block callout-block-success">
       <div class="pt-0">
@@ -65,84 +72,31 @@
         </h5>
       </div>
     </div>
+
+    <!-- Response -->
     <h5 class="pt-2">Responses:</h5>
-    <div class="table-responsive my-4">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Code</th>
-            <th scope="col">Keterangan</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>200</td>
-            <td>OK
-              <!--//table-responsive-->
-              <div class="docs-code-block pt-0 pb-0">
-                <pre class="rounded">
+    <div class="docs-code-block pt-0 pb-0">
+      <pre class="rounded">
                   <code class="json hljs">
   {
-    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Password change successfully."</span>,
-    <span class="hljs-attr">"user"</span>: {
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"success"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Login successfully"</span>,
+    <span class="hljs-attr">"data"</span>: {
       <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>, 
       <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Kukoh Santoso"</span>, 
       <span class="hljs-attr">"username"</span>: <span class="hljs-string">"1412170001"</span>, 
       <span class="hljs-attr">"role"</span>: <span class="hljs-string">"Mahasiswa"</span>, 
-      <span class="hljs-attr">"api_token"</span>: <span class="hljs-string">"$2y$10$hwEnAF73Yfl5yOgL39LLzuTrh1TS83kFVSXp/hojUD1tH3H6p.wSq"</span>
+      <span class="hljs-attr">"api_token"</span>: <span class="hljs-string">"TamWyNRKuwjqSt35aCcFkkC2yR9VNhnxZXKBUcPeGXYyA83qVCVZypUkroAOemWm2AxYmtPJ99mO3Hi12fVnOuVmA3tUxQzjQnvm"</span>
     }
   }
                   </code>
                 </pre>
-              </div>
-              <!--//docs-code-block-->
-            </td>
-          <tr>
-
-          <tr>
-            <td>422</td>
-            <td>Unprocessable Entity
-              <!--//table-responsive-->
-              <div class="docs-code-block pt-0 pb-0">
-                <pre class="rounded">
-                  <code class="json hljs">
-  {
-    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The given data was invalid"</span>,
-    <span class="hljs-attr">"errors"</span>: {
-      <span class="hljs-attr">"password"</span>: [
-        <span class="hljs-string">"The password field is required."</span>
-      ]
-    }
-  }
-                  </code>
-                </pre>
-              </div>
-              <!--//docs-code-block-->
-            </td>
-          <tr>
-
-          <tr>
-            <td>401</td>
-            <td>Unauthorized
-              <!--//table-responsive-->
-              <div class="docs-code-block pt-0 pb-0">
-                <pre class="rounded">
-                  <code class="json hljs">
-  {
-    <span class="hljs-attr">"errors"</span>: <span class="hljs-string">"Incorrect username or password"</span>
-  }
-                  </code>
-                </pre>
-              </div>
-              <!--//docs-code-block-->
-            </td>
-          <tr>
-
-        </tbody>
-      </table>
     </div>
+    <!-- Akhir Response -->
+
   </section>
   <!--//section Login-->
+
 
   <!-- section Ganti Password -->
   <section class="docs-section" id="item-4-2">
@@ -154,6 +108,8 @@
     <p>
       Mengganti password pengguna
     </p>
+
+    <!-- Parameter -->
     <h5>Request parameters:</h5>
     <div class="table-responsive">
       <table class="table table-bordered">
@@ -164,6 +120,17 @@
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <th class="theme-bg-light">Authorization
+              <h6>string <small><i>(header)</i></small></h6>
+            </th>
+            <td>
+              <fieldset disabled>
+                <label for="token"><i>Default value </i>: Bearer {api_token}</label>
+                <input name="token" type="text" class="form-control bg-light text-black" placeholder="Bearer {api_token}">
+              </fieldset>
+            </td>
+          </tr>
           <tr>
             <th class="theme-bg-light">Accept
               <small class="text-danger"> <sup>* required</sup></small>
@@ -178,73 +145,61 @@
           <tr>
             <th class="theme-bg-light">api_key
               <small class="text-danger"> <sup>* required</sup></small>
-              <h6>string <small><i>(header)</i></small></h6>
+              <h6>string <small><i>(query)</i></small></h6>
             </th>
-            <td>API Key dari project aplikasi anda, letakkan pada HTTP Header</td>
-          </tr>
-          <tr>
-            <th class="theme-bg-light">api_token
-              <small class="text-danger"> <sup>* required</sup></small>
-              <h6>string <small><i>(header)</i></small></h6>
-            </th>
-            <td>API Token yang didapatkan dari proses login, letakkan pada HTTP Header</td>
+            <td>API Key dari project aplikasi anda</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <!--//table-responsive-->
 
+    <!-- Request Body -->
+    <h5 class="pt-2">Request body:</h5>
+    <div class="callout-block callout-block-success">
+      <div class="pt-0">
+        <h5>username
+          <small>
+            <sup class="text-danger">* required</sup> integer<i>($int32)</i>
+          </small>
+        </h5>
+      </div>
+      <div class="pt-3">
+        <h5>password_lama
+          <small>
+            <sup class="text-danger">* required</sup> string
+          </small>
+        </h5>
+      </div>
+      <div class="pt-3">
+        <h5>password_baru
+          <small>
+            <sup class="text-danger">* required</sup> string
+          </small>
+        </h5>
+      </div>
+      <div class="pt-3">
+        <h5>confirm_password
+          <small>
+            <sup class="text-danger">* required</sup> string
+          </small>
+        </h5>
+      </div>
+    </div>
+
+    <!-- Response -->
     <h5 class="pt-2">Responses:</h5>
-    <div class="table-responsive my-4">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Code</th>
-            <th scope="col">Keterangan</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>200</td>
-            <td>OK
-              <!--//table-responsive-->
-              <div class="docs-code-block pt-0 pb-0">
-                <pre class="rounded">
+    <div class="docs-code-block pt-0 pb-0">
+      <pre class="rounded">
                   <code class="json hljs">
   {
-       <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Password change successfully."</span>
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"success"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Password change successfully."</span>,
   }
                   </code>
                 </pre>
-              </div>
-              <!--//docs-code-block-->
-            </td>
-          <tr>
-
-          <tr>
-            <td>422</td>
-            <td>Unprocessable Entity
-              <!--//table-responsive-->
-              <div class="docs-code-block pt-0 pb-0">
-                <pre class="rounded">
-                  <code class="json hljs">
-  {
-    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The given data was invalid"</span>,
-    <span class="hljs-attr">"errors"</span>: {
-      <span class="hljs-attr">"confirm_password"</span>: [
-        <span class="hljs-string">"The confirm password and password baru must match."</span>
-      ]
-    }
-  }
-                  </code>
-                </pre>
-              </div>
-              <!--//docs-code-block-->
-            </td>
-          <tr>
-        </tbody>
-      </table>
     </div>
+    <!-- Akhir Response -->
+
   </section>
   <!--//section Ganti Password-->
 
@@ -256,8 +211,10 @@
       <small>auth/logout</small>
     </h4>
     <p>
-      Logout
+      User Logout
     </p>
+
+    <!-- Parameter -->
     <h5>Request parameters:</h5>
     <div class="table-responsive">
       <table class="table table-bordered">
@@ -268,6 +225,17 @@
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <th class="theme-bg-light">Authorization
+              <h6>string <small><i>(header)</i></small></h6>
+            </th>
+            <td>
+              <fieldset disabled>
+                <label for="token"><i>Default value </i>: Bearer {api_token}</label>
+                <input name="token" type="text" class="form-control bg-light text-black" placeholder="Bearer {api_token}">
+              </fieldset>
+            </td>
+          </tr>
           <tr>
             <th class="theme-bg-light">Accept
               <small class="text-danger"> <sup>* required</sup></small>
@@ -282,51 +250,28 @@
           <tr>
             <th class="theme-bg-light">api_key
               <small class="text-danger"> <sup>* required</sup></small>
-              <h6>string <small><i>(header)</i></small></h6>
+              <h6>string <small><i>(query)</i></small></h6>
             </th>
-            <td>API Key dari project aplikasi anda, letakkan pada HTTP Header</td>
-          </tr>
-          <tr>
-            <th class="theme-bg-light">api_token
-              <small class="text-danger"> <sup>* required</sup></small>
-              <h6>string <small><i>(header)</i></small></h6>
-            </th>
-            <td>API Token yang didapatkan dari proses login, letakkan pada HTTP Header</td>
+            <td>API Key dari project aplikasi anda</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <!--//table-responsive-->
 
+    <!-- Response -->
     <h5 class="pt-2">Responses:</h5>
-    <div class="table-responsive my-4">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Code</th>
-            <th scope="col">Keterangan</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>200</td>
-            <td>OK
-              <!--//table-responsive-->
-              <div class="docs-code-block pt-0 pb-0">
-                <pre class="rounded">
+    <div class="docs-code-block pt-0 pb-0">
+      <pre class="rounded">
                   <code class="json hljs">
   {
-       <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Logout successfully."</span>
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"success"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Logout successfully."</span>,
   }
                   </code>
                 </pre>
-              </div>
-              <!--//docs-code-block-->
-            </td>
-          <tr>
-        </tbody>
-      </table>
     </div>
+    <!-- Akhir Response -->
+
   </section>
   <!--//section Logout-->
 

@@ -60,10 +60,12 @@
     <div id="docs-sidebar" class="docs-sidebar">
       <nav id="docs-nav" class="docs-nav navbar">
         <ul class="section-items list-unstyled nav flex-column pb-3">
+          <li class="nav-item section-title mt-0">
+            <a class="nav-link scrollto" href="#section-2"><span class="theme-icon-holder mr-2"><i class="fas fa-file-alt"></i></span>Pengantar</a>
+          </li>
           <li class="nav-item section-title">
             <a class="nav-link scrollto active" href="#section-1"><span class="theme-icon-holder mr-2"><i class="fas fa-star-half-alt"></i></span>Memulai</a>
           </li>
-          <li class="nav-item section-title mt-0"><a class="nav-link scrollto" href="#section-2"><span class="theme-icon-holder mr-2"><i class="fas fa-file-alt"></i></span>Pengantar</a></li>
           <li class="nav-item section-title mt-0 mb-0"><a class="nav-link scrollto" href="#section-3"><span class="theme-icon-holder mr-2"><i class="fab fa-readme"></i></span>Dokumentasi</a></li>
           <ul class="nav-item mx-0">
             <a class="nav-link scrollto" href="#section-4">Auth</a>
@@ -71,14 +73,72 @@
             <li class="nav-item"><a class="nav-link scrollto" href="#item-4-2">Ganti Password</a></li>
             <li class="nav-item"><a class="nav-link scrollto" href="#item-4-3">Logout</a></li>
           </ul>
+
+          <!-- Sidebar Admin  -->
           <ul class="nav-item mx-0">
-            <a class="nav-link scrollto" href="#section-5">Admin/Fakultas</a>
-            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-1">Data Fakultas</a></li>
-            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-2">Tambah Fakultas</a></li>
-            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-3">Detail Fakultas</a></li>
-            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-4">Update Fakultas</a></li>
-            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-5">Hapus Fakultas</a></li>
-            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-6">Fakultas Aktif</a></li>
+            <a class="nav-link scrollto" href="#section-5">Admin/Profile</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-1">Lihat Profile</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-5-2">Update Profile</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-6">Admin/Fakultas</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-6-1">Lihat Data Fakultas</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-6-2">Tambah Fakultas</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-6-3">Fakultas By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-6-4">Update Fakultas</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-6-5">Hapus Fakultas</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-6-6">Fakultas Aktif</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-7">Admin/Program Studi</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-7-1">Lihat Data Program Studi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-7-2">Tambah Program Studi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-7-3">Program Studi By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-7-4">Update Program Studi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-7-5">Hapus Program Studi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-7-6">Program Studi Aktif By ID Fakultas</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-8">Admin/Jabatan Struktural</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-8-1">Lihat Data Jabatan Struktural</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-8-2">Tambah Jabatan Struktural</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-8-3">Jabatan Struktural By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-8-4">Update Jabatan Struktural</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-8-5">Hapus Jabatan Struktural</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-9">Admin/Jabatan Fungsional</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-9-1">Lihat Data Jabatan Fungsional</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-9-2">Tambah Jabatan Fungsional</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-9-3">Jabatan Fungsional By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-9-4">Update Jabatan Fungsional</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-9-5">Hapus Jabatan Fungsional</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-10">Admin/Admin Prodi</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-10-1">Lihat Data Admin Prodi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-10-2">Tambah Admin Prodi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-10-3">Admin Prodi By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-10-4">Update Admin Prodi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-10-5">Hapus Admin Prodi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-10-6">Reset Password Admin Prodi</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-11">Admin/Seminar Proposal</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-11-1">Lihat Data Seminar Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-11-2">Seminar Proposal By ID</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-12">Admin/Sidang Skripsi</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-12-1">Lihat Data Sidang Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-12-2">Sidang Skripsi By ID</a></li>
           </ul>
         </ul>
       </nav>
@@ -87,12 +147,20 @@
     <!--//docs-sidebar-->
     <div class="docs-content">
       <div class="container">
-        @include('docs.mulai')
         @include('docs.pengantar')
+        @include('docs.mulai')
         @include('docs.docsindex')
         @include('docs.auth')
-        @include('docs.admin.fakultas.index')
-        <!-- Content Here  -->
+
+        <!-- Conten Admin  -->
+        @include('docs.admin.profile')
+        @include('docs.admin.fakultas')
+        @include('docs.admin.prodi')
+        @include('docs.admin.jabatanstruktural')
+        @include('docs.admin.jabatanfungsional')
+        @include('docs.admin.adminprodi')
+        @include('docs.admin.seminarproposal')
+        @include('docs.admin.sidangskripsi')
       </div>
       @include('footer')
       <button onclick="topFunction()" id="myBtn" title="Back To Top"><i class="fas fa-chevron-up"></i></button>

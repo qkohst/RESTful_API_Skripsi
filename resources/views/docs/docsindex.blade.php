@@ -7,7 +7,40 @@
       http://127.0.0.1:8000/api/v1
     </p>
     <p>
-      Velit exercitation irure nostrud minim voluptate esse dolore. Irure nulla proident veniam sunt proident minim proident enim cupidatat sunt. Adipisicing Lorem non mollit et aliquip pariatur ea exercitation labore elit laborum. Magna elit ea sint consectetur consectetur nulla laboris mollit. Est in laborum quis velit anim do.
+      Berikut adalah struktur response yang akan anda dapatkan saat melakukan request :
     </p>
+
+    <!-- Response Success -->
+    <h5 class="pt-2">Response Success:</h5>
+    <div class="docs-code-block pt-0 pb-0">
+      <pre class="rounded">
+                  <code class="json hljs">
+  {
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"success"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"pesan keterangan response"</span>,
+    <span class="hljs-attr">"data"</span>: {
+      <span class="hljs-attr">"id"</span>: <span class="hljs-number">value_id</span>, 
+      <span class="hljs-attr">"key_1"</span>: <span class="hljs-string">"value_1"</span>, 
+      <span class="hljs-attr">"key_1"</span>: <span class="hljs-string">"value_1"</span>, 
+      <span class="hljs-attr">"key_n"</span>: <span class="hljs-string">"value_n"</span>, 
+    }
+  }
+                  </code>
+                </pre>
+    </div>
+
+    <!-- Response Error -->
+    <h5 class="pt-0">Response Error:</h5>
+    <div class="docs-code-block pt-0 pb-0">
+      <pre class="rounded">
+                  <code class="json hljs">
+  {
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"error"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"pesan keterangan response"</span>,
+  }
+                  </code>
+                </pre>
+    </div>
+
   </header>
 </article>
