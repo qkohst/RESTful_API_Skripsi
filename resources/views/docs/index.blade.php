@@ -61,12 +61,13 @@
       <nav id="docs-nav" class="docs-nav navbar">
         <ul class="section-items list-unstyled nav flex-column pb-3">
           <li class="nav-item section-title mt-0">
-            <a class="nav-link scrollto" href="#section-2"><span class="theme-icon-holder mr-2"><i class="fas fa-file-alt"></i></span>Pengantar</a>
+            <a class="nav-link scrollto active" href="#section-2"><span class="theme-icon-holder mr-2"><i class="fas fa-file-alt"></i></span>Pengantar</a>
           </li>
           <li class="nav-item section-title">
-            <a class="nav-link scrollto active" href="#section-1"><span class="theme-icon-holder mr-2"><i class="fas fa-star-half-alt"></i></span>Memulai</a>
+            <a class="nav-link scrollto" href="#section-1"><span class="theme-icon-holder mr-2"><i class="fas fa-star-half-alt"></i></span>Memulai</a>
           </li>
-          <li class="nav-item section-title mt-0 mb-0"><a class="nav-link scrollto" href="#section-3"><span class="theme-icon-holder mr-2"><i class="fab fa-readme"></i></span>Dokumentasi</a></li>
+          <li class="nav-item section-title"><a class="nav-link scrollto" href="#section-3"><span class="theme-icon-holder mr-2"><i class="fab fa-readme"></i></span>Dokumentasi</a></li>
+          <li class="nav-item section-title mb-0"><a class="nav-link scrollto" href="#section-4"><span class="theme-icon-holder mr-2"><i class="fa fa-sign-in-alt"></i></span>Auth</a></li>
           <ul class="nav-item mx-0">
             <a class="nav-link scrollto" href="#section-4">Auth</a>
             <li class="nav-item"><a class="nav-link scrollto" href="#item-4-1">Login</a></li>
@@ -75,6 +76,7 @@
           </ul>
 
           <!-- Sidebar Admin  -->
+          <li class="nav-item section-title mb-0 mt-2"><a class="nav-link scrollto" href="#section-5"><span class="theme-icon-holder mr-2"><i class="fa fa-user-shield"></i></span>Admin</a></li>
           <ul class="nav-item mx-0">
             <a class="nav-link scrollto" href="#section-5">Admin/Profile</a>
             <li class="nav-item"><a class="nav-link scrollto" href="#item-5-1">Lihat Profile</a></li>
@@ -140,6 +142,75 @@
             <li class="nav-item"><a class="nav-link scrollto" href="#item-12-1">Lihat Data Sidang Skripsi</a></li>
             <li class="nav-item"><a class="nav-link scrollto" href="#item-12-2">Sidang Skripsi By ID</a></li>
           </ul>
+
+          <!-- Sidebar Admin Prodi -->
+          <li class="nav-item section-title mb-0 mt-2"><a class="nav-link scrollto" href="#section-13"><span class="theme-icon-holder mr-2"><i class="fa fa-user-tie"></i></span>Admin Prodi</a></li>
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-13">Admin Prodi/Profile</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-13-1">Lihat Profile</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-13-2">Update Profile</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-14">Admin Prodi/Mahasiswa</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-14-1">Lihat Data Mahasiswa</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-14-2">Tambah Mahasiswa</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-14-3">Mahasiswa By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-14-4">Update Mahasiswa</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-14-5">Hapus Mahasiswa</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-14-6">Reset Password Mahasiswa</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-15">Admin Prodi/Dosen</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-15-1">Lihat Data Dosen</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-15-2">Tambah Dosen</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-15-3">Dosen By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-15-4">Update Dosen</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-15-5">Hapus Dosen</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-15-6">Reset Password Dosen</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-15-7">Dosen Aktif</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-16">Admin Prodi/Jabatan Dosen</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-16-1">Lihat Jabatan Struktural</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-16-2">Lihat Jabatan Fungsional</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-17">Admin Prodi/Persetujuan KRS</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-17-1">Lihat Data Persetujuan KRS</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-17-2">Persetujuan KRS By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-17-3">Verifikasi Persetujuan KRS</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-18">Admin Prodi/Seminar Proposal</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-18-1">Lihat Data Seminar Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-18-2">Seminar Proposal By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-18-3">Tentukan Penguji dan Waktu</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-18-4">Status Persetujuan Penguji</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-18-5">Hasil Seminar Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-18-6">Verifikasi Seminar Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-18-7">Nilai Seminar Proposal</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-19">Admin Prodi/Sidang Skripsi</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-19-1">Lihat Data Sidang Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-19-2">Sidang Skripsi By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-19-3">Tentukan Waktu Sidang</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-19-4">Hasil Sidang Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-19-5">Verifikasi Sidang Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-19-6">Nilai Sidang Skripsi</a></li>
+          </ul>
+
+          <!-- Sidebar Mahasiswa -->
+          <li class="nav-item section-title mb-0 mt-2"><a class="nav-link scrollto" href="#section-13"><span class="theme-icon-holder mr-2"><i class="fa fa-user-graduate"></i></span>Mahasiswa</a></li>
+
+          <!-- Sidebar Dosen -->
+          <li class="nav-item section-title mb-0 mt-2"><a class="nav-link scrollto" href="#section-13"><span class="theme-icon-holder mr-2"><i class="fa fa-user-secret"></i></span>Dosen</a></li>
         </ul>
       </nav>
       <!--//docs-nav-->
@@ -161,6 +232,15 @@
         @include('docs.admin.adminprodi')
         @include('docs.admin.seminarproposal')
         @include('docs.admin.sidangskripsi')
+
+        <!-- Conten Admin Prodi -->
+        @include('docs.adminprodi.profile')
+        @include('docs.adminprodi.mahasiswa')
+        @include('docs.adminprodi.dosen')
+        @include('docs.adminprodi.jabatandosen')
+        @include('docs.adminprodi.persetujuankrs')
+        @include('docs.adminprodi.seminarproposal')
+        @include('docs.adminprodi.sidangskripsi')
       </div>
       @include('footer')
       <button onclick="topFunction()" id="myBtn" title="Back To Top"><i class="fas fa-chevron-up"></i></button>

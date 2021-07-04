@@ -1,20 +1,20 @@
-<article class="docs-article" id="section-10">
+<article class="docs-article" id="section-14">
   <header class="docs-header">
-    <h1 class="docs-heading pb-0">Admin/Admin Prodi</h1>
+    <h1 class="docs-heading pb-0">Admin Prodi/Mahasiswa</h1>
     <p>
-      Mengelola data Admin Prodi yang dilakukan oleh user dengan role Admin
+      Mengelola data Mahasiswa yang dilakukan oleh user dengan role Admin Prodi
     </p>
   </header>
 
   <!-- Lihat Fakultas  -->
-  <section class="docs-section pt-0" id="item-10-1">
-    <h3 class="section-heading">Lihat Data Admin Prodi</h3>
+  <section class="docs-section pt-0" id="item-14-1">
+    <h3 class="section-heading">Lihat Data Mahasiswa</h3>
     <h4>
       <span class="badge badge-info">GET</span>
-      <small>admin/adminprodi</small>
+      <small>adminprodi/mahasiswa</small>
     </h4>
     <p>
-      Melihat semua data Admin Prodi
+      Melihat semua data Mahasiswa sesuai program studi admin prodi
     </p>
 
     <!-- Parameter -->
@@ -68,27 +68,25 @@
                   <code class="json hljs">
   {
     <span class="hljs-attr">"status"</span>: <span class="hljs-string">"success"</span>,
-    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"List of Data Admin Prodi"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"List Mahasiswa of Program Studi Teknik Informatika"</span>,
     <span class="hljs-attr">"data"</span>: [
       {
         <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
-        <span class="hljs-attr">"program_studi"</span>: {
-          <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
-          <span class="hljs-attr">"nama_program_studi"</span>: <span class="hljs-string">"Teknik Informatika"</span>, 
-        },
-        <span class="hljs-attr">"nama_admin_prodi"</span>: <span class="hljs-string">"Muhammad"</span>, 
-        <span class="hljs-attr">"jenis_kelamin_admin_prodi"</span>: <span class="hljs-string">"L"</span>, 
-        <span class="hljs-attr">"nidn_admin_prodi"</span>: <span class="hljs-string">"1212123459"</span>, 
+        <span class="hljs-attr">"nama_mahasiswa"</span>: <span class="hljs-string">"Kukoh Santoso"</span>, 
+        <span class="hljs-attr">"npm_mahasiswa"</span>: <span class="hljs-string">"1412170001"</span>, 
+        <span class="hljs-attr">"jenis_kelamin_mahasiswa"</span>: <span class="hljs-string">"L"</span>, 
+        <span class="hljs-attr">"tanggal_lahir_mahasiswa"</span>: <span class="hljs-string">"1998-05-30"</span>, 
+        <span class="hljs-attr">"semester_mahasiswa"</span>: <span class="hljs-number">8</span>, 
+        <span class="hljs-attr">"status_mahasiswa"</span>: <span class="hljs-string">"Lulus"</span>, 
       },
       {
-        <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
-        <span class="hljs-attr">"program_studi"</span>: {
-          <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
-          <span class="hljs-attr">"nama_program_studi"</span>: <span class="hljs-string">"Teknik Industri"</span>, 
-        },
-        <span class="hljs-attr">"nama_admin_prodi"</span>: <span class="hljs-string">"Ahmad"</span>, 
-        <span class="hljs-attr">"jenis_kelamin_admin_prodi"</span>: <span class="hljs-string">"L"</span>, 
-        <span class="hljs-attr">"nidn_admin_prodi"</span>: <span class="hljs-string">"1212123458"</span>, 
+        <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+        <span class="hljs-attr">"nama_mahasiswa"</span>: <span class="hljs-string">"Ali"</span>, 
+        <span class="hljs-attr">"npm_mahasiswa"</span>: <span class="hljs-string">"1412170002"</span>, 
+        <span class="hljs-attr">"jenis_kelamin_mahasiswa"</span>: <span class="hljs-string">"L"</span>, 
+        <span class="hljs-attr">"tanggal_lahir_mahasiswa"</span>: <span class="hljs-string">"1996-05-30"</span>, 
+        <span class="hljs-attr">"semester_mahasiswa"</span>: <span class="hljs-number">10</span>, 
+        <span class="hljs-attr">"status_mahasiswa"</span>: <span class="hljs-string">"Aktif"</span>, 
       }
     ]
   }
@@ -101,14 +99,14 @@
   <!--//section Login-->
 
   <!-- Tambah Fakultas  -->
-  <section class="docs-section pt-3" id="item-10-2">
-    <h3 class="section-heading">Tambah Admin Prodi </h3>
+  <section class="docs-section pt-3" id="item-14-2">
+    <h3 class="section-heading">Tambah Mahasiswa </h3>
     <h4>
       <span class="badge badge-primary">POST</span>
-      <small>admin/adminprodi</small>
+      <small>adminprodi/mahasiswa</small>
     </h4>
     <p>
-      Menambahkan data Admin Prodi
+      Menambahkan data Mahasiswa
     </p>
 
     <!-- Parameter -->
@@ -159,95 +157,47 @@
     <h5 class="pt-2">Request body:</h5>
     <div class="callout-block callout-block-success">
       <div class="pt-0">
-        <h5>program_studi_id_program_studi
+        <h5>nama_mahasiswa
           <small>
-            <sup class="text-danger">* required</sup> integer<i>($int32)</i>
+            <sup class="text-danger">* required</sup> string
           </small>
         </h5>
       </div>
       <div class="pt-3">
-        <h5>nik_admin_prodi
-          <small>
-            <sup class="text-danger">* required</sup> integer<i>($int32)</i>
-          </small>
-        </h5>
-      </div>
-      <div class="pt-3">
-        <h5>nidn_admin_prodi
-          <small>
-            <sup class="text-danger">* required</sup> integer<i>($int32)</i>
-          </small>
-        </h5>
-      </div>
-      <div class="pt-3">
-        <h5>nip_admin_prodi
+        <h5>npm_mahasiswa
           <small>
             <sup class="text-danger"></sup> integer<i>($int32)</i>
           </small>
         </h5>
       </div>
       <div class="pt-3">
-        <h5>nama_admin_prodi
+        <h5>semester_mahasiswa
+          <small>
+            <sup class="text-danger">* required</sup> enum <i>between</i> ('1','14')
+          </small>
+        </h5>
+      </div>
+      <div class="pt-3">
+        <h5>tempat_lahir_mahasiswa
           <small>
             <sup class="text-danger">* required</sup> string
           </small>
         </h5>
       </div>
       <div class="pt-3">
-        <h5>tempat_lahir_admin_prodi
-          <small>
-            <sup class="text-danger">* required</sup> string
-          </small>
-        </h5>
-      </div>
-      <div class="pt-3">
-        <h5>tanggal_lahir_admin_prodi
+        <h5>tanggal_lahir_mahasiswa
           <small>
             <sup class="text-danger">* required</sup> date
           </small>
         </h5>
       </div>
       <div class="pt-3">
-        <h5>jenis_kelamin_admin_prodi
+        <h5>jenis_kelamin_mahasiswa
           <small>
             <sup class="text-danger">* required</sup> enum ('L','P')
           </small>
         </h5>
       </div>
-      <div class="pt-3">
-        <h5>foto_admin_prodi
-          <small>
-            <sup class="text-danger"></sup> file (image)
-          </small>
-        </h5>
-      </div>
-      <div class="pt-3">
-        <h5>no_surat_tugas_admin_prodi
-          <small>
-            <sup class="text-danger">* required</sup> string
-          </small>
-        </h5>
-      </div>
-      <div class="pt-3">
-        <h5>email_admin_prodi
-          <small>
-            <sup class="text-danger">* required</sup> string (email)
-          </small>
-        </h5>
-      </div>
-      <div class="pt-3">
-        <h5>no_hp_admin_prodi
-          <small>
-            <sup class="text-danger">* required</sup> string
-          </small>
-        </h5>
-      </div>
-    </div>
-
-    <!-- Catatan Foreign Key -->
-    <h5 class="mt-2">Catatan:</h5>
-    <div class="alert alert-info" role="alert">
-      Untuk mendapatkan list data id program studi dapat anda lihat pada endpoint <a class="scrollto" href="#item-7-6" target="_black">Program Studi Aktif By ID Fakultas</a>
     </div>
 
     <!-- Response -->
@@ -262,28 +212,22 @@
       <span class="hljs-attr">"id"</span>: <span class="hljs-number">15</span>, 
       <span class="hljs-attr">"user"</span>: {
         <span class="hljs-attr">"id"</span>: <span class="hljs-number">15</span>,
-        <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Muhammad"</span>, 
-        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"1212123457"</span>, 
-        <span class="hljs-attr">"role"</span>: <span class="hljs-string">"Admin Prodi"</span>, 
+        <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Kukoh Santoso"</span>, 
+        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"1412170001"</span>, 
+        <span class="hljs-attr">"role"</span>: <span class="hljs-string">"Mahasiswa"</span>, 
       }, 
       <span class="hljs-attr">"program_studi"</span>: {
         <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
         <span class="hljs-attr">"kode_program_studi"</span>: <span class="hljs-number">1412</span>,
         <span class="hljs-attr">"nama_program_studi"</span>: <span class="hljs-string">"Teknik Informatika"</span>, 
       }, 
-      <span class="hljs-attr">"nik_admin_prodi"</span>: <span class="hljs-string">"3523063005980009"</span>, 
-      <span class="hljs-attr">"nidn_admin_prodi"</span>: <span class="hljs-string">"1212123457"</span>, 
-      <span class="hljs-attr">"nip_admin_prodi"</span>: <span class="hljs-null">null</span>, 
-      <span class="hljs-attr">"nama_admin_prodi"</span>: <span class="hljs-string">"Muhammad"</span>, 
-      <span class="hljs-attr">"tempat_lahir_admin_prodi"</span>: <span class="hljs-string">"Tuban"</span>, 
-      <span class="hljs-attr">"tanggal_lahir_admin_prodi"</span>: <span class="hljs-string">"1998-01-21"</span>, 
-      <span class="hljs-attr">"jenis_kelamin_admin_prodi"</span>: <span class="hljs-string">"L"</span>, 
-      <span class="hljs-attr">"foto_admin_prodi"</span>: {
-        <span class="hljs-attr">"nama_file"</span>: <span class="hljs-null">null</span>,
-        <span class="hljs-attr">"url"</span>: <span class="hljs-string">"fileFotoProfile/"</span>, 
-      }, 
-      <span class="hljs-attr">"no_surat_tugas_admin_prodi"</span>: <span class="hljs-string">"30/ST.FT.TI/2021"</span>, 
-      <span class="hljs-attr">"email_admin_prodi"</span>: <span class="hljs-string">"admintif@mail.com"</span>, 
+      <span class="hljs-attr">"nama_mahasiswa"</span>: <span class="hljs-string">"Kukoh Santoso"</span>, 
+      <span class="hljs-attr">"npm_mahasiswa"</span>: <span class="hljs-string">"1412170001"</span>, 
+      <span class="hljs-attr">"semester_mahasiswa"</span>: <span class="hljs-string">"8"</span>, 
+      <span class="hljs-attr">"tempat_lahir_mahasiswa"</span>: <span class="hljs-string">"Tuban"</span>, 
+      <span class="hljs-attr">"tanggal_lahir_mahasiswa"</span>: <span class="hljs-string">"1998-01-21"</span>, 
+      <span class="hljs-attr">"jenis_kelamin_mahasiswa"</span>: <span class="hljs-string">"L"</span>, 
+      <span class="hljs-attr">"status_mahasiswa"</span>: <span class="hljs-string">"Aktif"</span>, 
       <span class="hljs-attr">"created_at"</span>: <span class="hljs-string">"1 detik yang lalu"</span>, 
     }
   }
@@ -296,14 +240,14 @@
   <!--//section Tambah -->
 
   <!-- Fakultas By ID -->
-  <section class="docs-section pt-3" id="item-10-3">
-    <h3 class="section-heading">Admin Prodi By ID</h3>
+  <section class="docs-section pt-3" id="item-14-3">
+    <h3 class="section-heading">Mahasiswa By ID</h3>
     <h4>
       <span class="badge badge-info">GET</span>
-      <small>admin/adminprodi/{id}</small>
+      <small>adminprodi/mahasiswa/{id}</small>
     </h4>
     <p>
-      Melihat Data Admin Prodi Berdasarkan ID
+      Melihat Data Mahasiswa Berdasarkan ID
     </p>
 
     <!-- Parameter -->
@@ -357,34 +301,53 @@
                   <code class="json hljs">
   {
     <span class="hljs-attr">"status"</span>: <span class="hljs-string">"success"</span>,
-    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Details Data Admin Prodi"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Details Data Mahasiswa"</span>,
     <span class="hljs-attr">"data"</span>: {
       <span class="hljs-attr">"id"</span>: <span class="hljs-number">15</span>, 
       <span class="hljs-attr">"user"</span>: {
         <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>, 
-        <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Muhammad"</span>, 
-        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"1212123457"</span>, 
+        <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Kukoh Santoso"</span>, 
+        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"1412170001"</span>, 
       }, 
       <span class="hljs-attr">"program_studi"</span>: {
         <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>, 
         <span class="hljs-attr">"kode_program_studi"</span>: <span class="hljs-number">1412</span>, 
         <span class="hljs-attr">"nama_program_studi"</span>: <span class="hljs-string">"Teknik Informatika"</span>, 
       }, 
-      <span class="hljs-attr">"nik_admin_prodi"</span>: <span class="hljs-string">"3523063005980006"</span>, 
-      <span class="hljs-attr">"nidn_admin_prodi"</span>: <span class="hljs-string">"1212123457"</span>, 
-      <span class="hljs-attr">"nip_admin_prodi"</span>: <span class="hljs-null">null</span>, 
-      <span class="hljs-attr">"nama_admin_prodi"</span>: <span class="hljs-string">"Muhammad"</span>, 
-      <span class="hljs-attr">"tempat_lahir_admin_prodi"</span>: <span class="hljs-string">"Tuban"</span>, 
-      <span class="hljs-attr">"tanggal_lahir_admin_prodi"</span>: <span class="hljs-string">"1998-01-21"</span>, 
-      <span class="hljs-attr">"jenis_kelamin_admin_prodi"</span>: <span class="hljs-string">"L"</span>, 
-      <span class="hljs-attr">"foto_admin_prodi"</span>: {
+      <span class="hljs-attr">"nama_mahasiswa"</span>: <span class="hljs-string">"Kukoh Santoso"</span>, 
+      <span class="hljs-attr">"npm_mahasiswa"</span>: <span class="hljs-string">"1412170001"</span>, 
+      <span class="hljs-attr">"semester_mahasiswa"</span>: <span class="hljs-number">8</span>, 
+      <span class="hljs-attr">"tempat_lahir_mahasiswa"</span>: <span class="hljs-string">"Tuban"</span>, 
+      <span class="hljs-attr">"tanggal_lahir_mahasiswa"</span>: <span class="hljs-string">"1998-01-21"</span>, 
+      <span class="hljs-attr">"jenis_kelamin_mahasiswa"</span>: <span class="hljs-string">"L"</span>, 
+      <span class="hljs-attr">"status_perkawinan_mahasiswa"</span>: <span class="hljs-string">"Belum Kawin"</span>, 
+      <span class="hljs-attr">"agama_mahasiswa"</span>: <span class="hljs-string">"Islam"</span>, 
+      <span class="hljs-attr">"nama_ibu_mahasiswa"</span>: <span class="hljs-string">"Darmini"</span>, 
+      <span class="hljs-attr">"alamat_mahasiswa"</span>: <span class="hljs-null">null</span>, 
+      <span class="hljs-attr">"provinsi_mahasiswa"</span>: {
+        <span class="hljs-attr">"id"</span>: <span class="hljs-number">35</span>, 
+        <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Jawa Timur"</span>, 
+      }, 
+      <span class="hljs-attr">"kabupaten_mahasiswa"</span>: {
+        <span class="hljs-attr">"id"</span>: <span class="hljs-number">3523</span>, 
+        <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Tuban"</span>, 
+      }, 
+      <span class="hljs-attr">"kecamatan_mahasiswa"</span>: {
+        <span class="hljs-attr">"id"</span>: <span class="hljs-number">3514170</span>, 
+        <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Tambakboyo"</span>, 
+      }, 
+      <span class="hljs-attr">"desa_mahasiswa"</span>: {
+        <span class="hljs-attr">"id"</span>: <span class="hljs-number">3514170017</span>, 
+        <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Dikir"</span>, 
+      }, 
+      <span class="hljs-attr">"foto_mahasiswa"</span>: {
         <span class="hljs-attr">"nama_file"</span>: <span class="hljs-null">null</span>, 
         <span class="hljs-attr">"url"</span>: <span class="hljs-string">"fileFotoProfile/"</span>, 
       }, 
-      <span class="hljs-attr">"no_surat_tugas_admin_prodi"</span>: <span class="hljs-string">"30/ST.FKIP.PE/2021"</span>, 
-      <span class="hljs-attr">"email_admin_prodi"</span>: <span class="hljs-string">"adminpe@mail.com"</span>, 
-      <span class="hljs-attr">"no_hp_admin_prodi"</span>: <span class="hljs-string">"085232077939"</span>, 
-      <span class="hljs-attr">"tanggal_pembaruan_admin_prodi"</span>: <span class="hljs-string">"2021-06-19 23:31:16"</span>, 
+      <span class="hljs-attr">"email_mahasiswa"</span>: <span class="hljs-string">"kukohsan@mail.com"</span>, 
+      <span class="hljs-attr">"no_hp_mahasiswa"</span>: <span class="hljs-string">"085232077939"</span>, 
+      <span class="hljs-attr">"status_mahasiswa"</span>: <span class="hljs-string">"Aktif"</span>, 
+      <span class="hljs-attr">"tanggal_pembaruan_mahasiswa"</span>: <span class="hljs-string">"2021-06-19 23:31:16"</span>, 
     }
   }
                   </code>
@@ -395,14 +358,14 @@
   <!--//section Fakulltas By ID  -->
 
   <!-- Update Fakultas  -->
-  <section class="docs-section pt-3" id="item-10-4">
-    <h3 class="section-heading">Update Admin Prodi </h3>
+  <section class="docs-section pt-3" id="item-14-4">
+    <h3 class="section-heading">Update Mahasiswa </h3>
     <h4>
       <span class="badge badge-primary">POST</span>
-      <small>admin/adminprodi/{id}</small>
+      <small>adminprodi/mahasiswa/{id}</small>
     </h4>
     <p>
-      Update Data Admin Prodi
+      Update Data Mahasiswa
     </p>
 
     <!-- Parameter -->
@@ -460,23 +423,30 @@
         </h5>
       </div>
       <div class="pt-3">
-        <h5>nama_admin_prodi
+        <h5>nama_mahasiswa
           <small>
             <sup class="text-danger">* required</sup> string
           </small>
         </h5>
       </div>
       <div class="pt-3">
-        <h5>nip_admin_prodi
+        <h5>tempat_lahir_mahasiswa
           <small>
-            <sup class="text-danger"></sup> string
+            <sup class="text-danger">* required</sup> string
           </small>
         </h5>
       </div>
       <div class="pt-3">
-        <h5>nik_admin_prodi
+        <h5>tanggal_lahir_mahasiswa
           <small>
-            <sup class="text-danger">* required</sup> string
+            <sup class="text-danger">* required</sup> date
+          </small>
+        </h5>
+      </div>
+      <div class="pt-3">
+        <h5>status_mahasiswa
+          <small>
+            <sup class="text-danger">* required</sup> enum ('Aktif','Non Aktif','Drop Out')
           </small>
         </h5>
       </div>
@@ -494,16 +464,17 @@
       <span class="hljs-attr">"id"</span>: <span class="hljs-number">15</span>, 
       <span class="hljs-attr">"user"</span>: {
         <span class="hljs-attr">"id"</span>: <span class="hljs-number">30</span>, 
-        <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Muhammad"</span>, 
+        <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Kukoh Santoso"</span>, 
       }, 
       <span class="hljs-attr">"program_studi"</span>: {
         <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>, 
         <span class="hljs-attr">"kode_program_studi"</span>: <span class="hljs-number">1412</span>, 
         <span class="hljs-attr">"nama_program_studi"</span>: <span class="hljs-string">"Teknik Informatika"</span>, 
       }, 
-      <span class="hljs-attr">"nama_admin_prodi"</span>: <span class="hljs-string">"Muhammad"</span>, 
-      <span class="hljs-attr">"nip_admin_prodi"</span>: <span class="hljs-null">null</span>, 
-      <span class="hljs-attr">"nik_admin_prodi"</span>: <span class="hljs-string">"3523063005980001"</span>, 
+      <span class="hljs-attr">"nama_mahasiswa"</span>: <span class="hljs-string">"Kukoh Santoso"</span>, 
+      <span class="hljs-attr">"tempat_lahir_mahasiswa"</span>: <span class="hljs-string">"Tuban"</span>, 
+      <span class="hljs-attr">"tanggal_lahir_mahasiswa"</span>: <span class="hljs-string">"1997-05-30"</span>, 
+      <span class="hljs-attr">"status_mahasiswa"</span>: <span class="hljs-string">"Aktif"</span>, 
       <span class="hljs-attr">"updated_at"</span>: <span class="hljs-string">"1 detik yang lalu"</span>, 
     }
   }
@@ -516,14 +487,14 @@
   <!--//section Edit -->
 
   <!-- Tambah Fakultas  -->
-  <section class="docs-section pt-3" id="item-10-5">
-    <h3 class="section-heading">Hapus Admin Prodi</h3>
+  <section class="docs-section pt-3" id="item-14-5">
+    <h3 class="section-heading">Hapus Mahasiswa</h3>
     <h4>
       <span class="badge badge-primary">POST</span>
-      <small>admin/adminprodi/{id}</small>
+      <small>adminprodi/mahasiswa/{id}</small>
     </h4>
     <p>
-      Menghapus Data Admin Prodi
+      Menghapus Data Mahasiswa
     </p>
 
     <!-- Parameter -->
@@ -589,7 +560,7 @@
                   <code class="json hljs">
   {
     <span class="hljs-attr">"status"</span>: <span class="hljs-string">"success"</span>,
-    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Data user & admin prodi with id 4 deleted successfully"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Data user & mahasiswa with id 9 deleted successfully"</span>,
   }
                   </code>
                 </pre>
@@ -600,14 +571,14 @@
   <!--//section Hapus -->
 
   <!-- Reset Password  -->
-  <section class="docs-section pt-3" id="item-10-6">
-    <h3 class="section-heading">Reset Password Admin Prodi </h3>
+  <section class="docs-section pt-3" id="item-14-6">
+    <h3 class="section-heading">Reset Password Mahasiswa </h3>
     <h4>
       <span class="badge badge-primary">POST</span>
-      <small>admin/adminprodi/{id}/resetpassword</small>
+      <small>adminprodi/mahasiswa/{id}/resetpassword</small>
     </h4>
     <p>
-      Reset Password Admin Prodi
+      Reset Password Mahasiswa
     </p>
 
     <!-- Parameter -->
@@ -665,7 +636,7 @@
         </h5>
       </div>
       <div class="pt-3">
-        <h5>nidn_admin_prod
+        <h5>npm_mahasiswa
           <small>
             <sup class="text-danger">* required</sup> integer <i>$int32</i>
           </small>
@@ -685,8 +656,8 @@
       <span class="hljs-attr">"id"</span>: <span class="hljs-number">15</span>, 
       <span class="hljs-attr">"user"</span>: {
         <span class="hljs-attr">"id"</span>: <span class="hljs-number">30</span>, 
-        <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Muhammad"</span>, 
-        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"1212123459"</span>, 
+        <span class="hljs-attr">"nama"</span>: <span class="hljs-string">"Kukoh Santoso"</span>, 
+        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"1412170001"</span>, 
       }, 
       <span class="hljs-attr">"program_studi"</span>: {
         <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>, 

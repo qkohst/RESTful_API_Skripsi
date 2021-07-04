@@ -192,6 +192,12 @@
       </div>
     </div>
 
+    <!-- Catatan Foreign Key -->
+    <h5 class="mt-2">Catatan:</h5>
+    <div class="alert alert-info" role="alert">
+      Untuk mendapatkan list data id fakultas dapat anda lihat pada endpoint <a class="scrollto" href="#item-6-6" target="_black">Fakultas Aktif</a>
+    </div>
+
     <!-- Response -->
     <h5 class="pt-2">Responses:</h5>
     <div class="docs-code-block pt-0 pb-0">
