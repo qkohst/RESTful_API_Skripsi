@@ -19,10 +19,8 @@
     <span class="hljs-attr">"status"</span>: <span class="hljs-string">"success"</span>,
     <span class="hljs-attr">"message"</span>: <span class="hljs-string">"pesan keterangan response"</span>,
     <span class="hljs-attr">"data"</span>: {
-      <span class="hljs-attr">"id"</span>: <span class="hljs-number">value_id</span>, 
-      <span class="hljs-attr">"key_1"</span>: <span class="hljs-string">"value_1"</span>, 
-      <span class="hljs-attr">"key_1"</span>: <span class="hljs-string">"value_1"</span>, 
-      <span class="hljs-attr">"key_n"</span>: <span class="hljs-string">"value_n"</span>, 
+      <span class="hljs-attr">"id"</span>: <span class="hljs-number">value</span>, 
+      <span class="hljs-attr">"key"</span>: <span class="hljs-string">"value"</span>
     }
   }
                   </code>

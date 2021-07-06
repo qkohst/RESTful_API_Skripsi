@@ -268,7 +268,72 @@
           </ul>
 
           <!-- Sidebar Dosen -->
-          <li class="nav-item section-title mb-0 mt-2"><a class="nav-link scrollto" href="#section-13"><span class="theme-icon-holder mr-2"><i class="fa fa-user-secret"></i></span>Dosen</a></li>
+          <li class="nav-item section-title mb-0 mt-2"><a class="nav-link scrollto" href="#section-27"><span class="theme-icon-holder mr-2"><i class="fa fa-user-secret"></i></span>Dosen</a></li>
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-27">Dosen/Profile</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-27-1">Lihat Profile</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-27-2">Update Profile</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-28">Dosen/Persetujuan Judul</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-28-1">Lihat Data Persetujuan Judul</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-28-2">Persetujuan Judul By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-28-3">Verifikasi Judul</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-29">Dosen/Persetujuan Dosen Penguji</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-29-1">Lihat Data Persetujuan Dosen Penguji</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-29-2">Persetujuan Dosen Penguji By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-29-3">Verifikasi Dosen Penguji</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-30">Dosen/Bimbingan Proposal</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-30-1">Lihat Data Bimbingan Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-30-2">Bimbingan Proposal By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-30-3">Verifikasi Bimbingan Proposal</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-31">Dosen/Persetujuan Seminar Proposal</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-31-1">Lihat Data Persetujuan Seminar Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-31-2">Persetujuan Seminar Proposal By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-31-3">Verifikasi Persetujuan Seminar Proposal</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-32">Dosen/Seminar Proposal</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-32-1">Lihat Data Seminar Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-32-2">Seminar Proposal By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-32-3">Verifikasi Seminar Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-32-4">Input Nilai Seminar Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-32-5">Lihat Nilai Seminar Proposal</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-33">Dosen/Bimbingan Skripsi</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-33-1">Lihat Data Bimbingan Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-33-2">Bimbingan Skripsi By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-33-3">Verifikasi Bimbingan Skripsi</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-34">Dosen/Persetujuan Sidang Skripsi</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-34-1">Lihat Data Persetujuan Sidang Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-34-2">Persetujuan Sidang Skripsi By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-34-3">Verifikasi Persetujuan Sidang Skripsi</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-35">Dosen/Sidang Skripsi</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-35-1">Lihat Data Sidang Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-35-2">Sidang Skripsi By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-35-3">Verifikasi Sidang Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-35-4">Input Nilai Sidang Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-35-5">Lihat Nilai Sidang Skripsi</a></li>
+          </ul>
         </ul>
       </nav>
       <!--//docs-nav-->
@@ -300,7 +365,7 @@
         @include('docs.adminprodi.seminarproposal')
         @include('docs.adminprodi.sidangskripsi')
 
-        <!-- Conten Admin Prodi -->
+        <!-- Conten Mahasiswa -->
         @include('docs.mahasiswa.profile')
         @include('docs.mahasiswa.dosen')
         @include('docs.mahasiswa.persyaratanskripsi')
@@ -308,6 +373,17 @@
         @include('docs.mahasiswa.seminarproposal')
         @include('docs.mahasiswa.bimbinganskripsi')
         @include('docs.mahasiswa.sidangskripsi')
+
+        <!-- Conten Dosen -->
+        @include('docs.dosen.profile')
+        @include('docs.dosen.persetujuanjudul')
+        @include('docs.dosen.persetujuandosenpenguji')
+        @include('docs.dosen.bimbinganproposal')
+        @include('docs.dosen.persetujuanseminarproposal')
+        @include('docs.dosen.seminarproposal')
+        @include('docs.dosen.bimbinganskripsi')
+        @include('docs.dosen.persetujuansidangskripsi')
+        @include('docs.dosen.sidangskripsi')
 
       </div>
       @include('footer')
