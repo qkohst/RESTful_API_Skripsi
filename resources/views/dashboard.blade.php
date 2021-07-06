@@ -86,15 +86,14 @@
               <div class="card-body">
                 <h5 class="card-title mb-3">
                   <span class="theme-icon-holder card-icon-holder mr-2">
-                    <i class="fas fa-star-half-alt"></i>
+                    <i class="fas fa-file-alt"></i>
                   </span>
                   <!--//card-icon-holder-->
-                  <span class="card-title-text">Memulai</span>
+                  <span class="card-title-text">Pengantar</span>
                 </h5>
                 <div class="card-text">
-                  Section overview goes here. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-                </div>
-                <a class="card-link-mask" href="/docs#section-1"></a>
+                  Ini merupakan Dokumentasi RESTful API (Application Programming Interface) E-Skripsi Universitas PGRI Ronggolawe Tuban yang dapat ... <a href="#">baca selengkapnya</a> </div>
+                <a class="card-link-mask" href="/docs#section-2"></a>
               </div>
               <!--//card-body-->
             </div>
@@ -106,15 +105,16 @@
               <div class="card-body">
                 <h5 class="card-title mb-3">
                   <span class="theme-icon-holder card-icon-holder mr-2">
-                    <i class="fas fa-file-alt"></i>
+                    <i class="fas fa-star-half-alt"></i>
                   </span>
                   <!--//card-icon-holder-->
-                  <span class="card-title-text">Pengantar</span>
+                  <span class="card-title-text">Memulai</span>
                 </h5>
                 <div class="card-text">
-                  Section overview goes here. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+                  Untuk mulai anda memerlukan API Key. Silahkan <a href="/register">daftar</a> untuk mendapatkan API Key anda. <br>
+                  Anda harus tahu cara ... <a href="#">baca selengkapnya</a>
                 </div>
-                <a class="card-link-mask" href="/docs#section-2"></a>
+                <a class="card-link-mask" href="/docs#section-1"></a>
               </div>
               <!--//card-body-->
             </div>
@@ -132,8 +132,10 @@
                   <span class="card-title-text">Dokumentasi</span>
                 </h5>
                 <div class="card-text">
-                  Section overview goes here. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-                </div>
+                  Server :
+                  http://127.0.0.1:8000/api/v1
+
+                  Berikut adalah struktur response yang akan anda dapatkan saat melakukan request ... <a href="#">baca selengkapnya</a> </div>
                 <a class="card-link-mask" href="/docs#section-3"></a>
               </div>
               <!--//card-body-->

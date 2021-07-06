@@ -21,12 +21,12 @@ class CheckApiKey
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid Api Key'
-            ], 400);
+            ], 401);
         } elseif ($api_client->status == 'Non Aktif') {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Api Key is Non Aktif'
-            ], 400);
+            ], 401);
         }
         return $next($request);
     }

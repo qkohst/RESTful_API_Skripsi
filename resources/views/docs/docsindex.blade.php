@@ -40,5 +40,83 @@
                 </pre>
     </div>
 
+    <!-- HTTP Status Code-->
+    <h5 class="pt-2">HTTP Status Code:</h5>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="theme-bg-light">200
+              <h6>OK</h6>
+            </th>
+            <td>
+              Permintaan berhasil dijalankan.
+            </td>
+          </tr>
+          <tr>
+            <th class="theme-bg-light">201
+              <h6>Created</h6>
+            </th>
+            <td>
+              Permintaan berhasil dan data baru berhasil ditambahkan.
+            </td>
+          </tr>
+          <tr>
+            <th class="theme-bg-light">400
+              <h6>Bad Request</h6>
+            </th>
+            <td>
+              Permintaan tidak dapat diterima, biasanya karena parameter yang hilang atau kesalahan dikonfigurasi.
+            </td>
+          </tr>
+          <tr>
+            <th class="theme-bg-light">401
+              <h6>Unauthorized</h6>
+            </th>
+            <td>
+              Kesalahan pada <b>api_key</b> atau <b>api_token</b> yang tidak valid atau non aktif.
+            </td>
+          </tr>
+          <tr>
+            <th class="theme-bg-light">404
+              <h6>Not Found</h6>
+            </th>
+            <td>
+              Kesalahan pada kode respons client sehingga server tidak dapat menemukan data yang diminta.
+            </td>
+          </tr>
+          <tr>
+            <th class="theme-bg-light">409
+              <h6>Conflict</h6>
+            </th>
+            <td>
+              Menunjukkan konflik permintaan atau data ganda dengan status sumber daya target yang dikirim.
+            </td>
+          </tr>
+          <tr>
+            <th class="theme-bg-light">422
+              <h6>Unprocessable Entity</h6>
+            </th>
+            <td>
+              Server tidak dapat memproses data yang dikirimkan, ini biasanya terjadi karena kesalahan pada format isian data yang dikirim.
+            </td>
+          </tr>
+          <tr>
+            <th class="theme-bg-light">500
+              <h6>Server Error</h6>
+            </th>
+            <td>
+              Terdapat masalah pada sisi server.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </header>
 </article>

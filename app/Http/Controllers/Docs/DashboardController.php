@@ -24,7 +24,7 @@ class DashboardController extends Controller
                 DB::raw('count(id) as `count`'),
                 DB::raw('DATE(created_at) as day')
             ])->groupBy('day')
-                ->where('created_at', '>=', Carbon::now()->subWeeks(1))
+                ->where('created_at', '>=', Carbon::now()->subMonth(1))
                 ->get();
 
             $date_traffic = [];
@@ -43,7 +43,7 @@ class DashboardController extends Controller
                     DB::raw('count(id) as `count`'),
                     DB::raw('DATE(created_at) as day')
                 ])->groupBy('day')
-                ->where('created_at', '>=', Carbon::now()->subWeeks(1))
+                ->where('created_at', '>=', Carbon::now()->subMonth(1))
                 ->get();
 
 
@@ -58,7 +58,7 @@ class DashboardController extends Controller
                     DB::raw('count(id) as `count`'),
                     DB::raw('DATE(created_at) as day')
                 ])->groupBy('day')
-                ->where('created_at', '>=', Carbon::now()->subWeeks(1))
+                ->where('created_at', '>=', Carbon::now()->subMonth(1))
                 ->get();
 
             $count_traffic_web = [];

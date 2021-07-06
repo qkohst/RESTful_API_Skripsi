@@ -84,7 +84,7 @@
         text: 'Traffic Request'
       },
       subtitle: {
-        text: 'Dalam Minggu Ini'
+        text: '1 Bulan Terakhir'
       },
       xAxis: {
         categories: <?php echo json_encode($date_traffic); ?>,
