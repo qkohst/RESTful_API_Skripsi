@@ -207,7 +207,65 @@
           </ul>
 
           <!-- Sidebar Mahasiswa -->
-          <li class="nav-item section-title mb-0 mt-2"><a class="nav-link scrollto" href="#section-13"><span class="theme-icon-holder mr-2"><i class="fa fa-user-graduate"></i></span>Mahasiswa</a></li>
+          <li class="nav-item section-title mb-0 mt-2"><a class="nav-link scrollto" href="#section-20"><span class="theme-icon-holder mr-2"><i class="fa fa-user-graduate"></i></span>Mahasiswa</a></li>
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-20">Mahasiswa/Profile</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-20-1">Lihat Profile</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-20-2">Update Profile</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-21">Mahasiswa/Dosen</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-21-1">Dosen By Status Aktif</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-21-2">Lihat Data Dosen Pembimbing</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-21-3">Lihat Data Dosen Penguji</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-22">Mahasiswa/Persyaratan Skripsi</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-22-1">Upload KRS</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-22-2">Status Verifikasi Upload KRS</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-22-3">Pengajuan Judul Ke Pembimbing 1</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-22-4">Status Persetujuan Pembimbing 1</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-22-5">Pengajuan Judul Ke Pembimbing 2</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-22-6">Status Persetujuan Pembimbing 2</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-23">Mahasiswa/Bimbingan Proposal</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-23-1">Lihat Data Bimbingan Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-23-2">Pengajuan Bimbingan Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-23-3">Bimbingan Proposal By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-23-4">Berita Acara Bimbingan Proposal</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-24">Mahasiswa/Seminar Proposal</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-24-1">Pengajuan Seminar Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-24-2">Status Persetujuan Dosen Pembimbing</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-24-3">Dosen Penguji dan Waktu Seminar</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-24-4">Hasil Seminar Proposal</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-24-5">Hasil Seminar Proposal By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-24-6">Nilai Seminar Proposal</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-25">Mahasiswa/Bimbingan Skripsi</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-25-1">Lihat Data Bimbingan Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-25-2">Pengajuan Bimbingan Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-25-3">Bimbingan Skripsi By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-25-4">Berita Acara Bimbingan Skripsi</a></li>
+          </ul>
+
+          <ul class="nav-item mx-0">
+            <a class="nav-link scrollto" href="#section-26">Mahasiswa/Sidang Skripsi</a>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-26-1">Pengajuan Sidang Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-26-2">Status Persetujuan Dosen Pembimbing</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-26-3">Waktu Sidang</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-26-4">Hasil Sidang Skripsi</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-26-5">Hasil Sidang Skripsi By ID</a></li>
+            <li class="nav-item"><a class="nav-link scrollto" href="#item-26-6">Rekap Nilai Sidang Skripsi</a></li>
+          </ul>
 
           <!-- Sidebar Dosen -->
           <li class="nav-item section-title mb-0 mt-2"><a class="nav-link scrollto" href="#section-13"><span class="theme-icon-holder mr-2"><i class="fa fa-user-secret"></i></span>Dosen</a></li>
@@ -241,6 +299,16 @@
         @include('docs.adminprodi.persetujuankrs')
         @include('docs.adminprodi.seminarproposal')
         @include('docs.adminprodi.sidangskripsi')
+
+        <!-- Conten Admin Prodi -->
+        @include('docs.mahasiswa.profile')
+        @include('docs.mahasiswa.dosen')
+        @include('docs.mahasiswa.persyaratanskripsi')
+        @include('docs.mahasiswa.bimbinganproposal')
+        @include('docs.mahasiswa.seminarproposal')
+        @include('docs.mahasiswa.bimbinganskripsi')
+        @include('docs.mahasiswa.sidangskripsi')
+
       </div>
       @include('footer')
       <button onclick="topFunction()" id="myBtn" title="Back To Top"><i class="fas fa-chevron-up"></i></button>
