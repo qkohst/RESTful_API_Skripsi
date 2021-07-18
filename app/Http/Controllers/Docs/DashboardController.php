@@ -20,22 +20,7 @@ class DashboardController extends Controller
     public function index()
     {
         if (Auth::guard('developer')->user()->role == 'Admin') {
-            $data = TrafficRequest::select([
-                DB::raw('count(id) as `count`'),
-                DB::raw('DATE(created_at) as day')
-            ])->groupBy('day')
-                ->where('created_at', '>=', Carbon::now()->subMonth(1))
-                ->get();
 
-            $date_traffic = [];
-            foreach ($data as $entry) {
-                $date_traffic[] = $entry->day;
-            }
-
-            $count_traffic = [];
-            foreach ($data as $entry) {
-                $count_traffic[] = $entry->count;
-            }
             // Mobile Traffic
             $mobile_client = ApiClient::where('platform', 'Mobile')->get('id');
             $data_mobile = TrafficRequest::whereIn('api_client_id', $mobile_client)
@@ -46,11 +31,39 @@ class DashboardController extends Controller
                 ->where('created_at', '>=', Carbon::now()->subMonth(1))
                 ->get();
 
-
-            $count_traffic_mobile = [];
+            $date_traffic_mobile = [];
             foreach ($data_mobile as $entry) {
-                $count_traffic_mobile[] = $entry->count;
+                $date_traffic_mobile[] = $entry->day;
             }
+
+            // Mobile Request Success 
+            $mobile_data_success = TrafficRequest::whereIn('api_client_id', $mobile_client)->where('status', '1')
+                ->select([
+                    DB::raw('count(id) as `count`'),
+                    DB::raw('DATE(created_at) as day')
+                ])->groupBy('day')
+                ->where('created_at', '>=', Carbon::now()->subMonth(1))
+                ->get();
+
+            $count_traffic_mobile_success  = [];
+            foreach ($mobile_data_success as $entry) {
+                $count_traffic_mobile_success[] = $entry->count;
+            }
+
+            // Mobile Request Error 
+            $mobile_data_error = TrafficRequest::whereIn('api_client_id', $mobile_client)->where('status', '0')
+                ->select([
+                    DB::raw('count(id) as `count`'),
+                    DB::raw('DATE(created_at) as day')
+                ])->groupBy('day')
+                ->where('created_at', '>=', Carbon::now()->subMonth(1))
+                ->get();
+
+            $count_traffic_mobile_error  = [];
+            foreach ($mobile_data_error as $entry) {
+                $count_traffic_mobile_error[] = $entry->count;
+            }
+
             // Web Traffic
             $web_client = ApiClient::where('platform', 'Web')->get('id');
             $data_web = TrafficRequest::whereIn('api_client_id', $web_client)
@@ -61,12 +74,40 @@ class DashboardController extends Controller
                 ->where('created_at', '>=', Carbon::now()->subMonth(1))
                 ->get();
 
-            $count_traffic_web = [];
+            $date_traffic_web = [];
             foreach ($data_web as $entry) {
-                $count_traffic_web[] = $entry->count;
+                $date_traffic_web[] = $entry->day;
             }
-            // dd($count_traffic);
-            return view('admin/dashboard', compact('date_traffic', 'count_traffic_web', 'count_traffic_mobile'));
+
+            // Web Request Success 
+            $web_data_success = TrafficRequest::whereIn('api_client_id', $web_client)->where('status', '1')
+                ->select([
+                    DB::raw('count(id) as `count`'),
+                    DB::raw('DATE(created_at) as day')
+                ])->groupBy('day')
+                ->where('created_at', '>=', Carbon::now()->subMonth(1))
+                ->get();
+
+            $count_traffic_web_success  = [];
+            foreach ($web_data_success as $entry) {
+                $count_traffic_web_success[] = $entry->count;
+            }
+
+            // Web Request Error 
+            $web_data_error = TrafficRequest::whereIn('api_client_id', $web_client)->where('status', '0')
+                ->select([
+                    DB::raw('count(id) as `count`'),
+                    DB::raw('DATE(created_at) as day')
+                ])->groupBy('day')
+                ->where('created_at', '>=', Carbon::now()->subMonth(1))
+                ->get();
+
+            $count_traffic_web_error  = [];
+            foreach ($web_data_error as $entry) {
+                $count_traffic_web_error[] = $entry->count;
+            }
+
+            return view('admin/dashboard', compact('date_traffic_web', 'count_traffic_web_success', 'count_traffic_web_error', 'date_traffic_mobile', 'count_traffic_mobile_success', 'count_traffic_mobile_error',));
         } elseif (Auth::guard('developer')->user()->role == 'Developer') {
             return view('users/dashboard');
         }

@@ -18,9 +18,18 @@
 <div class="container">
   <div class="docs-overview py-5">
     <div class="row justify-content-center">
-      <div class="col-12 col-lg-12 py-3">
+      <div class="col-6 col-lg-6 py-3">
         <div class="card shadow-sm">
-          <div class="card-body" id="traffic_request">
+          <div class="card-body" id="traffic_request_web">
+            <a class="card-link-mask" href="#"></a>
+          </div>
+          <!--//card-body-->
+        </div>
+        <!--//card-->
+      </div>
+      <div class="col-6 col-lg-6 py-3">
+        <div class="card shadow-sm">
+          <div class="card-body" id="traffic_request_mobile">
             <a class="card-link-mask" href="#"></a>
           </div>
           <!--//card-body-->
@@ -42,18 +51,18 @@
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script>
   // Traffic Request 
-  Highcharts.chart('traffic_request', {
+  Highcharts.chart('traffic_request_web', {
     chart: {
       type: 'column'
     },
     title: {
-      text: 'Traffic Request'
+      text: 'Traffic Request Web Client'
     },
     subtitle: {
       text: '1 Bulan Terakhir'
     },
     xAxis: {
-      categories: <?php echo json_encode($date_traffic); ?>,
+      categories: <?php echo json_encode($date_traffic_web); ?>,
       crosshair: true
     },
     yAxis: {
@@ -77,13 +86,64 @@
       }
     },
     series: [{
-      name: 'Web Client',
-      data: <?php echo json_encode($count_traffic_web); ?>,
+        name: 'Request Success',
+        data: <?php echo json_encode($count_traffic_web_success); ?>,
 
-    }, {
-      name: 'Mobile Client',
-      data: <?php echo json_encode($count_traffic_mobile); ?>,
-    }]
+      },
+      {
+        name: 'Request Error',
+        data: <?php echo json_encode($count_traffic_web_error); ?>,
+
+      }
+    ]
+  });
+
+  // Traffic Request 
+  Highcharts.chart('traffic_request_mobile', {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Traffic Request Mobile Client'
+    },
+    subtitle: {
+      text: '1 Bulan Terakhir'
+    },
+    xAxis: {
+      categories: <?php echo json_encode($date_traffic_mobile); ?>,
+      crosshair: true
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Request'
+      }
+    },
+    tooltip: {
+      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        '<td style="padding:0"><b>{point.y:.0f} request</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      }
+    },
+    series: [{
+        name: 'Request Success',
+        data: <?php echo json_encode($count_traffic_mobile_success); ?>,
+
+      },
+      {
+        name: 'Request Error',
+        data: <?php echo json_encode($count_traffic_mobile_error); ?>,
+
+      }
+    ]
   });
 </script>
 @endsection
