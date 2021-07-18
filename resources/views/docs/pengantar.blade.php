@@ -8,7 +8,7 @@
         dengan menerapkan arsitektur REST dengan format balasan berupa JSON yang didukung oleh hampir semua bahasa pemrograman sehingga mudah untuk diintegrasikan pada aplikasi anda.
       </p>
       <p>
-        Namun, jika Anda menemukan data yang tidak valid atau bug, silahkan <a href="https://www.instagram.com/qkoh_st" target="_black">laporkan ke tim kami</a>.
+        Namun, jika Anda menemukan data yang tidak valid atau bug, silahkan <a href="mailto:kukohsantoso013@gmail.com?&subject=Lapor%20Min&body= Silahkan tuliskan laporan anda disini" target="_black">laporkan ke tim kami</a>.
       </p>
     </section>
     <!--//docs-intro-->

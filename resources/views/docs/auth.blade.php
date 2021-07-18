@@ -17,7 +17,7 @@
       Login dengan menggunakan username dan password untuk mendapatkan api_token.
     </p>
     <p>
-      Terdapat 4 level user yaitu Admin, Admin Prodi, Mahasiswa, dan Dosen. Untuk mendapat <code>username</code> dan <code>password</code> login silahkan hubungi <a href="https://www.instagram.com/qkoh_st" target="_black">tim kami</a>.
+      Terdapat 4 level user yaitu Admin, Admin Prodi, Mahasiswa, dan Dosen. Untuk mendapat <code>username</code> dan <code>password</code> login silahkan hubungi <a href="mailto:kukohsantoso013@gmail.com?&subject=Username%20Password&body=Permintaan Username dan Password RESTful API E-Skripsi ...... tambahkan keterangan disini" target="_black">tim kami</a>.
     </p>
 
     <!-- Parameter -->
