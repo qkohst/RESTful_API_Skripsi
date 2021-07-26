@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
 
 class AdminSeeder extends Seeder
 {
@@ -15,10 +17,10 @@ class AdminSeeder extends Seeder
         //Menambahkan seeder data user admin
         DB::table('users')->insert([
             'nama' => 'Admin',
-            'username' => '1490000001',
-            'password' => bcrypt('1490000001'),
+            'username' => '0710730001',
+            'password' => bcrypt('0710730001'),
             'role' => 'Admin',
-            'api_token' => bcrypt('1490000001' . 'Admin'),
+            'api_token' => Str::random(100),
         ]);
 
         //Menambahkan data seeder identitas admin

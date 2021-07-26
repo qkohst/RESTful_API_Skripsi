@@ -20,7 +20,7 @@ class JabatanStrukturalController extends Controller
     {
         $api_client = ApiClient::where('api_key', $request->api_key)->first();
 
-        $jabatan_struktural = JabatanStruktural::get([
+        $jabatan_struktural = JabatanStruktural::orderby('nama_jabatan_struktural', 'asc')->get([
             'id',
             'nama_jabatan_struktural',
             'deskripsi_jabatan_struktural'

@@ -20,7 +20,7 @@ class JabatanFungsionalController extends Controller
     {
         $api_client = ApiClient::where('api_key', $request->api_key)->first();
 
-        $jabatan_fungsional = JabatanFungsional::get([
+        $jabatan_fungsional = JabatanFungsional::orderby('nama_jabatan_fungsional', 'asc')->get([
             'id',
             'nama_jabatan_fungsional',
             'deskripsi_jabatan_fungsional'

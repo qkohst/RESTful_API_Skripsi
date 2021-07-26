@@ -19,7 +19,7 @@ class FakultasController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Fakultas::get([
+        $data = Fakultas::orderby('kode_fakultas', 'asc')->get([
             'id',
             'kode_fakultas',
             'nama_fakultas',

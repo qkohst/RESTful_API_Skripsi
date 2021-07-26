@@ -91,11 +91,13 @@ class AdminProdiController extends Controller
             return response()->json($response, 422);
         }
 
+        $program_studi = ProgramStudi::findorfail($request->program_studi_id_program_studi);
+
         //Menyimpan Data User
         $user = new User([
             'nama' => $request->input('nama_admin_prodi'),
-            'username' => $request->input('nidn_admin_prodi'),
-            'password' => bcrypt($request->input('nidn_admin_prodi')),
+            'username' => $program_studi->kode_program_studi . "000001",
+            'password' => bcrypt($program_studi->kode_program_studi . "000001"),
             'role' => 'Admin Prodi',
             'api_token' => Str::random(100),
 
@@ -105,8 +107,6 @@ class AdminProdiController extends Controller
         if ($user->save()) {
             //Menyimpan Data Admin Prodi
             try {
-                $program_studi = ProgramStudi::findorfail($request->input('program_studi_id_program_studi'));
-
                 //Jika Upload Foto
                 if ($request->hasFile('foto_admin_prodi')) {
                     $file_foto = $request->file('foto_admin_prodi');
@@ -492,8 +492,8 @@ class AdminProdiController extends Controller
         $user = User::findorfail($admin_prodi->user_id_user);
         $program_studi = ProgramStudi::findorfail($admin_prodi->program_studi_id_program_studi);
 
-        if ($user->username == $request->input('nidn_admin_prodi')) {
-            $user->password = bcrypt($request->input('nidn_admin_prodi'));
+        if ($admin_prodi->nidn_admin_prodi == $request->input('nidn_admin_prodi')) {
+            $user->password = bcrypt($program_studi->kode_program_studi . "000001");
             $user->api_token = Str::random(100);
             $user->update();
 

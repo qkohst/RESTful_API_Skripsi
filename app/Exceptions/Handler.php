@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -51,5 +52,18 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         return parent::render($request, $exception);
+    }
+
+    protected function unauthenticated($request, \Illuminate\Auth\AuthenticationException $exception)
+    {
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status' => "error",
+                'message' => "Unauthorized, please check your api_token!"
+            ], 401);
+        }
+
+        return redirect()->guest(route('login'));
     }
 }

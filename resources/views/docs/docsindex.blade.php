@@ -68,6 +68,14 @@
             </td>
           </tr>
           <tr>
+            <th class="theme-bg-light">205
+              <h6>Reset Content</h6>
+            </th>
+            <td>
+              Permintaan reset data berhasil.
+            </td>
+          </tr>
+          <tr>
             <th class="theme-bg-light">400
               <h6>Bad Request</h6>
             </th>
@@ -77,7 +85,7 @@
           </tr>
           <tr>
             <th class="theme-bg-light">401
-              <h6>Unauthorized</h6>
+              <h6>Unauthorized/Unauthenticated</h6>
             </th>
             <td>
               Kesalahan pada <b>api_key</b> atau <b>api_token</b> yang tidak valid atau non aktif.
