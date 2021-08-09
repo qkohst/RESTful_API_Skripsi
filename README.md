@@ -1,3 +1,11 @@
+## RESTful API E-Skripsi Unirow Tuban
+
+Ini merupakan RESTful API (Application Programming Interface) &  Dokumentasi  E-Skripsi Universitas PGRI Ronggolawe Tuban yang dapat Anda pakai untuk membuat berbagai macam aplikasi, dengan menerapkan arsitektur REST dengan format balasan berupa JSON yang didukung oleh hampir semua bahasa pemrograman sehingga mudah untuk diintegrasikan pada aplikasi anda.
+
+Namun, jika Anda menemukan data yang tidak valid atau bug, silahkan laporkan ke tim kami.
+
+![RESTful API Skri](https://user-images.githubusercontent.com/57386598/128751024-b5a1d1b0-481c-44ed-a602-b5616f1f76e5.png)
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
