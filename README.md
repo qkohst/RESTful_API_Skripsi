@@ -4,6 +4,11 @@ Ini merupakan RESTful API (Application Programming Interface) &  Dokumentasi  E-
 
 Namun, jika Anda menemukan data yang tidak valid atau bug, silahkan laporkan ke tim kami.
 
+
+### Vidio Demo
+[![#01 Dokumentasi ](https://user-images.githubusercontent.com/57386598/129228507-8af80c42-75c2-43d8-a1fa-dbc0dfa266eb.png)](https://www.youtube.com/watch?v=dnawpWfXDu4&list=PLa_CQUC9_sfHYJFSJyX6pgsvpguLhriB5 "Tonton Vidio")
+
+### ScreeenShoot
 ![RESTful API Skri](https://user-images.githubusercontent.com/57386598/128751024-b5a1d1b0-481c-44ed-a602-b5616f1f76e5.png)
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
