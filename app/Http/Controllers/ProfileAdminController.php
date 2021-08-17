@@ -126,49 +126,51 @@ class ProfileAdminController extends Controller
         $admin->save();
 
         $user = User::findorfail(Auth::user()->id);
+        $user->nama = $admin->nama_admin;
+        $user->save();
 
-        if ($user->username != $admin->nidn_admin) {
-            $user->nama = $admin->nama_admin;
-            $user->username = $admin->nidn_admin;
-            $user->password = bcrypt($admin->nidn_admin);
-            $user->api_token = Str::random(100);
-            $user->save();
+        // if ($user->username != $admin->nidn_admin) {
+        //     $user->nama = $admin->nama_admin;
+        //     $user->username = $admin->nidn_admin;
+        //     $user->password = bcrypt($admin->nidn_admin);
+        //     $user->api_token = Str::random(100);
+        //     $user->save();
 
-            $data1 = [
-                'id' => $admin->id,
-                'user' => [
-                    'id' => $user->id,
-                    'nama' => $user->nama,
-                    'username' => $user->username,
-                    'api_token' => $user->api_token,
-                ],
-                'nik_admin' => $admin->nik_admin,
-                'nidn_admin' => $admin->nidn_admin,
-                'nip_admin' => $admin->nip_admin,
-                'tempat_lahir_admin' => $admin->tempat_lahir_admin,
-                'tanggal_lahir_admin' => $admin->tanggal_lahir_admin,
-                'jenis_kelamin_admin' => $admin->jenis_kelamin_admin,
-                'foto_admin' => [
-                    'nama_file' => $admin->foto_admin,
-                    'url' => 'fileFotoProfile/' . $admin->foto_admin
-                ],
-                'email_admin' => $admin->email_admin,
-                'no_hp_admin' => $admin->no_hp_admin,
-                'updated_at' => $admin->updated_at->diffForHumans(),
-            ];
+        //     $data1 = [
+        //         'id' => $admin->id,
+        //         'user' => [
+        //             'id' => $user->id,
+        //             'nama' => $user->nama,
+        //             'username' => $user->username,
+        //             'api_token' => $user->api_token,
+        //         ],
+        //         'nik_admin' => $admin->nik_admin,
+        //         'nidn_admin' => $admin->nidn_admin,
+        //         'nip_admin' => $admin->nip_admin,
+        //         'tempat_lahir_admin' => $admin->tempat_lahir_admin,
+        //         'tanggal_lahir_admin' => $admin->tanggal_lahir_admin,
+        //         'jenis_kelamin_admin' => $admin->jenis_kelamin_admin,
+        //         'foto_admin' => [
+        //             'nama_file' => $admin->foto_admin,
+        //             'url' => 'fileFotoProfile/' . $admin->foto_admin
+        //         ],
+        //         'email_admin' => $admin->email_admin,
+        //         'no_hp_admin' => $admin->no_hp_admin,
+        //         'updated_at' => $admin->updated_at->diffForHumans(),
+        //     ];
 
-            $traffic = new TrafficRequest([
-                'api_client_id' => $api_client->id,
-                'status' => '1',
-            ]);
-            $traffic->save();
+        //     $traffic = new TrafficRequest([
+        //         'api_client_id' => $api_client->id,
+        //         'status' => '1',
+        //     ]);
+        //     $traffic->save();
 
-            return response()->json([
-                'status'  => 'success',
-                'message' => 'User profile and account data has been updated successfully, please log in with new username & password',
-                'data' => $data1
-            ], 200);
-        }
+        //     return response()->json([
+        //         'status'  => 'success',
+        //         'message' => 'User profile and account data has been updated successfully, please log in with new username & password',
+        //         'data' => $data1
+        //     ], 200);
+        // }
 
         $data1 = [
             'id' => $admin->id,

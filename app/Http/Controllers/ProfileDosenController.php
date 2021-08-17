@@ -217,7 +217,7 @@ class ProfileDosenController extends Controller
         $dosen->desa_dosen = $request->input('desa_dosen');
         $dosen->no_hp_dosen = $request->input('no_hp_dosen');
         $dosen->email_dosen = $request->input('email_dosen');
-        $dosen->foto_dosen = $request->input('foto_dosen');
+        // $dosen->foto_dosen = $request->input('foto_dosen');
 
         if ($request->hasFile('foto_dosen')) {
             $file_foto = $request->file('foto_dosen');
