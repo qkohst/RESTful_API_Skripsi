@@ -519,32 +519,8 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                 $traffic->save();
 
                 return response()->json($response, 400);
-            } elseif ($cek_verifikasi->status_verifikasi_hasil_sidang_skripsi == 'Revisi') {
-                $response = [
-                    'status'  => 'error',
-                    'message' => 'You do not have access to data with id ' . $sidang_skripsi->id . ', because the verification status is Revisi. Please re-verify before input nilai'
-                ];
-                $traffic = new TrafficRequest([
-                    'api_client_id' => $api_client->id,
-                    'status' => '0',
-                ]);
-                $traffic->save();
-
-                return response()->json($response, 400);
             } elseif (!is_null($cek_pembimbing)) {
-                if ($cek_verifikasi->nilai_a1_hasil_sidang_skripsi != null) {
-                    $response = [
-                        'status'  => 'error',
-                        'message' => 'It is detected that you have made an assessment, on the data with an id ' . $sidang_skripsi->id
-                    ];
-                    $traffic = new TrafficRequest([
-                        'api_client_id' => $api_client->id,
-                        'status' => '0',
-                    ]);
-                    $traffic->save();
-                    return response()->json($response, 400);
-                }
-
+               
                 $validator = Validator::make($request->all(), [
                     'nilai_a1_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
                     'nilai_a2_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
@@ -629,19 +605,6 @@ class DosenVerifikasiSidangSkripsiController extends Controller
                     'nilai_hasil_sidang_skripsi' => $data,
                 ], 200);
             } elseif (!is_null($cek_penguji)) {
-                if ($cek_verifikasi->nilai_b1_hasil_sidang_skripsi != null) {
-                    $response = [
-                        'status'  => 'error',
-                        'message' => 'It is detected that you have made an assessment, on the data with an id ' . $sidang_skripsi->id
-                    ];
-                    $traffic = new TrafficRequest([
-                        'api_client_id' => $api_client->id,
-                        'status' => '0',
-                    ]);
-                    $traffic->save();
-                    return response()->json($response, 400);
-                }
-
                 $validator = Validator::make($request->all(), [
                     'nilai_b1_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
                     'nilai_b2_hasil_sidang_skripsi' => 'required|numeric|between:0,100',
